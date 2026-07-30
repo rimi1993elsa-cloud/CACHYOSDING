@@ -29,10 +29,11 @@ import javafx.scene.layout.VBox;
 import org.cachyos.controlcenter.ai.api.AiProvider;
 import org.cachyos.controlcenter.ai.knowledge.KnowledgeService;
 import org.cachyos.controlcenter.ai.provider.AiConfiguration;
+import org.cachyos.controlcenter.ai.provider.SecretStore;
 import org.cachyos.controlcenter.core.action.ActionDispatcher;
 import org.cachyos.controlcenter.core.action.ActionRequest;
 import org.cachyos.controlcenter.core.action.InputSource;
-import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
+import org.cachyos.controlcenter.core.audit.AuditLog;
 import org.cachyos.controlcenter.input.intent.GermanIntentRouter;
 import org.cachyos.controlcenter.input.intent.IntentResult;
 import org.cachyos.controlcenter.input.voice.MicrophoneCatalog;
@@ -89,7 +90,7 @@ final class ApplicationShell {
       PlatformInfo platformInfo,
       SystemSnapshot systemSnapshot,
       DashboardMonitor dashboardMonitor,
-      InMemoryAuditLog auditLog,
+      AuditLog auditLog,
       NetworkManagerModule networkManager,
       NetworkEvents networkEvents,
       AudioManagerModule audioManager,
@@ -112,6 +113,7 @@ final class ApplicationShell {
       SpeechToTextEngine speechToTextEngine,
       AiProvider aiProvider,
       AiConfiguration aiConfiguration,
+      SecretStore secretStore,
       KnowledgeService knowledgeService,
       SettingsService settingsService,
       NavigationCatalog catalog,
@@ -150,6 +152,7 @@ final class ApplicationShell {
                 speechToTextEngine,
                 aiProvider,
                 aiConfiguration,
+                secretStore,
                 knowledgeService,
                 settingsService,
                 themeManager,
@@ -236,7 +239,7 @@ final class ApplicationShell {
 
     Label title = new Label("CachyOS Control Center");
     title.getStyleClass().add("app-title");
-    Label phase = new Label("Version 1.1");
+    Label phase = new Label("Version 1.2");
     phase.getStyleClass().add("phase-badge");
 
     Label statusDot = new Label("●");
@@ -286,7 +289,7 @@ final class ApplicationShell {
       PlatformInfo platformInfo,
       SystemSnapshot systemSnapshot,
       DashboardMonitor dashboardMonitor,
-      InMemoryAuditLog auditLog,
+      AuditLog auditLog,
       NetworkManagerModule networkManager,
       NetworkEvents networkEvents,
       AudioManagerModule audioManager,
@@ -308,6 +311,7 @@ final class ApplicationShell {
       SpeechToTextEngine speechToTextEngine,
       AiProvider aiProvider,
       AiConfiguration aiConfiguration,
+      SecretStore secretStore,
       KnowledgeService knowledgeService,
       SettingsService settingsService,
       ThemeManager themeManager,
@@ -375,6 +379,8 @@ final class ApplicationShell {
                     "Darstellung", "Theme auf „" + mode.displayName() + "“ gesetzt."),
             settingsService,
             auditLog,
+            secretStore,
+            systemSnapshot,
             notificationCenter,
             chatView::applySettings,
             () -> {

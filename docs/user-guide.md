@@ -1,7 +1,7 @@
-# Benutzerhandbuch – Version 1.1
+# Benutzerhandbuch – Version 1.2
 
 Beim ersten Start erklärt ein Einrichtungsassistent die lokale/online Trennung. Dort werden
-Online-KI, Diagnosefreigabe, lokaler Chatverlauf und eine monatliche Warnschwelle gewählt. Der
+Online-KI, Diagnosefreigabe, lokaler Chatverlauf und ein lokales USD-Monatslimit gewählt. Der
 Assistent fragt keinen API-Key ab und erscheint erneut, bis die Einrichtung ausdrücklich
 abgeschlossen wurde.
 
@@ -15,6 +15,10 @@ Tastaturkürzel:
 - `Strg+L`: Eingabefeld fokussieren
 
 Unter „Einstellungen“ kann zwischen System-, hellem und dunklem Farbschema gewechselt werden.
+Dort lässt sich außerdem der OpenAI-Schlüssel über KWallet/Secret Service speichern oder löschen.
+Der integrierte Linux-Systemcheck zeigt erkannte Werkzeuge und den Pfad der privaten
+SQLite-Datenbank. Einstellungen, opt-in Chatverlauf, Audit und Tokenverbrauch bleiben dadurch auch
+nach einem Neustart erhalten.
 
 Die Seite „System“ zeigt erkannte Angaben zu Distribution, CachyOS, Kernel, Desktop, Sitzung,
 Prozessor, Arbeitsspeicher, Speicherplatz, Akku, Netzwerk, Bootmanager und optionalen Werkzeugen.

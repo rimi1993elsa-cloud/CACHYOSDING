@@ -9,6 +9,8 @@ public interface AiProvider extends AutoCloseable {
 
   String availabilityMessage();
 
+  default void refreshAvailability() {}
+
   CompletionStage<Void> stream(AiRequest request, Consumer<AiStreamEvent> listener);
 
   void cancel();

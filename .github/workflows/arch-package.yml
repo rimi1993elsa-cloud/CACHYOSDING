@@ -1,0 +1,38 @@
+name: Arch package
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    container: archlinux:base-devel
+    timeout-minutes: 45
+    steps:
+      - name: Install runner dependencies
+        run: pacman -Syu --noconfirm git jdk21-openjdk libsecret gtk3 xorg-server-xvfb
+
+      - name: Check out source
+        uses: actions/checkout@v6
+
+      - name: Create unprivileged package builder
+        run: |
+          useradd --create-home builder
+          chown -R builder:builder "$GITHUB_WORKSPACE"
+
+      - name: Build and test split packages
+        run: |
+          su builder -c "cd '$GITHUB_WORKSPACE/packaging' && xvfb-run --auto-servernum makepkg --cleanbuild --force --noconfirm"
+
+      - name: Upload packages
+        uses: actions/upload-artifact@v7
+        with:
+          name: cachyos-control-center-arch-packages
+          path: packaging/*.pkg.tar.zst
+          if-no-files-found: error

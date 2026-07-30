@@ -8,7 +8,6 @@ import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseStreamEvent;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -26,7 +25,8 @@ import org.cachyos.controlcenter.ai.provider.SecretStore;
 /** Official-SDK Responses API adapter with no dependency on local execution components. */
 public final class OpenAiResponsesProvider implements AiProvider {
   private final Supplier<AiConfiguration> configuration;
-  private final Optional<OpenAIClient> client;
+  private final SecretStore secrets;
+  private volatile boolean available;
   private final ExecutorService executor;
   private final AtomicReference<Future<?>> active = new AtomicReference<>();
 
@@ -36,19 +36,8 @@ public final class OpenAiResponsesProvider implements AiProvider {
 
   public OpenAiResponsesProvider(Supplier<AiConfiguration> configuration, SecretStore secrets) {
     this.configuration = Objects.requireNonNull(configuration, "configuration");
-    Objects.requireNonNull(secrets, "secrets");
-    char[] secret = secrets.readSecret("openai-api-key").orElse(null);
-    try {
-      client =
-          secret == null
-              ? Optional.empty()
-              : Optional.of(
-                  OpenAIOkHttpClient.builder().apiKey(new String(secret)).maxRetries(2).build());
-    } finally {
-      if (secret != null) {
-        Arrays.fill(secret, '\0');
-      }
-    }
+    this.secrets = Objects.requireNonNull(secrets, "secrets");
+    available = secrets.containsSecret("openai-api-key");
     executor =
         Executors.newSingleThreadExecutor(
             runnable -> {
@@ -60,7 +49,12 @@ public final class OpenAiResponsesProvider implements AiProvider {
 
   @Override
   public boolean available() {
-    return client.isPresent();
+    return available;
+  }
+
+  @Override
+  public void refreshAvailability() {
+    available = secrets.containsSecret("openai-api-key");
   }
 
   @Override
@@ -74,7 +68,7 @@ public final class OpenAiResponsesProvider implements AiProvider {
   public CompletableFuture<Void> stream(AiRequest request, Consumer<AiStreamEvent> listener) {
     Objects.requireNonNull(request, "request");
     Objects.requireNonNull(listener, "listener");
-    if (client.isEmpty()) {
+    if (!available) {
       listener.accept(AiStreamEvent.error(availabilityMessage()));
       return CompletableFuture.failedFuture(new IllegalStateException("AI unavailable"));
     }
@@ -85,19 +79,48 @@ public final class OpenAiResponsesProvider implements AiProvider {
             () -> {
               try {
                 AiConfiguration selected = configuration.get();
-                ResponseCreateParams params =
-                    ResponseCreateParams.builder()
-                        .model(selected.model())
-                        .instructions(SystemPromptBuilder.build(request))
-                        .input(buildInput(request))
-                        .maxOutputTokens(selected.maximumOutputTokens())
-                        .store(false)
-                        .build();
-                try (StreamResponse<ResponseStreamEvent> response =
-                    client.orElseThrow().responses().createStreaming(params)) {
-                  response.stream()
-                      .flatMap(event -> event.outputTextDelta().stream())
-                      .forEach(delta -> listener.accept(AiStreamEvent.delta(delta.delta())));
+                char[] secret =
+                    secrets
+                        .readSecret("openai-api-key")
+                        .orElseThrow(() -> new IllegalStateException("AI unavailable"));
+                available = true;
+                OpenAIClient client;
+                try {
+                  client =
+                      OpenAIOkHttpClient.builder().apiKey(new String(secret)).maxRetries(2).build();
+                } finally {
+                  Arrays.fill(secret, '\0');
+                }
+                try {
+                  ResponseCreateParams params =
+                      ResponseCreateParams.builder()
+                          .model(selected.model())
+                          .instructions(SystemPromptBuilder.build(request))
+                          .input(buildInput(request))
+                          .maxOutputTokens(selected.maximumOutputTokens())
+                          .store(false)
+                          .build();
+                  try (StreamResponse<ResponseStreamEvent> response =
+                      client.responses().createStreaming(params)) {
+                    response.stream()
+                        .forEach(
+                            event -> {
+                              event
+                                  .outputTextDelta()
+                                  .ifPresent(
+                                      delta -> listener.accept(AiStreamEvent.delta(delta.delta())));
+                              event
+                                  .completed()
+                                  .flatMap(completed -> completed.response().usage())
+                                  .ifPresent(
+                                      usage ->
+                                          listener.accept(
+                                              AiStreamEvent.usage(
+                                                  usage.inputTokens(), usage.outputTokens())));
+                            });
+                  }
+                } finally {
+                  client.close();
                 }
                 listener.accept(AiStreamEvent.completed());
                 completion.complete(null);

@@ -3,7 +3,7 @@
 ## Ziel
 
 Die Anwendung trennt Anzeige, lokale Aktionen, privilegierte Aktionen und Online-KI technisch. In
-Version 1.0 existieren die unprivilegierte UI, sichere Systemerkennung, das Live-Dashboard, eine
+Version 1.2 existieren die unprivilegierte UI, sichere Systemerkennung, das Live-Dashboard, eine
 allowlist-basierte lokale Action Engine, Fachgrenzen für NetworkManager und PipeWire-Pulse sowie
 eine strikt textliefernde Speech-to-Text-Grenze und ein separater privilegierter Helper.
 
@@ -71,8 +71,9 @@ flowchart TB
   procfs, feste Bootpfade, Pacman-Metadaten und begrenzte `systemd-analyze`-Ausgaben.
 - Der CachyOS Kernel Manager wird ausschließlich gestartet, wenn eine von zwei fest eingebauten
   absoluten Executables vorhanden ist; Benutzerparameter oder Shelltext existieren nicht.
-- `persistence` speichert nur das explizite `ApplicationSettings`-Schema und optional bis zu 200
-  Chatnachrichten. Temporärdatei und atomarer Move verhindern Teilstände; Symlinks werden abgelehnt.
+- `persistence` verwendet eine private SQLite-Datenbank mit versioniertem Schema für Einstellungen,
+  optional bis zu 200 Chatnachrichten, Audit und KI-Nutzung. Alte JSON-Dateien werden validiert
+  importiert; Symlink-Wurzeln werden abgelehnt.
 - API-Keys, Tokens und Wallet-Inhalte besitzen kein Feld im Einstellungs- oder Exportschema.
 - Der Chat prüft Online-Freigabe, Anbieter und Budget bei jedem Senden. Dokumentations-, System-
   und Hardwarekontext wird nur bei der jeweiligen aktuellen Freigabe aufgebaut.
@@ -117,7 +118,7 @@ $XDG_CACHE_HOME/cachyos-control-center
 ```
 
 Fehlende oder relative XDG-Pfade fallen sicher auf die entsprechenden Verzeichnisse unter dem
-Benutzer-Home zurück. Secrets gehören später in Secret Service/KDE Wallet, nie in SQLite.
+Benutzer-Home zurück. Secrets liegen im Secret Service/KDE Wallet, nie in SQLite.
 
 ## Versionsbasis (30. Juli 2026)
 
@@ -132,3 +133,4 @@ Benutzer-Home zurück. Secrets gehören später in Secret Service/KDE Wallet, ni
 - Offizielles OpenAI Java SDK 4.43.0
 - jsoup 1.23.1
 - dbus-java 5.2.0
+- SQLite JDBC 3.53.1.0

@@ -41,3 +41,14 @@ im Helper und unter `packaging/dbus` müssen bytegleich bleiben. Für ein Releas
 CachyOS-System `makepkg --syncdeps --cleanbuild`, Installation, KDE-Menü, D-Bus-Aktivierung,
 Polkit-Dialoge, Update und Entfernung prüfen. Benutzerdaten dürfen bei Entfernung nicht automatisch
 gelöscht werden.
+
+## CachyOS-Release-Workflow
+
+- `scripts/verify-linux.sh` ist das lokale Linux-Quality-Gate.
+- `scripts/install-cachyos.sh` baut und installiert alle Split-Pakete als normaler Benutzer.
+- `scripts/verify-installed.sh` wird als `cachyos-control-center-verify` mitinstalliert.
+- `.github/workflows/arch-package.yml` baut Tags in einem aktuellen Arch-Linux-Container und
+  veröffentlicht die `.pkg.tar.zst`-Dateien als Workflow-Artefakt.
+
+Vor einer öffentlichen Veröffentlichung müssen die AppStream-/PKGBUILD-Projekt-URLs auf das
+tatsächliche Repository gesetzt und ein Git-Remote konfiguriert werden.

@@ -5,11 +5,10 @@ phasenweise nach dem verbindlichen Masterauftrag entwickelt.
 
 ## Aktueller Stand
 
-Version 1.1 umfasst die lokale Systemverwaltung, ein direkt paketiertes deutsches Vosk-Modell,
-eine benutzerfreundliche Auswahl aktueller OpenAI-Modellprofile, den getrennten
-Polkit-Helper, private XDG-Einstellungen, den Ersteinrichtungsassistenten und die CachyOS-
-Paketintegration. Online-Funktionen sind optional; administrative Aktionen verwenden ausschließlich
-typisierte und erneut validierte D-Bus-Aufrufe.
+Version 1.2 ist ein auf CachyOS installierbarer Release Candidate. Neben lokaler
+Systemverwaltung, Vosk, OpenAI-Modellprofilen und dem getrennten Polkit-Helper enthält sie eine
+SQLite-Datenbasis, dauerhaftes Audit und Chat-Historie, lokale KI-Verbrauchsgrenzen, sichere
+API-Key-Verwaltung über KWallet/Secret Service sowie geführte Linux- und Installationschecks.
 
 ## Voraussetzungen
 
@@ -43,6 +42,19 @@ Die aktuelle Oberfläche zeigt reale lokale Systemdaten. Schnellbuttons senden a
 Action-IDs an den lokalen Dispatcher. Die Erkennung verwendet sichere Java- und Kernel-Schnittstellen;
 es gibt keine freie Shellausführung und keine erhöhten Rechte.
 
+## Auf CachyOS installieren und testen
+
+```bash
+cd /pfad/zum/CachyOS-Projekt
+./scripts/install-cachyos.sh
+cachyos-control-center-verify
+cachyos-control-center
+```
+
+Das Installationsskript installiert ausschließlich deklarierte Arch-Buildabhängigkeiten, führt alle
+Tests aus, prüft die Vosk-Prüfsumme und baut anschließend die vier Split-Pakete mit `makepkg`.
+Alternativ kann zuerst nur `./scripts/verify-linux.sh` ausgeführt werden.
+
 ## Projektmodule
 
 | Modul | Verantwortung |
@@ -68,6 +80,7 @@ Einstiegspunkte:
 - [Entwicklerhandbuch](docs/developer-guide.md)
 - [Release Notes 1.0](docs/release-notes-1.0.0.md)
 - [Release Notes 1.1](docs/release-notes-1.1.0.md)
+- [Release Notes 1.2](docs/release-notes-1.2.0.md)
 - [Bekannte Einschränkungen](docs/known-limitations.md)
 
 ## Lizenz

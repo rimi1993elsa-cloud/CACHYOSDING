@@ -17,13 +17,16 @@ aktualisiert.
 ## Lokale Speicherorte
 
 ```text
-$XDG_CONFIG_HOME/cachyos-control-center/settings.json
-$XDG_CONFIG_HOME/cachyos-control-center/chat-history.json
-$XDG_CONFIG_HOME/cachyos-control-center/setup-v1.complete
+$XDG_DATA_HOME/cachyos-control-center/cachyos-control-center.sqlite3
 $XDG_CACHE_HOME/cachyos-control-center/
 $XDG_DATA_HOME/cachyos-control-center/
 ```
 
-„Lokale persönliche Daten löschen“ entfernt Einstellungen, Verlauf und Setup-Marker. Cache und
-optionale Sprachmodelle können separat im jeweiligen XDG-Verzeichnis gelöscht werden. Eine
-Paketdeinstallation löscht Benutzerdaten absichtlich nicht.
+Die SQLite-Datenbank enthält Einstellungen, bewusst aktivierten Chatverlauf, parameterfreie
+Audit-Metadaten und lokale KI-Tokenstatistiken. Bestehende JSON-Einstellungen und JSON-Verläufe
+werden beim ersten Start atomar importiert und anschließend entfernt. API-Schlüssel befinden sich
+nie in dieser Datenbank.
+
+„Lokale persönliche Daten löschen“ entfernt Einstellungen, Verlauf, Verbrauch und Setup-Status aus
+der Datenbank. Cache und optionale Sprachmodelle können separat im jeweiligen XDG-Verzeichnis
+gelöscht werden. Eine Paketdeinstallation löscht Benutzerdaten absichtlich nicht.

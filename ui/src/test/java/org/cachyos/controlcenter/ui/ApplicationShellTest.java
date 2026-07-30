@@ -339,6 +339,7 @@ class ApplicationShellTest extends ApplicationTest {
             new NoopSpeechEngine(),
             new UnavailableAiProvider(),
             AiConfiguration.defaults(),
+            ignored -> java.util.Optional.empty(),
             knowledgeService,
             settingsService,
             request -> {
@@ -544,6 +545,9 @@ class ApplicationShellTest extends ApplicationTest {
         lookup("#ai-model").queryAs(javafx.scene.control.ComboBox.class);
     assertEquals(3, models.getItems().size());
     assertEquals("Beste Qualität", models.getItems().getFirst().toString());
+    lookup("#api-key-store").queryButton();
+    lookup("#api-key-delete").queryButton();
+    lookup("#system-check-result").queryAs(Label.class);
   }
 
   @Test

@@ -11,7 +11,7 @@ import org.cachyos.controlcenter.ai.openai.OpenAiResponsesProvider;
 import org.cachyos.controlcenter.ai.provider.AiConfiguration;
 import org.cachyos.controlcenter.core.action.ActionRegistry;
 import org.cachyos.controlcenter.core.action.DefaultActionDispatcher;
-import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
+import org.cachyos.controlcenter.core.audit.AuditLog;
 import org.cachyos.controlcenter.core.module.ModuleRegistry;
 import org.cachyos.controlcenter.input.intent.GermanIntentRouter;
 import org.cachyos.controlcenter.input.intent.RegisteredApplication;
@@ -33,6 +33,7 @@ import org.cachyos.controlcenter.modules.services.ServiceManager;
 import org.cachyos.controlcenter.modules.snapshots.SnapshotManager;
 import org.cachyos.controlcenter.modules.storage.StorageManager;
 import org.cachyos.controlcenter.persistence.SettingsService;
+import org.cachyos.controlcenter.persistence.SqliteAuditLog;
 import org.cachyos.controlcenter.platform.applications.DesktopApplicationBackend;
 import org.cachyos.controlcenter.platform.audio.PactlAudioBackend;
 import org.cachyos.controlcenter.platform.audio.PactlEventMonitor;
@@ -144,22 +145,25 @@ public final class Bootstrap {
     SpeechModelManager speechModelManager = new SpeechModelManager(xdgPaths.dataDirectory());
     VoskSpeechToTextEngine speechToTextEngine =
         lifecycle.manage(new VoskSpeechToTextEngine(microphoneCatalog));
-    SettingsService settingsService = new SettingsService(xdgPaths.configDirectory());
+    SettingsService settingsService =
+        new SettingsService(xdgPaths.configDirectory(), xdgPaths.dataDirectory());
     AiConfiguration aiConfiguration = AiConfiguration.fromEnvironment();
+    DesktopSecretStore secretStore = new DesktopSecretStore();
     AiProvider aiProvider =
         lifecycle.manage(
             new OpenAiResponsesProvider(
                 () ->
                     new AiConfiguration(
                         settingsService.current().aiModel(), aiConfiguration.maximumOutputTokens()),
-                new DesktopSecretStore()));
+                secretStore));
     KnowledgeService knowledgeService =
         lifecycle.manage(
             new KnowledgeService(
                 OfficialSourceRegistry.sources(),
                 new KnowledgeCache(xdgPaths.cacheDirectory()),
                 new HttpKnowledgeFetcher()));
-    InMemoryAuditLog auditLog = new InMemoryAuditLog();
+    AuditLog auditLog =
+        new SqliteAuditLog(xdgPaths.dataDirectory().resolve("cachyos-control-center.sqlite3"));
     ModuleRegistry moduleRegistry = new ModuleRegistry();
     ActionRegistry actionRegistry = new ActionRegistry();
 
@@ -214,6 +218,7 @@ public final class Bootstrap {
         speechToTextEngine,
         aiProvider,
         aiConfiguration,
+        secretStore,
         knowledgeService,
         settingsService,
         lifecycle,

@@ -14,7 +14,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import org.cachyos.controlcenter.core.action.ActionDispatcher;
 import org.cachyos.controlcenter.core.audit.ActionAuditEvent;
-import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
+import org.cachyos.controlcenter.core.audit.AuditLog;
 import org.cachyos.controlcenter.persistence.SettingsService;
 import org.cachyos.controlcenter.systeminfo.DashboardMetrics;
 import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
@@ -39,11 +39,11 @@ public final class DashboardView extends VBox {
   private final Label refreshedAt = new Label();
   private final ListView<String> warnings = new ListView<>();
   private final ListView<String> recentActions = new ListView<>();
-  private final InMemoryAuditLog auditLog;
+  private final AuditLog auditLog;
 
   public DashboardView(
       DashboardMonitor monitor,
-      InMemoryAuditLog auditLog,
+      AuditLog auditLog,
       ActionDispatcher actionDispatcher,
       NotificationCenter notifications,
       SettingsService settings) {

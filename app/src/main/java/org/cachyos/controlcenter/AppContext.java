@@ -3,8 +3,9 @@ package org.cachyos.controlcenter;
 import org.cachyos.controlcenter.ai.api.AiProvider;
 import org.cachyos.controlcenter.ai.knowledge.KnowledgeService;
 import org.cachyos.controlcenter.ai.provider.AiConfiguration;
+import org.cachyos.controlcenter.ai.provider.SecretStore;
 import org.cachyos.controlcenter.core.action.ActionDispatcher;
-import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
+import org.cachyos.controlcenter.core.audit.AuditLog;
 import org.cachyos.controlcenter.core.module.ModuleRegistry;
 import org.cachyos.controlcenter.input.intent.GermanIntentRouter;
 import org.cachyos.controlcenter.input.voice.MicrophoneCatalog;
@@ -58,9 +59,10 @@ public record AppContext(
     SpeechToTextEngine speechToTextEngine,
     AiProvider aiProvider,
     AiConfiguration aiConfiguration,
+    SecretStore secretStore,
     KnowledgeService knowledgeService,
     SettingsService settingsService,
     LifecycleManager lifecycleManager,
     ActionDispatcher actionDispatcher,
-    InMemoryAuditLog auditLog,
+    AuditLog auditLog,
     ModuleRegistry moduleRegistry) {}

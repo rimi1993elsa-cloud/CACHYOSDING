@@ -29,4 +29,25 @@ class OpenAiResponsesProviderTest {
       assertTrue(event.get().text().contains("API-Schlüssel"));
     }
   }
+
+  @Test
+  void refreshesAvailabilityWithoutRestartingTheProvider() {
+    AtomicReference<char[]> secret = new AtomicReference<>();
+    try (OpenAiResponsesProvider provider =
+        new OpenAiResponsesProvider(
+            AiConfiguration.defaults(),
+            ignored -> {
+              char[] value = secret.get();
+              return value == null
+                  ? java.util.Optional.empty()
+                  : java.util.Optional.of(value.clone());
+            })) {
+      assertFalse(provider.available());
+
+      secret.set("development-only-secret-value".toCharArray());
+      provider.refreshAvailability();
+
+      assertTrue(provider.available());
+    }
+  }
 }

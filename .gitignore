@@ -7,4 +7,7 @@ out/
 *.log
 hs_err_pid*
 .DS_Store
-
+/packaging/src/
+/packaging/pkg/
+/packaging/*.pkg.tar.*
+/packaging/vosk-model-small-de-0.15.zip

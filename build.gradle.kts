@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "org.cachyos.controlcenter"
-version = "1.1.0"
+version = "1.2.0"
 
 subprojects {
     apply(plugin = "java-library")
@@ -92,6 +92,9 @@ val verifyPackaging = tasks.register("verifyPackaging") {
             "packaging/dbus/org.cachyos.ControlCenter.Helper1.service",
             "packaging/dbus/org.cachyos.ControlCenter.Helper1.conf",
             "packaging/polkit/org.cachyos.controlcenter.policy",
+            "scripts/install-cachyos.sh",
+            "scripts/verify-linux.sh",
+            "scripts/verify-installed.sh",
         ).map(::file)
         check(required.all { it.isFile }) { "Packaging asset is missing" }
         val desktop = required[2].readText()
@@ -108,6 +111,10 @@ val verifyPackaging = tasks.register("verifyPackaging") {
             "vosk-model-small-de-0.15.zip" in packageBuild &&
                 "b7e53c90b1f0a38456f4cd62b366ecd58803cd97cd42b06438e2c131713d5e43" in packageBuild
         ) { "Packaged Vosk model source or checksum is missing" }
+        check("pkgver=1.2.0" in packageBuild) { "PKGBUILD version drifted" }
+        check(required.drop(8).all { it.readText().startsWith("#!/usr/bin/env bash") }) {
+            "Linux helper script is not executable shell source"
+        }
         check(
             file("packaging/dbus/org.cachyos.ControlCenter.Helper1.service").readText() ==
                 file("helper/privileged-helper/src/main/resources/dbus-1/system-services/org.cachyos.ControlCenter.Helper1.service").readText()

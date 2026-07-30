@@ -14,9 +14,10 @@ import javafx.scene.layout.VBox;
 import org.cachyos.controlcenter.ai.api.AiProvider;
 import org.cachyos.controlcenter.ai.knowledge.KnowledgeService;
 import org.cachyos.controlcenter.ai.provider.AiConfiguration;
+import org.cachyos.controlcenter.ai.provider.SecretStore;
 import org.cachyos.controlcenter.core.action.ActionDispatcher;
 import org.cachyos.controlcenter.core.action.InputSource;
-import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
+import org.cachyos.controlcenter.core.audit.AuditLog;
 import org.cachyos.controlcenter.input.voice.MicrophoneCatalog;
 import org.cachyos.controlcenter.input.voice.SpeechModelManager;
 import org.cachyos.controlcenter.input.voice.SpeechToTextEngine;
@@ -68,7 +69,7 @@ final class ShellPages {
 
   static Node overview(
       DashboardMonitor dashboardMonitor,
-      InMemoryAuditLog auditLog,
+      AuditLog auditLog,
       ActionDispatcher actionDispatcher,
       NotificationCenter notifications,
       SettingsService settings) {
@@ -285,7 +286,9 @@ final class ShellPages {
       ThemeManager themeManager,
       Consumer<ThemeMode> onChanged,
       SettingsService settingsService,
-      InMemoryAuditLog auditLog,
+      AuditLog auditLog,
+      SecretStore secretStore,
+      SystemSnapshot snapshot,
       NotificationCenter notifications,
       Runnable applySettings,
       Runnable clearLiveChat) {
@@ -316,7 +319,13 @@ final class ShellPages {
             18,
             themeSetting,
             new SettingsView(
-                settingsService, auditLog, notifications, applySettings, clearLiveChat));
+                settingsService,
+                auditLog,
+                secretStore,
+                snapshot,
+                notifications,
+                applySettings,
+                clearLiveChat));
     return page(
         "Einstellungen",
         "Lokale Module, Datenschutzfreigaben, Verlauf, Audit und secret-freier Datentransfer.",

@@ -5,8 +5,9 @@ import javafx.scene.Scene;
 import org.cachyos.controlcenter.ai.api.AiProvider;
 import org.cachyos.controlcenter.ai.knowledge.KnowledgeService;
 import org.cachyos.controlcenter.ai.provider.AiConfiguration;
+import org.cachyos.controlcenter.ai.provider.SecretStore;
 import org.cachyos.controlcenter.core.action.ActionDispatcher;
-import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
+import org.cachyos.controlcenter.core.audit.AuditLog;
 import org.cachyos.controlcenter.input.intent.GermanIntentRouter;
 import org.cachyos.controlcenter.input.voice.MicrophoneCatalog;
 import org.cachyos.controlcenter.input.voice.SpeechModelManager;
@@ -44,7 +45,7 @@ public final class MainView {
       PlatformInfo platformInfo,
       SystemSnapshot systemSnapshot,
       DashboardMonitor dashboardMonitor,
-      InMemoryAuditLog auditLog,
+      AuditLog auditLog,
       NetworkManagerModule networkManager,
       NetworkEvents networkEvents,
       AudioManagerModule audioManager,
@@ -67,6 +68,7 @@ public final class MainView {
       SpeechToTextEngine speechToTextEngine,
       AiProvider aiProvider,
       AiConfiguration aiConfiguration,
+      SecretStore secretStore,
       KnowledgeService knowledgeService,
       SettingsService settingsService,
       ActionDispatcher actionDispatcher) {
@@ -100,6 +102,7 @@ public final class MainView {
             speechToTextEngine,
             aiProvider,
             aiConfiguration,
+            secretStore,
             knowledgeService,
             settingsService,
             new NavigationCatalog(settingsService.current().enabledModules()),

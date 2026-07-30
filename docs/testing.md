@@ -26,3 +26,26 @@ Zu prüfen:
 Die praktische Prüfung auf dem Zielgerät Dell Latitude 5440 ist erforderlich, sobald das Projekt
 dort ausgecheckt ist.
 
+## Automatisierte Zielsystemprüfung ab Version 1.2
+
+Auf CachyOS oder Arch Linux:
+
+```bash
+./scripts/verify-linux.sh
+```
+
+Die Prüfung führt Gradle-Build, alle Tests, Formatierung, Checkstyle, Packaging-Gate,
+Vosk-Quellprüfsumme, optionale Desktop-/AppStream-Validatoren und Sicherheitsgreps aus. Nach der
+Paketinstallation prüft `cachyos-control-center-verify` die installierten Programm-, Desktop-,
+D-Bus-, Polkit- und Vosk-Dateien.
+
+## Manuelle Release-Checkliste
+
+1. App aus dem KDE-Menü starten.
+2. Unter Einstellungen den Linux-Systemcheck kontrollieren.
+3. API-Key in KWallet speichern, Chatstatus prüfen und den Key wieder löschen.
+4. Eine kurze deutsche Push-to-Talk-Aufnahme testen; nach Loslassen darf kein Mikrofonstream laufen.
+5. Netzwerk- und Audiostatus gegen KDE vergleichen.
+6. Eine Pakettransaktion nur nach korrekter Vorschau und Polkit-Abfrage ausführen.
+7. Einen erlaubten Dienst neu starten und Audit-Eintrag nach App-Neustart prüfen.
+8. Suspend/Resume durchführen und CPU-/RAM-Leerlauf messen.

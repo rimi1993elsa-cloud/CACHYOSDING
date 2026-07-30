@@ -7,6 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.sql.DriverManager;
+import java.util.HashSet;
+import java.util.Set;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -124,5 +127,102 @@ class SettingsServiceTest {
                 false,
                 false,
                 false));
+  }
+
+  @Test
+  void persistsSettingsHistoryAndUsageInSqlite() {
+    Path config = temporary.resolve("config");
+    Path data = temporary.resolve("data");
+    SettingsService service = new SettingsService(config, data);
+    ApplicationSettings defaults = service.current();
+    service.update(
+        new ApplicationSettings(
+            defaults.enabledModules(),
+            defaults.quickButtons(),
+            defaults.microphoneEnabled(),
+            defaults.microphoneId(),
+            true,
+            "openai",
+            "gpt-5.6-luna",
+            500,
+            defaults.shareDocumentation(),
+            defaults.shareDiagnostics(),
+            defaults.shareHardware(),
+            defaults.shareSystemContext(),
+            true));
+    service.recordChat("user", "Persistenter Test");
+    service.recordAiUsage("gpt-5.6-luna", 1_000, 500);
+
+    SettingsService reopened = new SettingsService(config, data);
+
+    assertEquals("gpt-5.6-luna", reopened.current().aiModel());
+    assertEquals(1, reopened.history().size());
+    assertEquals(1, reopened.currentMonthUsage().requests());
+    assertTrue(Files.isRegularFile(reopened.databaseFile()));
+    assertFalse(Files.exists(config.resolve("settings.json")));
+  }
+
+  @Test
+  void migratesLegacyJsonSettingsIntoSqlite() throws Exception {
+    Path sourceConfig = temporary.resolve("source");
+    SettingsService source = new SettingsService(sourceConfig);
+    ApplicationSettings defaults = source.current();
+    source.update(
+        new ApplicationSettings(
+            defaults.enabledModules(),
+            defaults.quickButtons(),
+            true,
+            "default",
+            defaults.onlineAiEnabled(),
+            defaults.aiProvider(),
+            defaults.aiModel(),
+            defaults.monthlyBudgetCents(),
+            defaults.shareDocumentation(),
+            defaults.shareDiagnostics(),
+            defaults.shareHardware(),
+            defaults.shareSystemContext(),
+            defaults.storeChatHistory()));
+    Path targetConfig = temporary.resolve("legacy-config");
+    Files.createDirectories(targetConfig);
+    source.exportSettings(targetConfig.resolve("settings.json"));
+
+    SettingsService migrated =
+        new SettingsService(targetConfig, temporary.resolve("migrated-data"));
+
+    assertTrue(migrated.current().microphoneEnabled());
+    assertFalse(Files.exists(targetConfig.resolve("settings.json")));
+    assertTrue(Files.isRegularFile(migrated.databaseFile()));
+  }
+
+  @Test
+  void createsTheRequiredPersistentSchema() throws Exception {
+    SettingsService service =
+        new SettingsService(temporary.resolve("config"), temporary.resolve("data"));
+    Set<String> tables = new HashSet<>();
+    try (var connection = DriverManager.getConnection("jdbc:sqlite:" + service.databaseFile());
+        var statement =
+            connection.prepareStatement(
+                "SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY name");
+        var rows = statement.executeQuery()) {
+      while (rows.next()) {
+        tables.add(rows.getString(1));
+      }
+    }
+
+    assertTrue(
+        tables.containsAll(
+            Set.of(
+                "settings",
+                "module_preferences",
+                "quick_actions",
+                "action_history",
+                "diagnostic_runs",
+                "chat_sessions",
+                "chat_messages",
+                "knowledge_sources",
+                "knowledge_documents",
+                "knowledge_chunks",
+                "ai_usage",
+                "schema_migrations")));
   }
 }

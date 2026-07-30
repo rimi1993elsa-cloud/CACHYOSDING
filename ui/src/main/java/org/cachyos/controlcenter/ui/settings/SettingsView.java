@@ -5,26 +5,34 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
+import org.cachyos.controlcenter.ai.provider.SecretOperationResult;
+import org.cachyos.controlcenter.ai.provider.SecretStore;
+import org.cachyos.controlcenter.core.audit.AuditLog;
 import org.cachyos.controlcenter.persistence.ApplicationSettings;
 import org.cachyos.controlcenter.persistence.SettingsService;
+import org.cachyos.controlcenter.systeminfo.SystemSnapshot;
 import org.cachyos.controlcenter.ui.notifications.NotificationCenter;
 
 public final class SettingsView extends VBox {
   private static final String OPENAI_LABEL = "OpenAI (online)";
   private static final String OFFLINE_LABEL = "Nur lokal (keine Online-KI)";
   private final SettingsService service;
-  private final InMemoryAuditLog auditLog;
+  private final AuditLog auditLog;
+  private final SecretStore secretStore;
+  private final SystemSnapshot systemSnapshot;
   private final NotificationCenter notifications;
   private final Runnable clearLiveChat;
   private final Runnable applySettings;
@@ -42,15 +50,22 @@ public final class SettingsView extends VBox {
   private final CheckBox system = new CheckBox("Systembasisdaten freigeben");
   private final CheckBox history = new CheckBox("Chatverlauf lokal speichern");
   private final Label status = new Label();
+  private final Label secretStatus = new Label();
+  private final PasswordField apiKey = new PasswordField();
+  private final Label systemCheck = new Label();
 
   public SettingsView(
       SettingsService service,
-      InMemoryAuditLog auditLog,
+      AuditLog auditLog,
+      SecretStore secretStore,
+      SystemSnapshot systemSnapshot,
       NotificationCenter notifications,
       Runnable applySettings,
       Runnable clearLiveChat) {
     this.service = service;
     this.auditLog = auditLog;
+    this.secretStore = secretStore;
+    this.systemSnapshot = systemSnapshot;
     this.notifications = notifications;
     this.applySettings = applySettings;
     this.clearLiveChat = clearLiveChat;
@@ -99,6 +114,13 @@ public final class SettingsView extends VBox {
           auditLog.clear();
           refreshStatus();
         });
+    Button clearUsage = new Button("KI-Verbrauch zurücksetzen");
+    clearUsage.setOnAction(
+        ignored -> {
+          service.clearAiUsage();
+          notifications.show("KI-Verbrauch", "Die lokale Verbrauchsstatistik wurde gelöscht.");
+          refreshStatus();
+        });
     Button export = new Button("Sichere Einstellungen exportieren");
     export.setOnAction(ignored -> exportSettings());
     Button importButton = new Button("Einstellungen importieren");
@@ -112,6 +134,22 @@ public final class SettingsView extends VBox {
           load();
           notifications.show("Datenschutz", "Einstellungen, Verlauf und Audit wurden gelöscht.");
         });
+    apiKey.setPromptText("OpenAI API-Schlüssel");
+    apiKey.setAccessibleText("OpenAI API-Schlüssel sicher in KWallet speichern");
+    Button storeKey = new Button("API-Schlüssel sicher speichern");
+    storeKey.setId("api-key-store");
+    storeKey.setOnAction(ignored -> storeApiKey());
+    Button deleteKey = new Button("API-Schlüssel löschen");
+    deleteKey.setId("api-key-delete");
+    deleteKey.setOnAction(ignored -> deleteApiKey());
+    Button runSystemCheck = new Button("Linux-Systemcheck aktualisieren");
+    runSystemCheck.setId("system-check-refresh");
+    runSystemCheck.setOnAction(ignored -> refreshSystemCheck());
+    secretStatus.getStyleClass().add("muted-label");
+    secretStatus.setId("api-key-status");
+    systemCheck.setWrapText(true);
+    systemCheck.setId("system-check-result");
+    systemCheck.getStyleClass().add("muted-label");
     getChildren()
         .addAll(
             new Label("Aktive Module (wirksam nach Neustart)"),
@@ -120,20 +158,27 @@ public final class SettingsView extends VBox {
             quickChoices,
             microphone,
             onlineAi,
+            new Label("OpenAI-Zugang"),
+            apiKey,
+            new HBox(8, storeKey, deleteKey),
+            secretStatus,
             new HBox(8, new Label("KI-Anbieter"), provider),
             new HBox(8, new Label("Modellprofil"), model),
             modelDescription,
-            new HBox(8, new Label("Monatsbudget in Cent (0 deaktiviert Online-KI)"), budget),
+            new HBox(8, new Label("Monatslimit in USD-Cent (0 deaktiviert Online-KI)"), budget),
             documentation,
             diagnostics,
             hardware,
             system,
             history,
             save,
-            new HBox(8, clearHistory, clearAudit),
+            new HBox(8, clearHistory, clearAudit, clearUsage),
             new HBox(8, export, importButton),
             delete,
             status,
+            new Label("Installations- und Systemcheck"),
+            runSystemCheck,
+            systemCheck,
             new Label(
                 "API-Keys liegen ausschließlich im Secret Service/KDE Wallet und sind nie Teil eines Exports."));
     load();
@@ -157,6 +202,8 @@ public final class SettingsView extends VBox {
     system.setSelected(value.shareSystemContext());
     history.setSelected(value.storeChatHistory());
     refreshAiControls();
+    refreshSecretStatus();
+    refreshSystemCheck();
     refreshStatus();
   }
 
@@ -223,7 +270,76 @@ public final class SettingsView extends VBox {
             + service.history().size()
             + " Einträge · Audit: "
             + auditLog.events().size()
-            + " Einträge");
+            + " Einträge · geschätzte KI-Kosten diesen Monat: "
+            + String.format(
+                java.util.Locale.GERMAN, "%.4f USD", service.currentMonthUsage().estimatedUsd()));
+  }
+
+  private void storeApiKey() {
+    char[] value = apiKey.getText().toCharArray();
+    apiKey.clear();
+    secretStatus.setText("KWallet/Secret Service wird geöffnet …");
+    CompletableFuture.supplyAsync(() -> secretStore.storeSecret("openai-api-key", value))
+        .thenAccept(result -> Platform.runLater(() -> applySecretResult(result)));
+  }
+
+  private void deleteApiKey() {
+    secretStatus.setText("API-Schlüssel wird gelöscht …");
+    CompletableFuture.supplyAsync(() -> secretStore.deleteSecret("openai-api-key"))
+        .thenAccept(result -> Platform.runLater(() -> applySecretResult(result)));
+  }
+
+  private void applySecretResult(SecretOperationResult result) {
+    secretStatus.setText(result.message());
+    notifications.show(
+        result.success() ? "OpenAI-Zugang" : "OpenAI-Zugang nicht geändert", result.message());
+    applySettings.run();
+    refreshSystemCheck();
+  }
+
+  private void refreshSecretStatus() {
+    CompletableFuture.supplyAsync(() -> secretStore.containsSecret("openai-api-key"))
+        .thenAccept(
+            present ->
+                Platform.runLater(
+                    () ->
+                        secretStatus.setText(
+                            present
+                                ? "API-Schlüssel ist sicher in KWallet/Secret Service hinterlegt."
+                                : "Noch kein API-Schlüssel in KWallet/Secret Service gefunden.")));
+  }
+
+  private void refreshSystemCheck() {
+    long available =
+        systemSnapshot.capabilities().statuses().values().stream()
+            .filter(capability -> capability.available())
+            .count();
+    long total = systemSnapshot.capabilities().statuses().size();
+    String missing =
+        systemSnapshot.capabilities().statuses().values().stream()
+            .filter(capability -> !capability.available())
+            .limit(8)
+            .map(capability -> capability.capability().displayName() + " → " + capability.reason())
+            .collect(java.util.stream.Collectors.joining("\n"));
+    String distribution =
+        systemSnapshot.distribution().cachyOs()
+            ? "CachyOS erkannt"
+            : systemSnapshot.distribution().prettyName();
+    systemCheck.setText(
+        distribution
+            + " · "
+            + available
+            + "/"
+            + total
+            + " optionale Werkzeuge verfügbar\n"
+            + "Datenbank: "
+            + service.databaseFile()
+            + "\n"
+            + (missing.isBlank()
+                ? "Alle optionalen Werkzeuge erkannt."
+                : "Optional fehlend:\n" + missing)
+            + "\nFehlende Werkzeuge deaktivieren nur die jeweils betroffene Funktion. "
+            + "Vollständiger Abnahmetest: scripts/verify-linux.sh");
   }
 
   private void refreshAiControls() {

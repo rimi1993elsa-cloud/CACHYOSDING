@@ -63,12 +63,13 @@ final class SetupWizard {
             """
             Systemaktionen bleiben lokal; die Online-KI darf keine Aktionen ausführen. API-Keys
             werden nur über Secret Service/KWallet eingerichtet (siehe API-Key-Hilfe). Das Budget
-            ist eine lokale Warnschwelle, keine Abrechnungssperre.""");
+            ist eine lokale Sperre auf Basis geschätzter Texttokenkosten, keine serverseitige
+            Abrechnungssperre.""");
     explanation.setWrapText(true);
     explanation.setMinWidth(0);
     explanation.setPrefWidth(500);
     explanation.setMaxWidth(500);
-    Label budgetLabel = new Label("Monatliche Warnschwelle in Euro:");
+    Label budgetLabel = new Label("Lokales Monatslimit in US-Dollar:");
     Region spacer = new Region();
     VBox.setVgrow(spacer, Priority.ALWAYS);
     Button cancel = new Button("Später");

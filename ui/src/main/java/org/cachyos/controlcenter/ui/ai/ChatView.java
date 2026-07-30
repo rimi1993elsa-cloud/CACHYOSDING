@@ -139,6 +139,7 @@ public final class ChatView extends VBox {
   }
 
   public void applySettings() {
+    provider.refreshAvailability();
     updateModelStatus();
     send.setDisable(!onlineAllowed());
     status.setText(
@@ -201,6 +202,15 @@ public final class ChatView extends VBox {
             case DELTA -> {
               currentAnswer.append(event.text());
               conversation.appendText(event.text());
+            }
+            case USAGE -> {
+              settings.recordAiUsage(
+                  settings.current().aiModel(), event.inputTokens(), event.outputTokens());
+              status.setText(
+                  String.format(
+                      java.util.Locale.GERMAN,
+                      "Antwort empfangen · Monatsschätzung %.4f USD",
+                      settings.currentMonthUsage().estimatedUsd()));
             }
             case COMPLETED -> {
               if (!currentAnswer.isEmpty()) {
@@ -293,6 +303,7 @@ public final class ChatView extends VBox {
     return provider.available()
         && settings.current().onlineAiEnabled()
         && settings.current().monthlyBudgetCents() > 0
+        && settings.currentMonthUsage().belowBudget(settings.current().monthlyBudgetCents())
         && "openai".equals(settings.current().aiProvider());
   }
 

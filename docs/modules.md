@@ -24,7 +24,7 @@
 | Packaging | PKGBUILD, Desktop/AppStream, D-Bus, Polkit und Split-Packages | Phase 24 |
 | Release | Ersteinrichtung, Handbücher, Screenshots und Release-Abnahme | Phase 25 |
 
-Alle in dieser Tabelle als aktiv beschriebenen Fachmodule sind in Version 1.1 verdrahtet.
+Alle in dieser Tabelle als aktiv beschriebenen Fachmodule sind in Version 1.2 verdrahtet.
 # Paketmanager
 
 `modules/packages` koordiniert lesende Snapshots, Suche, Details, Fortschritt und bestätigte

@@ -45,6 +45,7 @@ public final class ControlCenterApplication extends Application {
             context.speechToTextEngine(),
             context.aiProvider(),
             context.aiConfiguration(),
+            context.secretStore(),
             context.knowledgeService(),
             context.settingsService(),
             context.actionDispatcher());

@@ -6,7 +6,7 @@ pkgname=(
   cachyos-control-center-stt-de
   cachyos-control-center-doc-index
 )
-pkgver=1.1.0
+pkgver=1.2.0
 pkgrel=1
 pkgdesc='Sichere deutschsprachige Verwaltungszentrale für CachyOS'
 arch=('x86_64')
@@ -48,6 +48,8 @@ package_cachyos-control-center() {
   cp -a "$startdir/../app/build/install/app/." "$pkgdir/usr/lib/cachyos-control-center/"
   install -d "$pkgdir/usr/bin"
   ln -s /usr/lib/cachyos-control-center/bin/app "$pkgdir/usr/bin/cachyos-control-center"
+  install -Dm755 "$startdir/../scripts/verify-installed.sh" \
+    "$pkgdir/usr/bin/cachyos-control-center-verify"
   install -Dm644 "$startdir/desktop/org.cachyos.ControlCenter.desktop" \
     "$pkgdir/usr/share/applications/org.cachyos.ControlCenter.desktop"
   install -Dm644 "$startdir/appstream/org.cachyos.ControlCenter.metainfo.xml" \
@@ -106,4 +108,6 @@ package_cachyos-control-center-doc-index() {
     "$pkgdir/usr/share/doc/cachyos-control-center/release-notes-1.0.0.md"
   install -Dm644 "$startdir/../docs/release-notes-1.1.0.md" \
     "$pkgdir/usr/share/doc/cachyos-control-center/release-notes-1.1.0.md"
+  install -Dm644 "$startdir/../docs/release-notes-1.2.0.md" \
+    "$pkgdir/usr/share/doc/cachyos-control-center/release-notes-1.2.0.md"
 }

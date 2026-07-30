@@ -6,7 +6,11 @@ Einstellungen noch Exporten oder Logs.
 
 ## Sicher hinterlegen
 
-Installiere unter CachyOS bei Bedarf `libsecret` und führe in einem Terminal aus:
+In Version 1.2 wird der Schlüssel bevorzugt direkt unter **Einstellungen → OpenAI-Zugang**
+gespeichert oder gelöscht. KWallet beziehungsweise Secret Service zeigt dabei gegebenenfalls einen
+eigenen Freigabedialog.
+
+Als Terminal-Fallback installiere unter CachyOS bei Bedarf `libsecret` und führe aus:
 
 ```bash
 secret-tool store --label="CachyOS Control Center OpenAI" \
@@ -14,7 +18,8 @@ secret-tool store --label="CachyOS Control Center OpenAI" \
 ```
 
 `secret-tool` fragt den Wert verdeckt ab. Gib den Schlüssel nicht als zusätzliches
-Befehlszeilenargument an. Anschließend die Anwendung neu starten.
+Befehlszeilenargument an. Bei externer Änderung die Anwendung neu starten; Änderungen über die
+Oberfläche gelten sofort.
 
 Für eine isolierte Entwicklungssitzung ist `OPENAI_API_KEY` als Prozess-Umgebungsvariable möglich.
 Das ist kein empfohlener Desktop-Dauerbetrieb. Modell und Ausgabelimit lassen sich mit
@@ -29,8 +34,9 @@ secret-tool clear application cachyos-control-center key openai-api-key
 ```
 
 Ist der Schlüssel nicht vorhanden, zeigt der Chat einen Offlinezustand. Alle lokalen Manager
-arbeiten weiter. Kosten, Kontingente und Sperren werden vom API-Konto verwaltet; die lokale
-Budgetangabe ist nur eine Warnschwelle.
+arbeiten weiter. Das lokale USD-Monatslimit stoppt weitere Anfragen anhand der gemeldeten
+Texttokens und der dokumentierten Modellpreise. Kontingente, Tool-Gebühren und die endgültige Abrechnung
+werden weiterhin vom API-Konto verwaltet.
 
 ## Modellprofil wählen
 

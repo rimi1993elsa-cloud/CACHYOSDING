@@ -5,6 +5,22 @@ Alle nennenswerten Änderungen werden in dieser Datei dokumentiert. Das Format o
 
 ## Unreleased
 
+## [1.2.0] - 2026-07-31
+
+### Added
+
+- SQLite-Schema mit Migration für Einstellungen, Chat, Audit, Diagnose-, Wissens- und Nutzungsdaten
+- persistentes, parameterfreies Aktions-Audit und lokales KI-Token-/Kostenledger
+- API-Key speichern und löschen direkt über KWallet/Secret Service
+- dynamische Provider-Aktualisierung ohne Neustart
+- integrierter Systemcheck sowie Linux-Installations- und Abnahmeskripte
+- Arch-Linux-Paketworkflow für versionierte Builds
+
+### Changed
+
+- lokales Monatsbudget stoppt weitere Anfragen nach Erreichen der dokumentierten Kostenschätzung
+- Benutzerdaten liegen XDG-konform in einer privaten SQLite-Datenbank
+
 ## [1.1.0] - 2026-07-31
 
 ### Added
