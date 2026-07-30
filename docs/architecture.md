@@ -67,6 +67,10 @@ flowchart TB
 - Anzeige- und Energieänderungen besitzen feste Executables und getrennte, validierte Argumente.
   Suspend/Hibernate bleiben zusätzlich durch systemd/logind-Policy und UI-Bestätigung geschützt.
 - X11-Werkzeuge wie `xrandr` oder `glxinfo` sind keine Kernabhängigkeit.
+- `modules/boot` bietet keinen Konfigurations- oder Installationsendpunkt. Der Linux-Adapter liest
+  procfs, feste Bootpfade, Pacman-Metadaten und begrenzte `systemd-analyze`-Ausgaben.
+- Der CachyOS Kernel Manager wird ausschließlich gestartet, wenn eine von zwei fest eingebauten
+  absoluten Executables vorhanden ist; Benutzerparameter oder Shelltext existieren nicht.
 - `platform-linux` liest Pacman-Daten mit `LC_ALL=C`, begrenzter Ausgabe und getrennten
   validierten Argumenten. Nur der Mutation-Gateway kennt `helper-api`.
 - `platform-linux` enthält typisierte Adapter. Der aktuelle Prozessadapter akzeptiert eine absolute

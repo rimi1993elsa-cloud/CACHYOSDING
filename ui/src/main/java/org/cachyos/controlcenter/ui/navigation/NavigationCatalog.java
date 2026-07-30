@@ -8,6 +8,7 @@ public final class NavigationCatalog {
       List.of(
           active(NavigationId.OVERVIEW, "Übersicht", "Aktueller lokaler Status"),
           active(NavigationId.SYSTEM, "System", "Sichere Plattforminformationen"),
+          active(NavigationId.BOOT, "Boot & Kernel", "Bootanalyse und CachyOS-Kernel"),
           active(NavigationId.SECURITY, "Sicherheit", "Sicherheitsstatus"),
           active(NavigationId.NETWORK, "Netzwerk", "Verbindungen und Diagnose"),
           active(NavigationId.APPLICATIONS, "Programme", "Installierte Anwendungen"),

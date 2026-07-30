@@ -7,6 +7,13 @@ Alle nennenswerten Änderungen werden in dieser Datei dokumentiert. Das Format o
 
 ### Added
 
+- Lesende Übersicht für aktiven und installierte CachyOS-/Arch-Kernel
+- Erkennung von systemd-boot, GRUB und nicht eindeutigem UEFI
+- Kernelparameter direkt aus procfs ohne Änderungspfad
+- Zeitbegrenzte systemd-Bootdauer und auf 20 Einträge begrenzte langsame Units
+- Fester, unprivilegierter Startpfad für einen vorhandenen CachyOS Kernel Manager
+- Bewusster Verzicht auf direkte Bootloader- und Kernelinstallation ohne Backupkonzept
+
 - KDE-/Wayland-orientierte Monitorerkennung über die optionale KScreen-Schnittstelle
 - Dynamische Hintergrundbeleuchtung mit strikt validierten Prozentwerten
 - Optionaler KDE-Nachtmodus über eine feste D-Bus-Methode

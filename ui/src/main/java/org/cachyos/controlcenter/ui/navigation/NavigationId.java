@@ -4,6 +4,7 @@ package org.cachyos.controlcenter.ui.navigation;
 public enum NavigationId {
   OVERVIEW,
   SYSTEM,
+  BOOT,
   SECURITY,
   NETWORK,
   APPLICATIONS,

@@ -22,6 +22,7 @@ import org.cachyos.controlcenter.input.voice.SpeechToTextEngine;
 import org.cachyos.controlcenter.modules.applications.ApplicationManagerModule;
 import org.cachyos.controlcenter.modules.audio.AudioEvents;
 import org.cachyos.controlcenter.modules.audio.AudioManagerModule;
+import org.cachyos.controlcenter.modules.boot.BootManager;
 import org.cachyos.controlcenter.modules.diagnostics.DiagnosticManager;
 import org.cachyos.controlcenter.modules.display.DisplayManager;
 import org.cachyos.controlcenter.modules.hardware.HardwareManager;
@@ -40,6 +41,7 @@ import org.cachyos.controlcenter.systeminfo.SystemSnapshot;
 import org.cachyos.controlcenter.ui.ai.ChatView;
 import org.cachyos.controlcenter.ui.applications.ApplicationsView;
 import org.cachyos.controlcenter.ui.audio.AudioView;
+import org.cachyos.controlcenter.ui.boot.BootView;
 import org.cachyos.controlcenter.ui.dashboard.DashboardView;
 import org.cachyos.controlcenter.ui.diagnostics.DiagnosticsView;
 import org.cachyos.controlcenter.ui.display.DisplayView;
@@ -246,6 +248,13 @@ final class ShellPages {
         "Energie",
         "Akku, Profile und bestätigungspflichtige Schlafzustände aus dynamischen Fähigkeiten.",
         new PowerView(manager, notifications));
+  }
+
+  static Node boot(BootManager manager, NotificationCenter notifications) {
+    return page(
+        "Boot & Kernel",
+        "Lesende Bootanalyse und sichere Integration des vorhandenen CachyOS Kernel Managers.",
+        new BootView(manager, notifications));
   }
 
   static Node settings(ThemeManager themeManager, Consumer<ThemeMode> onChanged) {

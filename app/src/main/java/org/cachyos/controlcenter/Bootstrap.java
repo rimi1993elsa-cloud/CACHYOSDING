@@ -20,6 +20,7 @@ import org.cachyos.controlcenter.input.voice.SpeechModelManager;
 import org.cachyos.controlcenter.input.voice.VoskSpeechToTextEngine;
 import org.cachyos.controlcenter.modules.applications.ApplicationManagerModule;
 import org.cachyos.controlcenter.modules.audio.AudioManagerModule;
+import org.cachyos.controlcenter.modules.boot.BootManager;
 import org.cachyos.controlcenter.modules.diagnostics.DiagnosticManager;
 import org.cachyos.controlcenter.modules.display.DisplayManager;
 import org.cachyos.controlcenter.modules.hardware.HardwareManager;
@@ -34,6 +35,7 @@ import org.cachyos.controlcenter.modules.storage.StorageManager;
 import org.cachyos.controlcenter.platform.applications.DesktopApplicationBackend;
 import org.cachyos.controlcenter.platform.audio.PactlAudioBackend;
 import org.cachyos.controlcenter.platform.audio.PactlEventMonitor;
+import org.cachyos.controlcenter.platform.boot.LinuxBootBackend;
 import org.cachyos.controlcenter.platform.diagnostics.LinuxDiagnosticBackend;
 import org.cachyos.controlcenter.platform.display.LinuxDisplayBackend;
 import org.cachyos.controlcenter.platform.hardware.LinuxHardwareBackend;
@@ -129,6 +131,7 @@ public final class Bootstrap {
     DisplayManager displayManager =
         lifecycle.manage(new DisplayManager(new LinuxDisplayBackend(linux)));
     PowerManager powerManager = lifecycle.manage(new PowerManager(new LinuxPowerBackend(linux)));
+    BootManager bootManager = lifecycle.manage(new BootManager(new LinuxBootBackend(linux)));
     GermanIntentRouter intentRouter =
         new GermanIntentRouter(
             () ->
@@ -194,6 +197,7 @@ public final class Bootstrap {
         processManager,
         displayManager,
         powerManager,
+        bootManager,
         intentRouter,
         microphoneCatalog,
         speechModelManager,

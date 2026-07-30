@@ -41,6 +41,7 @@ import org.cachyos.controlcenter.input.voice.SpeechToTextEngine;
 import org.cachyos.controlcenter.modules.applications.ApplicationManagerModule;
 import org.cachyos.controlcenter.modules.audio.AudioEvents;
 import org.cachyos.controlcenter.modules.audio.AudioManagerModule;
+import org.cachyos.controlcenter.modules.boot.BootManager;
 import org.cachyos.controlcenter.modules.diagnostics.DiagnosticManager;
 import org.cachyos.controlcenter.modules.display.DisplayManager;
 import org.cachyos.controlcenter.modules.hardware.HardwareManager;
@@ -102,6 +103,7 @@ final class ApplicationShell {
       ProcessManager processManager,
       DisplayManager displayManager,
       PowerManager powerManager,
+      BootManager bootManager,
       GermanIntentRouter intentRouter,
       MicrophoneCatalog microphoneCatalog,
       SpeechModelManager speechModelManager,
@@ -138,6 +140,7 @@ final class ApplicationShell {
                 processManager,
                 displayManager,
                 powerManager,
+                bootManager,
                 microphoneCatalog,
                 speechModelManager,
                 speechToTextEngine,
@@ -228,7 +231,7 @@ final class ApplicationShell {
 
     Label title = new Label("CachyOS Control Center");
     title.getStyleClass().add("app-title");
-    Label phase = new Label("Entwicklungsstand · Phase 19");
+    Label phase = new Label("Entwicklungsstand \u00b7 Phase 20");
     phase.getStyleClass().add("phase-badge");
 
     Label statusDot = new Label("●");
@@ -294,6 +297,7 @@ final class ApplicationShell {
       ProcessManager processManager,
       DisplayManager displayManager,
       PowerManager powerManager,
+      BootManager bootManager,
       MicrophoneCatalog microphoneCatalog,
       SpeechModelManager speechModelManager,
       SpeechToTextEngine speechToTextEngine,
@@ -326,6 +330,7 @@ final class ApplicationShell {
     pages.put(NavigationId.PROCESSES, ShellPages.processes(processManager, notificationCenter));
     pages.put(NavigationId.DISPLAY, ShellPages.display(displayManager, notificationCenter));
     pages.put(NavigationId.POWER, ShellPages.power(powerManager, notificationCenter));
+    pages.put(NavigationId.BOOT, ShellPages.boot(bootManager, notificationCenter));
     pages.put(
         NavigationId.VOICE,
         ShellPages.voice(microphoneCatalog, speechModelManager, speechToTextEngine, this::submit));

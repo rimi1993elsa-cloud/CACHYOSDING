@@ -14,6 +14,7 @@ import org.cachyos.controlcenter.input.voice.SpeechToTextEngine;
 import org.cachyos.controlcenter.modules.applications.ApplicationManagerModule;
 import org.cachyos.controlcenter.modules.audio.AudioEvents;
 import org.cachyos.controlcenter.modules.audio.AudioManagerModule;
+import org.cachyos.controlcenter.modules.boot.BootManager;
 import org.cachyos.controlcenter.modules.diagnostics.DiagnosticManager;
 import org.cachyos.controlcenter.modules.display.DisplayManager;
 import org.cachyos.controlcenter.modules.hardware.HardwareManager;
@@ -58,6 +59,7 @@ public final class MainView {
       ProcessManager processManager,
       DisplayManager displayManager,
       PowerManager powerManager,
+      BootManager bootManager,
       GermanIntentRouter intentRouter,
       MicrophoneCatalog microphoneCatalog,
       SpeechModelManager speechModelManager,
@@ -89,6 +91,7 @@ public final class MainView {
             processManager,
             displayManager,
             powerManager,
+            bootManager,
             intentRouter,
             microphoneCatalog,
             speechModelManager,

@@ -39,6 +39,10 @@ import org.cachyos.controlcenter.modules.audio.AudioEvents;
 import org.cachyos.controlcenter.modules.audio.AudioManagerModule;
 import org.cachyos.controlcenter.modules.audio.AudioOperationResult;
 import org.cachyos.controlcenter.modules.audio.AudioSnapshot;
+import org.cachyos.controlcenter.modules.boot.BootBackend;
+import org.cachyos.controlcenter.modules.boot.BootManager;
+import org.cachyos.controlcenter.modules.boot.BootResult;
+import org.cachyos.controlcenter.modules.boot.BootSnapshot;
 import org.cachyos.controlcenter.modules.diagnostics.DiagnosticManager;
 import org.cachyos.controlcenter.modules.diagnostics.DiagnosticObservation;
 import org.cachyos.controlcenter.modules.diagnostics.DiagnosticStatus;
@@ -112,6 +116,7 @@ class ApplicationShellTest extends ApplicationTest {
   private ProcessManager processManager;
   private DisplayManager displayManager;
   private PowerManager powerManager;
+  private BootManager bootManager;
 
   @Override
   public void start(Stage stage) {
@@ -251,6 +256,26 @@ class ApplicationShellTest extends ApplicationTest {
                 return new PowerResult(false, "Test");
               }
             });
+    bootManager =
+        new BootManager(
+            new BootBackend() {
+              public BootSnapshot inspect() {
+                return new BootSnapshot(
+                    true,
+                    "test-kernel",
+                    java.util.List.of(),
+                    "Test",
+                    "",
+                    "",
+                    java.util.List.of(),
+                    false,
+                    "Test");
+              }
+
+              public BootResult launchKernelManager() {
+                return new BootResult(false, "Test");
+              }
+            });
     MainView view =
         new MainView(
             platformInfo,
@@ -284,6 +309,7 @@ class ApplicationShellTest extends ApplicationTest {
             processManager,
             displayManager,
             powerManager,
+            bootManager,
             new GermanIntentRouter(java.util.List::of),
             new MicrophoneCatalog(),
             new SpeechModelManager(
@@ -316,6 +342,7 @@ class ApplicationShellTest extends ApplicationTest {
     processManager.close();
     displayManager.close();
     powerManager.close();
+    bootManager.close();
   }
 
   @Test
@@ -468,6 +495,12 @@ class ApplicationShellTest extends ApplicationTest {
     assertEquals("Anzeige", lookup(".page-title").queryAs(Label.class).getText());
     clickOn("Energie");
     assertEquals("Energie", lookup(".page-title").queryAs(Label.class).getText());
+  }
+
+  @Test
+  void opensBootAndKernelPage() {
+    clickOn("Boot & Kernel");
+    assertEquals("Boot & Kernel", lookup(".page-title").queryAs(Label.class).getText());
   }
 
   @Test

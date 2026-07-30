@@ -163,3 +163,12 @@ Backlight-Gerät und `brightnessctl` vorhanden sind. Grafikdetails verwenden `ls
 Profilwechsel ist auf `power-saver`, `balanced` und `performance` begrenzt. Suspend verlangt einen
 Bestätigungsdialog. Für Hibernate muss zusätzlich `RUHEZUSTAND` exakt eingegeben werden; systemd
 und logind entscheiden anschließend anhand der lokalen Richtlinie, ob die Aktion zulässig ist.
+
+# Boot und Kernel
+
+„Boot & Kernel“ zeigt den laufenden Kernel, passende installierte Kernelpakete, den erkannten
+Bootmanager, die aktuellen Kernelparameter und eine begrenzte Bootanalyse. Alle Angaben sind
+lesend. „CachyOS Kernel Manager öffnen“ ist nur aktiv, wenn dessen fest erwartete Executable
+installiert ist. Das Control Center selbst bearbeitet keine Bootdateien und installiert keine
+Kernel; Backup-, Rollback- und Transaktionskonzepte bleiben damit Voraussetzung einer späteren
+Integration.

@@ -5,10 +5,10 @@ phasenweise nach dem verbindlichen Masterauftrag entwickelt.
 
 ## Aktueller Stand
 
-Phase 19 ergänzt eine KDE-/Wayland-orientierte Anzeige- und Energieverwaltung. Monitore,
-Hintergrundbeleuchtung, Nachtmodus, GPU-/Treiber- und Vulkan-/OpenGL-Evidenz sowie Akku,
-Energieprofile und verfügbare Schlafzustände werden dynamisch erkannt. Im Kern besteht keine
-X11-Abhängigkeit.
+Phase 20 ergänzt eine ausschließlich lesende Boot- und Kernelansicht. Aktiver und installierte
+Kernel, Bootmanager, Kernelparameter, Bootdauer und langsame Units werden transparent angezeigt.
+Der vorhandene CachyOS Kernel Manager kann über einen festen unprivilegierten Pfad geöffnet werden;
+eigene Boot- oder Kerneländerungen führt die Anwendung nicht aus.
 
 ## Voraussetzungen
 
