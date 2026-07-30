@@ -14,6 +14,8 @@ dependencies {
     api(project(":modules:hardware"))
     api(project(":modules:storage"))
     api(project(":modules:snapshots"))
+    api(project(":modules:services"))
+    api(project(":modules:processes"))
     api(project(":input"))
     api(project(":ai"))
     testImplementation("org.testfx:testfx-junit5:4.0.18")

@@ -27,7 +27,9 @@ import org.cachyos.controlcenter.modules.hardware.HardwareManager;
 import org.cachyos.controlcenter.modules.network.NetworkEvents;
 import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
 import org.cachyos.controlcenter.modules.packages.PackageManager;
+import org.cachyos.controlcenter.modules.processes.ProcessManager;
 import org.cachyos.controlcenter.modules.security.SecurityManager;
+import org.cachyos.controlcenter.modules.services.ServiceManager;
 import org.cachyos.controlcenter.modules.snapshots.SnapshotManager;
 import org.cachyos.controlcenter.modules.storage.StorageManager;
 import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
@@ -42,7 +44,9 @@ import org.cachyos.controlcenter.ui.hardware.HardwareView;
 import org.cachyos.controlcenter.ui.network.NetworkView;
 import org.cachyos.controlcenter.ui.notifications.NotificationCenter;
 import org.cachyos.controlcenter.ui.packages.PackagesView;
+import org.cachyos.controlcenter.ui.processes.ProcessesView;
 import org.cachyos.controlcenter.ui.security.SecurityView;
+import org.cachyos.controlcenter.ui.services.ServicesView;
 import org.cachyos.controlcenter.ui.storage.SnapshotsView;
 import org.cachyos.controlcenter.ui.storage.StorageView;
 import org.cachyos.controlcenter.ui.theme.ThemeManager;
@@ -210,6 +214,20 @@ final class ShellPages {
         "Snapshots",
         "Optionale Snapper-Verwaltung mit Polkit und expliziter ID-Bestätigung vor Löschung.",
         new SnapshotsView(manager, notifications));
+  }
+
+  static Node services(ServiceManager manager, NotificationCenter notifications) {
+    return page(
+        "Dienste",
+        "Explizit getrennte System- und Benutzerdienste mit lokal begrenzten Logs.",
+        new ServicesView(manager, notifications));
+  }
+
+  static Node processes(ProcessManager manager, NotificationCenter notifications) {
+    return page(
+        "Prozesse",
+        "Ressourcen, geschützte kritische Prozesse und validierte Signale/Prioritäten.",
+        new ProcessesView(manager, notifications));
   }
 
   static Node settings(ThemeManager themeManager, Consumer<ThemeMode> onChanged) {

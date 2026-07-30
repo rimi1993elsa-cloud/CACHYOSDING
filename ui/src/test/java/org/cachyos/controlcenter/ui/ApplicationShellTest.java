@@ -57,10 +57,20 @@ import org.cachyos.controlcenter.modules.packages.PackageManager;
 import org.cachyos.controlcenter.modules.packages.PackageMutationGateway;
 import org.cachyos.controlcenter.modules.packages.PackageOperationResult;
 import org.cachyos.controlcenter.modules.packages.PackageSnapshot;
+import org.cachyos.controlcenter.modules.processes.ProcessGateway;
+import org.cachyos.controlcenter.modules.processes.ProcessManager;
+import org.cachyos.controlcenter.modules.processes.ProcessResult;
 import org.cachyos.controlcenter.modules.security.SecurityManager;
 import org.cachyos.controlcenter.modules.security.SecurityMutationGateway;
 import org.cachyos.controlcenter.modules.security.SecurityOperationResult;
 import org.cachyos.controlcenter.modules.security.SecuritySnapshot;
+import org.cachyos.controlcenter.modules.services.ServiceBackend;
+import org.cachyos.controlcenter.modules.services.ServiceGateway;
+import org.cachyos.controlcenter.modules.services.ServiceManager;
+import org.cachyos.controlcenter.modules.services.ServiceOperation;
+import org.cachyos.controlcenter.modules.services.ServiceResult;
+import org.cachyos.controlcenter.modules.services.ServiceScope;
+import org.cachyos.controlcenter.modules.services.ServiceState;
 import org.cachyos.controlcenter.modules.snapshots.SnapshotGateway;
 import org.cachyos.controlcenter.modules.snapshots.SnapshotManager;
 import org.cachyos.controlcenter.modules.snapshots.SnapshotResult;
@@ -89,6 +99,8 @@ class ApplicationShellTest extends ApplicationTest {
   private HardwareManager hardwareManager;
   private StorageManager storageManager;
   private SnapshotManager snapshotManager;
+  private ServiceManager serviceManager;
+  private ProcessManager processManager;
 
   @Override
   public void start(Stage stage) {
@@ -171,6 +183,19 @@ class ApplicationShellTest extends ApplicationTest {
         new SnapshotManager(
             () -> new SnapshotState(false, java.util.List.of(), "Test"),
             new UnavailableSnapshotGateway());
+    serviceManager =
+        new ServiceManager(
+            new ServiceBackend() {
+              public ServiceState inspect() {
+                return new ServiceState(true, java.util.List.of(), "Test");
+              }
+
+              public java.util.List<String> logs(ServiceScope scope, String unitName) {
+                return java.util.List.of();
+              }
+            },
+            new UnavailableServiceGateway());
+    processManager = new ProcessManager(java.util.List::of, new UnavailableProcessGateway());
     MainView view =
         new MainView(
             platformInfo,
@@ -200,6 +225,8 @@ class ApplicationShellTest extends ApplicationTest {
             hardwareManager,
             storageManager,
             snapshotManager,
+            serviceManager,
+            processManager,
             new GermanIntentRouter(java.util.List::of),
             new MicrophoneCatalog(),
             new SpeechModelManager(
@@ -228,6 +255,8 @@ class ApplicationShellTest extends ApplicationTest {
     hardwareManager.close();
     storageManager.close();
     snapshotManager.close();
+    serviceManager.close();
+    processManager.close();
   }
 
   @Test
@@ -347,6 +376,31 @@ class ApplicationShellTest extends ApplicationTest {
                         .findFirst()
                         .orElseThrow()));
     lookup("#snapshot-list").queryListView();
+  }
+
+  @Test
+  void opensServiceAndProcessPages() {
+    ListView<NavigationEntry> navigation = lookup("#primary-navigation").queryListView();
+    interact(
+        () ->
+            navigation
+                .getSelectionModel()
+                .select(
+                    navigation.getItems().stream()
+                        .filter(entry -> entry.id() == NavigationId.SERVICES)
+                        .findFirst()
+                        .orElseThrow()));
+    lookup("#service-list").queryListView();
+    interact(
+        () ->
+            navigation
+                .getSelectionModel()
+                .select(
+                    navigation.getItems().stream()
+                        .filter(entry -> entry.id() == NavigationId.PROCESSES)
+                        .findFirst()
+                        .orElseThrow()));
+    lookup("#process-list").queryListView();
   }
 
   @Test
@@ -567,6 +621,25 @@ class ApplicationShellTest extends ApplicationTest {
     @Override
     public SnapshotResult delete(int id) {
       return new SnapshotResult(false, "Test");
+    }
+  }
+
+  private static final class UnavailableServiceGateway implements ServiceGateway {
+    @Override
+    public ServiceResult execute(ServiceScope scope, String unitName, ServiceOperation operation) {
+      return new ServiceResult(false, "Test");
+    }
+  }
+
+  private static final class UnavailableProcessGateway implements ProcessGateway {
+    @Override
+    public ProcessResult signal(long pid, int signal) {
+      return new ProcessResult(false, "Test");
+    }
+
+    @Override
+    public ProcessResult priority(long pid, int priority) {
+      return new ProcessResult(false, "Test");
     }
   }
 

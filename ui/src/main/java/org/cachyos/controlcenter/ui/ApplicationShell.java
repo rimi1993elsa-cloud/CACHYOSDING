@@ -46,7 +46,9 @@ import org.cachyos.controlcenter.modules.hardware.HardwareManager;
 import org.cachyos.controlcenter.modules.network.NetworkEvents;
 import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
 import org.cachyos.controlcenter.modules.packages.PackageManager;
+import org.cachyos.controlcenter.modules.processes.ProcessManager;
 import org.cachyos.controlcenter.modules.security.SecurityManager;
+import org.cachyos.controlcenter.modules.services.ServiceManager;
 import org.cachyos.controlcenter.modules.snapshots.SnapshotManager;
 import org.cachyos.controlcenter.modules.storage.StorageManager;
 import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
@@ -94,6 +96,8 @@ final class ApplicationShell {
       HardwareManager hardwareManager,
       StorageManager storageManager,
       SnapshotManager snapshotManager,
+      ServiceManager serviceManager,
+      ProcessManager processManager,
       GermanIntentRouter intentRouter,
       MicrophoneCatalog microphoneCatalog,
       SpeechModelManager speechModelManager,
@@ -126,6 +130,8 @@ final class ApplicationShell {
                 hardwareManager,
                 storageManager,
                 snapshotManager,
+                serviceManager,
+                processManager,
                 microphoneCatalog,
                 speechModelManager,
                 speechToTextEngine,
@@ -216,7 +222,7 @@ final class ApplicationShell {
 
     Label title = new Label("CachyOS Control Center");
     title.getStyleClass().add("app-title");
-    Label phase = new Label("Entwicklungsstand · Phase 17");
+    Label phase = new Label("Entwicklungsstand · Phase 18");
     phase.getStyleClass().add("phase-badge");
 
     Label statusDot = new Label("●");
@@ -278,6 +284,8 @@ final class ApplicationShell {
       HardwareManager hardwareManager,
       StorageManager storageManager,
       SnapshotManager snapshotManager,
+      ServiceManager serviceManager,
+      ProcessManager processManager,
       MicrophoneCatalog microphoneCatalog,
       SpeechModelManager speechModelManager,
       SpeechToTextEngine speechToTextEngine,
@@ -306,6 +314,8 @@ final class ApplicationShell {
     pages.put(NavigationId.HARDWARE, ShellPages.hardware(hardwareManager, notificationCenter));
     pages.put(NavigationId.STORAGE, ShellPages.storage(storageManager, notificationCenter));
     pages.put(NavigationId.SNAPSHOTS, ShellPages.snapshots(snapshotManager, notificationCenter));
+    pages.put(NavigationId.SERVICES, ShellPages.services(serviceManager, notificationCenter));
+    pages.put(NavigationId.PROCESSES, ShellPages.processes(processManager, notificationCenter));
     pages.put(
         NavigationId.VOICE,
         ShellPages.voice(microphoneCatalog, speechModelManager, speechToTextEngine, this::submit));

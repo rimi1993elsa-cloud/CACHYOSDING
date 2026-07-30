@@ -5,9 +5,9 @@ phasenweise nach dem verbindlichen Masterauftrag entwickelt.
 
 ## Aktueller Stand
 
-Phase 17 ergänzt Laufwerke, Partitionen, Mounts, SMART, begrenzte Home-Speicheranalyse sowie
-optionale Btrfs-/Snapper-Unterstützung. Ohne Btrfs bleibt die Speicheransicht voll nutzbar.
-Snapshot-Löschungen erfordern die sichtbare ID und anschließend Polkit.
+Phase 18 ergänzt getrennte systemd-System-/User-Units, begrenzte lokale Logs und
+Prozessverwaltung. Kritische oder nicht vollständig identifizierbare Prozesse sind geschützt;
+`SIGKILL` verlangt die exakte PID. Systemaktionen verwenden Polkit, User-Units nie Root.
 
 ## Voraussetzungen
 

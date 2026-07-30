@@ -7,6 +7,13 @@ Alle nennenswerten Änderungen werden in dieser Datei dokumentiert. Das Format o
 
 ### Added
 
+- Getrennte systemd-System- und Benutzerdienste mit Scope im Datenmodell
+- Start/Stop/Restart/Enable/Disable über scope-spezifische sichere Pfade
+- Auf 200 Zeilen begrenzte lokale systemd-Logs
+- Prozessliste mit Benutzer, CPU-Zeit, residentem RAM und Nice-Wert
+- Schutz für PID 1/2, Kernel-/Kernprozesse und nicht identifizierbare Prozesse
+- TERM/KILL/Priorität ausschließlich für PIDs des letzten Snapshots
+- Exakte PID-Zweitbestätigung vor SIGKILL
 - Speicheransicht für Laufwerke, Partitionen, Mounts und SMART-Evidenz
 - Begrenzte, symlink-resistente Suche großer Dateien ausschließlich im Benutzer-Home
 - Dynamische Btrfs-Root- und Nutzungsanzeige ohne Btrfs-Zwang

@@ -24,7 +24,9 @@ import org.cachyos.controlcenter.modules.diagnostics.DiagnosticManager;
 import org.cachyos.controlcenter.modules.hardware.HardwareManager;
 import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
 import org.cachyos.controlcenter.modules.packages.PackageManager;
+import org.cachyos.controlcenter.modules.processes.ProcessManager;
 import org.cachyos.controlcenter.modules.security.SecurityManager;
+import org.cachyos.controlcenter.modules.services.ServiceManager;
 import org.cachyos.controlcenter.modules.snapshots.SnapshotManager;
 import org.cachyos.controlcenter.modules.storage.StorageManager;
 import org.cachyos.controlcenter.platform.applications.DesktopApplicationBackend;
@@ -37,9 +39,13 @@ import org.cachyos.controlcenter.platform.network.NmcliNetworkBackend;
 import org.cachyos.controlcenter.platform.packages.DbusPackageMutationGateway;
 import org.cachyos.controlcenter.platform.packages.PacmanPackageBackend;
 import org.cachyos.controlcenter.platform.process.DesktopIntegrationModule;
+import org.cachyos.controlcenter.platform.processes.DbusProcessGateway;
+import org.cachyos.controlcenter.platform.processes.LinuxProcessBackend;
 import org.cachyos.controlcenter.platform.secrets.DesktopSecretStore;
 import org.cachyos.controlcenter.platform.security.DbusSecurityMutationGateway;
 import org.cachyos.controlcenter.platform.security.LinuxSecurityBackend;
+import org.cachyos.controlcenter.platform.services.LinuxServiceBackend;
+import org.cachyos.controlcenter.platform.services.LinuxServiceGateway;
 import org.cachyos.controlcenter.platform.status.LinuxSupplementalStatusProbe;
 import org.cachyos.controlcenter.platform.storage.DbusSnapshotGateway;
 import org.cachyos.controlcenter.platform.storage.LinuxSnapshotBackend;
@@ -110,6 +116,12 @@ public final class Bootstrap {
     SnapshotManager snapshotManager =
         lifecycle.manage(
             new SnapshotManager(new LinuxSnapshotBackend(linux), new DbusSnapshotGateway(linux)));
+    ServiceManager serviceManager =
+        lifecycle.manage(
+            new ServiceManager(new LinuxServiceBackend(linux), new LinuxServiceGateway(linux)));
+    ProcessManager processManager =
+        lifecycle.manage(
+            new ProcessManager(new LinuxProcessBackend(linux), new DbusProcessGateway(linux)));
     GermanIntentRouter intentRouter =
         new GermanIntentRouter(
             () ->
@@ -171,6 +183,8 @@ public final class Bootstrap {
         hardwareManager,
         storageManager,
         snapshotManager,
+        serviceManager,
+        processManager,
         intentRouter,
         microphoneCatalog,
         speechModelManager,

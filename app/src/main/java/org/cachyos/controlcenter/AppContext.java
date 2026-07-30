@@ -18,7 +18,9 @@ import org.cachyos.controlcenter.modules.hardware.HardwareManager;
 import org.cachyos.controlcenter.modules.network.NetworkEvents;
 import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
 import org.cachyos.controlcenter.modules.packages.PackageManager;
+import org.cachyos.controlcenter.modules.processes.ProcessManager;
 import org.cachyos.controlcenter.modules.security.SecurityManager;
+import org.cachyos.controlcenter.modules.services.ServiceManager;
 import org.cachyos.controlcenter.modules.snapshots.SnapshotManager;
 import org.cachyos.controlcenter.modules.storage.StorageManager;
 import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
@@ -41,6 +43,8 @@ public record AppContext(
     HardwareManager hardwareManager,
     StorageManager storageManager,
     SnapshotManager snapshotManager,
+    ServiceManager serviceManager,
+    ProcessManager processManager,
     GermanIntentRouter intentRouter,
     MicrophoneCatalog microphoneCatalog,
     SpeechModelManager speechModelManager,

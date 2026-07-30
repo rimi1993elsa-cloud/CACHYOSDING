@@ -3,7 +3,7 @@
 ## Ziel
 
 Die Anwendung trennt Anzeige, lokale Aktionen, privilegierte Aktionen und Online-KI technisch. In
-Phase 17 existieren die unprivilegierte UI, sichere Systemerkennung, das Live-Dashboard, eine
+Phase 18 existieren die unprivilegierte UI, sichere Systemerkennung, das Live-Dashboard, eine
 allowlist-basierte lokale Action Engine, Fachgrenzen für NetworkManager und PipeWire-Pulse sowie
 eine strikt textliefernde Speech-to-Text-Grenze und ein separater privilegierter Helper.
 
@@ -58,6 +58,10 @@ flowchart TB
 - `modules/storage` bleibt lesend und begrenzt Dateianalyse auf das konfigurierte Benutzer-Home.
 - `modules/snapshots` trennt Snapper-Status von typisierten Helper-Mutationen; Löschung verlangt
   eine exakte zweite Eingabe der Snapshot-ID.
+- `modules/services` trägt den Scope in jedem Modell. Nur `SYSTEM` erreicht D-Bus/Polkit,
+  `USER` wird unprivilegiert mit festen `systemctl --user`-Argumenten verarbeitet.
+- `modules/processes` akzeptiert Aktionen nur für PIDs aus dem letzten Snapshot und sperrt
+  kritische oder nicht vollständig identifizierbare Prozesse.
 - `platform-linux` liest Pacman-Daten mit `LC_ALL=C`, begrenzter Ausgabe und getrennten
   validierten Argumenten. Nur der Mutation-Gateway kennt `helper-api`.
 - `platform-linux` enthält typisierte Adapter. Der aktuelle Prozessadapter akzeptiert eine absolute

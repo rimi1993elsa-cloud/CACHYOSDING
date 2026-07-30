@@ -17,6 +17,8 @@ dependencies {
     implementation(project(":modules:hardware"))
     implementation(project(":modules:storage"))
     implementation(project(":modules:snapshots"))
+    implementation(project(":modules:services"))
+    implementation(project(":modules:processes"))
     implementation(project(":input"))
     implementation(project(":ai"))
     implementation("org.slf4j:slf4j-api:2.0.18")

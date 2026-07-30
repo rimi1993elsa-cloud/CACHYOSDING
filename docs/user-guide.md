@@ -1,4 +1,4 @@
-# Benutzerhandbuch – Phase 17
+# Benutzerhandbuch – Phase 18
 
 Nach `./gradlew :app:run` erscheint die Grundoberfläche mit Topbar, Navigation, Inhaltsbereich und
 Statusbereich. Die Seiten „Übersicht“, „System“ und „Einstellungen“ enthalten reale lokale Inhalte.
@@ -140,3 +140,14 @@ Partitionsänderung an.
 „Snapshots“ erscheint auch ohne Btrfs/Snapper mit einer verständlichen Nichtverfügbarkeit.
 Erstellung benötigt eine validierte Beschreibung und Polkit. Vor einer Löschung muss die angezeigte
 Snapshot-ID exakt eingegeben werden; erst danach wird der Helper aufgerufen.
+
+# Dienste und Prozesse
+
+Die Diensteseite kennzeichnet jede Unit als `SYSTEM` oder `USER`. Start, Stop und Restart einer
+System-Unit benötigen Polkit; User-Units laufen ohne Root. Logs bleiben lokal und sind auf die
+letzten 200 Zeilen begrenzt.
+
+Die Prozessseite zeigt PID, Benutzer, kumulierte CPU-Zeit, residenten Speicher und Nice-Wert.
+PID 1/2, bekannte zentrale Prozesse sowie Prozesse mit verborgener Identität sind als `GESCHÜTZT`
+markiert. TERM, KILL und Priorität akzeptieren nur PIDs aus der zuletzt aktualisierten Liste.
+Für KILL muss die PID zusätzlich exakt eingegeben werden.

@@ -19,8 +19,8 @@ public final class NavigationCatalog {
           active(NavigationId.AUDIO, "Audio", "PipeWire-Geräte und Streams"),
           planned(NavigationId.DISPLAY, "Anzeige", "Monitore und Grafik", 19),
           planned(NavigationId.POWER, "Energie", "Akku und Energieprofile", 19),
-          planned(NavigationId.SERVICES, "Dienste", "Systemd-Units", 18),
-          planned(NavigationId.PROCESSES, "Prozesse", "Laufende Prozesse", 18),
+          active(NavigationId.SERVICES, "Dienste", "Systemd-Units"),
+          active(NavigationId.PROCESSES, "Prozesse", "Laufende Prozesse"),
           active(NavigationId.DIAGNOSTICS, "Diagnose", "Lokale Systemdiagnose"),
           active(NavigationId.AI_ASSISTANT, "KI-Assistent", "Optionale Online-Hilfe"),
           active(NavigationId.SETTINGS, "Einstellungen", "Lokale Darstellung"));
