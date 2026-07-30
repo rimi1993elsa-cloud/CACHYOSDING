@@ -1,4 +1,4 @@
-# Benutzerhandbuch – Phase 4
+# Benutzerhandbuch – Phase 5
 
 Nach `./gradlew :app:run` erscheint die Grundoberfläche mit Topbar, Navigation, Inhaltsbereich und
 Statusbereich. Die Seiten „Übersicht“, „System“ und „Einstellungen“ enthalten reale lokale Inhalte.
@@ -22,6 +22,15 @@ Die Übersicht aktualisiert CPU, Arbeitsspeicher, Systemspeicher, Netzwerk und A
 Update- und Dienstestatus werden nur angezeigt, wenn `pacman` beziehungsweise `systemctl`
 verfügbar waren und die Abfrage erfolgreich war. Warnungen entstehen ausschließlich aus erkannten
 Schwellenwerten. Die fünf letzten lokalen Aktionen erscheinen nach der nächsten Aktualisierung.
+
+Unter „Netzwerk“ werden NetworkManager-Geräte, erreichbare WLANs sowie gespeicherte Verbindungs-
+und VPN-Profile angezeigt. Die Seite aktualisiert sich bei `nmcli monitor`-Ereignissen. WLAN lässt
+sich ein- oder ausschalten und neu scannen. Ein gespeichertes Profil kann nach Auswahl aktiviert,
+ein ausgewähltes Gerät getrennt werden.
+
+Neue geschützte WLANs werden bewusst nicht mit einem Passwort als Prozessargument verbunden.
+Lege sie über den NetworkManager-Secret-Agent von KDE an; anschließend kann das gespeicherte Profil
+in der Anwendung aktiviert werden. Fehlt `nmcli`, bleibt die Seite nutzbar und erklärt den Grund.
 
 Auf der Übersicht stehen vier Schnellaktionen bereit:
 

@@ -5,10 +5,10 @@ phasenweise nach dem verbindlichen Masterauftrag entwickelt.
 
 ## Aktueller Stand
 
-Phase 4 stellt zusätzlich ein dauerhaft nutzbares Dashboard bereit. CPU, RAM, Systemspeicher,
-Netzwerk und Akku werden alle 30 Sekunden lastarm im Hintergrund aktualisiert. Verfügbare
-Paketupdates und fehlgeschlagene systemd-Dienste werden über feste, schreibgeschützte Aufrufe
-ermittelt und fünf Minuten gecacht. Warnungen und die letzten lokalen Aktionen bleiben sichtbar.
+Phase 5 ergänzt einen NetworkManager für Geräte, Verbindungen, WLANs, gespeicherte Profile, VPNs,
+Gateway und DNS. WLAN kann ein- und ausgeschaltet, neu gescannt sowie über gespeicherte Profile
+verbunden werden. `nmcli monitor` aktualisiert die Ansicht ereignisbasiert. Passwörter werden weder
+ausgelesen noch in Prozessargumenten, Datenbank oder Logs gespeichert.
 
 ## Voraussetzungen
 

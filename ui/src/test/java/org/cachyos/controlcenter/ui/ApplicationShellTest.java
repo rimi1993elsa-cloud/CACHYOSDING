@@ -16,6 +16,11 @@ import org.cachyos.controlcenter.core.action.ActionRequest;
 import org.cachyos.controlcenter.core.action.ActionResult;
 import org.cachyos.controlcenter.core.action.InputSource;
 import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
+import org.cachyos.controlcenter.modules.network.NetworkBackend;
+import org.cachyos.controlcenter.modules.network.NetworkEvents;
+import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
+import org.cachyos.controlcenter.modules.network.NetworkOperationResult;
+import org.cachyos.controlcenter.modules.network.NetworkSnapshot;
 import org.cachyos.controlcenter.systeminfo.DashboardDataSource;
 import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
 import org.cachyos.controlcenter.systeminfo.OperatingSystemFamily;
@@ -48,6 +53,14 @@ class ApplicationShellTest extends ApplicationTest {
             systemSnapshot,
             dashboardMonitor,
             new InMemoryAuditLog(),
+            new NetworkManagerModule(new UnavailableNetworkBackend()),
+            new NetworkEvents() {
+              @Override
+              public void subscribe(Runnable listener) {}
+
+              @Override
+              public void close() {}
+            },
             request -> {
               dispatched.set(request);
               return CompletableFuture.completedFuture(ActionResult.success("Test"));
@@ -86,6 +99,15 @@ class ApplicationShellTest extends ApplicationTest {
   }
 
   @Test
+  void opensImplementedNetworkManagerPage() {
+    clickOn("Netzwerk");
+
+    Label heading = lookup(".page-title").queryAs(Label.class);
+    assertEquals("Netzwerk", heading.getText());
+    lookup("#network-devices").queryListView();
+  }
+
+  @Test
   void quickButtonDispatchesItsFixedActionId() {
     Button firefox = lookup("#action-open-firefox").queryButton();
     interact(firefox::fire);
@@ -93,5 +115,32 @@ class ApplicationShellTest extends ApplicationTest {
     assertEquals(ActionId.OPEN_FIREFOX, dispatched.get().actionId());
     assertEquals(InputSource.BUTTON, dispatched.get().source());
     assertEquals(Map.of(), dispatched.get().parameters());
+  }
+
+  private static final class UnavailableNetworkBackend implements NetworkBackend {
+    @Override
+    public NetworkSnapshot readSnapshot() {
+      return NetworkSnapshot.unavailable("Test");
+    }
+
+    @Override
+    public NetworkOperationResult scanWifi() {
+      return NetworkOperationResult.unavailable("Test");
+    }
+
+    @Override
+    public NetworkOperationResult setWifiEnabled(boolean enabled) {
+      return NetworkOperationResult.unavailable("Test");
+    }
+
+    @Override
+    public NetworkOperationResult activateProfile(String profileUuid) {
+      return NetworkOperationResult.unavailable("Test");
+    }
+
+    @Override
+    public NetworkOperationResult disconnectDevice(String deviceName) {
+      return NetworkOperationResult.unavailable("Test");
+    }
   }
 }

@@ -11,10 +11,13 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import org.cachyos.controlcenter.core.action.ActionDispatcher;
 import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
+import org.cachyos.controlcenter.modules.network.NetworkEvents;
+import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
 import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
 import org.cachyos.controlcenter.systeminfo.PlatformInfo;
 import org.cachyos.controlcenter.systeminfo.SystemSnapshot;
 import org.cachyos.controlcenter.ui.dashboard.DashboardView;
+import org.cachyos.controlcenter.ui.network.NetworkView;
 import org.cachyos.controlcenter.ui.notifications.NotificationCenter;
 import org.cachyos.controlcenter.ui.theme.ThemeManager;
 import org.cachyos.controlcenter.ui.theme.ThemeMode;
@@ -79,6 +82,17 @@ final class ShellPages {
         "System",
         "Sichere Plattformbasis ohne externe Systembefehle oder erhöhte Rechte.",
         details);
+  }
+
+  static Node network(
+      NetworkManagerModule manager,
+      NetworkEvents events,
+      ActionDispatcher dispatcher,
+      NotificationCenter notifications) {
+    return page(
+        "Netzwerk",
+        "NetworkManager-Status, gespeicherte Profile, WLANs und sichere lokale Aktionen.",
+        new NetworkView(manager, events, dispatcher, notifications));
   }
 
   static Node settings(ThemeManager themeManager, Consumer<ThemeMode> onChanged) {

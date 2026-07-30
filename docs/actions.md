@@ -24,10 +24,16 @@ Direkter Button
 | `desktop.open-file-manager` | Dateimanager im Home öffnen | nein | keine |
 | `desktop.open-terminal` | fest erkannten Terminalemulator starten | nein | keine |
 | `desktop.lock-screen` | Sitzungssperre anfordern | nein | keine |
+| `network.scan-wifi` | WLAN-Suche aktualisieren | nein | keine |
+| `network.wifi-on` | WLAN einschalten | nein | keine |
+| `network.wifi-off` | WLAN ausschalten | nein | keine |
+| `network.activate-profile` | gespeichertes Profil aktivieren | nein | validierte UUID |
+| `network.disconnect-device` | Netzwerkgerät trennen | nein | validierter Gerätename |
 
 Unbekannte IDs werden vor jedem Handler abgelehnt und auditiert. Die Desktop-Aktionen weisen
 sämtliche Parameter zurück. Prozesse erhalten eine absolute Executable und eine getrennte
-Argumentliste; ein Shellinterpreter wird nicht verwendet.
+Argumentliste; ein Shellinterpreter wird nicht verwendet. Netzwerkaktionen akzeptieren exakt ihre
+definierten Parameter. UUIDs und Gerätenamen werden vor dem Plattformadapter validiert.
 
 ## Audit
 

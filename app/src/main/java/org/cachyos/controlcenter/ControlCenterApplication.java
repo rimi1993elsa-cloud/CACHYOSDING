@@ -22,6 +22,8 @@ public final class ControlCenterApplication extends Application {
             context.systemSnapshot(),
             context.dashboardMonitor(),
             context.auditLog(),
+            context.networkManager(),
+            context.networkEvents(),
             context.actionDispatcher());
     Scene scene = new Scene(mainView.root(), 1100, 720);
     mainView.install(scene);

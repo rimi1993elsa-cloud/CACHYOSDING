@@ -11,6 +11,12 @@ public record ActionId(String value) implements Comparable<ActionId> {
   public static final ActionId OPEN_FILE_MANAGER = new ActionId("desktop.open-file-manager");
   public static final ActionId OPEN_TERMINAL = new ActionId("desktop.open-terminal");
   public static final ActionId LOCK_SCREEN = new ActionId("desktop.lock-screen");
+  public static final ActionId NETWORK_SCAN_WIFI = new ActionId("network.scan-wifi");
+  public static final ActionId NETWORK_WIFI_ON = new ActionId("network.wifi-on");
+  public static final ActionId NETWORK_WIFI_OFF = new ActionId("network.wifi-off");
+  public static final ActionId NETWORK_ACTIVATE_PROFILE = new ActionId("network.activate-profile");
+  public static final ActionId NETWORK_DISCONNECT_DEVICE =
+      new ActionId("network.disconnect-device");
 
   public ActionId {
     Objects.requireNonNull(value, "value");

@@ -24,6 +24,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.cachyos.controlcenter.core.action.ActionDispatcher;
 import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
+import org.cachyos.controlcenter.modules.network.NetworkEvents;
+import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
 import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
 import org.cachyos.controlcenter.systeminfo.PlatformInfo;
 import org.cachyos.controlcenter.systeminfo.SystemSnapshot;
@@ -54,6 +56,8 @@ final class ApplicationShell {
       SystemSnapshot systemSnapshot,
       DashboardMonitor dashboardMonitor,
       InMemoryAuditLog auditLog,
+      NetworkManagerModule networkManager,
+      NetworkEvents networkEvents,
       NavigationCatalog catalog,
       ThemeManager themeManager,
       NotificationCenter notifications,
@@ -66,6 +70,8 @@ final class ApplicationShell {
                 systemSnapshot,
                 dashboardMonitor,
                 auditLog,
+                networkManager,
+                networkEvents,
                 themeManager,
                 notifications,
                 actionDispatcher));
@@ -150,7 +156,7 @@ final class ApplicationShell {
 
     Label title = new Label("CachyOS Control Center");
     title.getStyleClass().add("app-title");
-    Label phase = new Label("Entwicklungsstand · Phase 4");
+    Label phase = new Label("Entwicklungsstand · Phase 5");
     phase.getStyleClass().add("phase-badge");
 
     Label statusDot = new Label("●");
@@ -198,6 +204,8 @@ final class ApplicationShell {
       SystemSnapshot systemSnapshot,
       DashboardMonitor dashboardMonitor,
       InMemoryAuditLog auditLog,
+      NetworkManagerModule networkManager,
+      NetworkEvents networkEvents,
       ThemeManager themeManager,
       NotificationCenter notificationCenter,
       ActionDispatcher actionDispatcher) {
@@ -206,6 +214,9 @@ final class ApplicationShell {
         NavigationId.OVERVIEW,
         ShellPages.overview(dashboardMonitor, auditLog, actionDispatcher, notificationCenter));
     pages.put(NavigationId.SYSTEM, ShellPages.system(platformInfo, systemSnapshot));
+    pages.put(
+        NavigationId.NETWORK,
+        ShellPages.network(networkManager, networkEvents, actionDispatcher, notificationCenter));
     pages.put(
         NavigationId.SETTINGS,
         ShellPages.settings(

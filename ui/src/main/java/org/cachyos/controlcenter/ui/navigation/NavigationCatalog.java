@@ -9,7 +9,7 @@ public final class NavigationCatalog {
           active(NavigationId.OVERVIEW, "Übersicht", "Aktueller lokaler Status"),
           active(NavigationId.SYSTEM, "System", "Sichere Plattforminformationen"),
           planned(NavigationId.SECURITY, "Sicherheit", "Sicherheitsstatus", 15),
-          planned(NavigationId.NETWORK, "Netzwerk", "Verbindungen und Diagnose", 5),
+          active(NavigationId.NETWORK, "Netzwerk", "Verbindungen und Diagnose"),
           planned(NavigationId.APPLICATIONS, "Programme", "Installierte Anwendungen", 7),
           planned(NavigationId.PACKAGES, "Pakete", "Pacman und optionale AUR-Pakete", 14),
           planned(NavigationId.HARDWARE, "Hardware", "Geräte und Sensoren", 16),

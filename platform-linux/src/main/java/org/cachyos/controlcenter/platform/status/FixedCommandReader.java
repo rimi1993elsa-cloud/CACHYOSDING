@@ -10,12 +10,12 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 /** Executes fixed, read-only argument lists with bounded output and timeout. */
-final class FixedCommandReader {
+public final class FixedCommandReader {
   private static final int MAX_LINES = 5_000;
 
   private FixedCommandReader() {}
 
-  static Optional<List<String>> read(
+  public static Optional<List<String>> read(
       Path executable, List<String> fixedArguments, Duration timeout) {
     List<String> command = new ArrayList<>(fixedArguments.size() + 1);
     command.add(executable.toAbsolutePath().normalize().toString());

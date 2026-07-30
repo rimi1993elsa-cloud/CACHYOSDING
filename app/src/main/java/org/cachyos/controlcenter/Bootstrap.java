@@ -6,6 +6,9 @@ import org.cachyos.controlcenter.core.action.ActionRegistry;
 import org.cachyos.controlcenter.core.action.DefaultActionDispatcher;
 import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
 import org.cachyos.controlcenter.core.module.ModuleRegistry;
+import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
+import org.cachyos.controlcenter.platform.network.NmcliEventMonitor;
+import org.cachyos.controlcenter.platform.network.NmcliNetworkBackend;
 import org.cachyos.controlcenter.platform.process.DesktopIntegrationModule;
 import org.cachyos.controlcenter.platform.status.LinuxSupplementalStatusProbe;
 import org.cachyos.controlcenter.systeminfo.DashboardDataSource;
@@ -31,6 +34,10 @@ public final class Bootstrap {
                 dashboardDataSource,
                 DashboardDataSource.initial(systemSnapshot),
                 Duration.ofSeconds(30)));
+    NetworkManagerModule networkManager =
+        new NetworkManagerModule(new NmcliNetworkBackend(systemSnapshot.capabilities()));
+    NmcliEventMonitor networkEvents =
+        lifecycle.manage(new NmcliEventMonitor(systemSnapshot.capabilities()));
     InMemoryAuditLog auditLog = new InMemoryAuditLog();
     ModuleRegistry moduleRegistry = new ModuleRegistry();
     ActionRegistry actionRegistry = new ActionRegistry();
@@ -39,6 +46,8 @@ public final class Bootstrap {
         DesktopIntegrationModule.createDefault(platformInfo.operatingSystemFamily());
     moduleRegistry.register(desktopModule);
     actionRegistry.registerModule(desktopModule);
+    moduleRegistry.register(networkManager);
+    actionRegistry.registerModule(networkManager);
 
     DefaultActionDispatcher dispatcher =
         lifecycle.manage(
@@ -56,6 +65,8 @@ public final class Bootstrap {
         platformInfo,
         systemSnapshot,
         dashboardMonitor,
+        networkManager,
+        networkEvents,
         lifecycle,
         dispatcher,
         auditLog,

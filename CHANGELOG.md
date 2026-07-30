@@ -7,6 +7,10 @@ Alle nennenswerten Änderungen werden in dieser Datei dokumentiert. Das Format o
 
 ### Added
 
+- NetworkManager-Seite für Geräte, WLANs, Profile, VPNs, Gateway und DNS
+- Ereignisbasierte Netzwerkaktualisierung über den festen `nmcli monitor`-Aufruf
+- Validierte Aktionen für WLAN, Scan, gespeicherte Profile und Gerätetrennung
+- Sicherer Offline- und Fehlende-`nmcli`-Fallback ohne Passwortverarbeitung
 - Lastarm aktualisiertes Dashboard für CPU, RAM, Speicher, Netzwerk und Akku
 - Gecachter Update- und fehlgeschlagener-Dienste-Status über feste read-only Argumentlisten
 - Schwellenwertbasierte Warnungen und Anzeige der letzten lokalen Aktionen
