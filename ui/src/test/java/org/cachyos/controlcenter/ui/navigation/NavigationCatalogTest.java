@@ -1,0 +1,40 @@
+package org.cachyos.controlcenter.ui.navigation;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.EnumSet;
+import org.junit.jupiter.api.Test;
+
+class NavigationCatalogTest {
+  @Test
+  void exposesEveryRouteExactlyOnce() {
+    NavigationCatalog catalog = new NavigationCatalog();
+
+    assertEquals(NavigationId.values().length, catalog.entries().size());
+    assertEquals(
+        EnumSet.allOf(NavigationId.class),
+        catalog.entries().stream()
+            .map(NavigationEntry::id)
+            .collect(() -> EnumSet.noneOf(NavigationId.class), EnumSet::add, EnumSet::addAll));
+  }
+
+  @Test
+  void enablesOnlyPagesWithRealPhaseOneContent() {
+    NavigationCatalog catalog = new NavigationCatalog();
+
+    assertTrue(entry(catalog, NavigationId.OVERVIEW).enabled());
+    assertTrue(entry(catalog, NavigationId.SYSTEM).enabled());
+    assertTrue(entry(catalog, NavigationId.SETTINGS).enabled());
+    assertFalse(entry(catalog, NavigationId.PACKAGES).enabled());
+    assertEquals("Phase 14", entry(catalog, NavigationId.PACKAGES).availability());
+  }
+
+  private static NavigationEntry entry(NavigationCatalog catalog, NavigationId id) {
+    return catalog.entries().stream()
+        .filter(candidate -> candidate.id() == id)
+        .findFirst()
+        .orElseThrow();
+  }
+}

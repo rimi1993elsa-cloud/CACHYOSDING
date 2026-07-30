@@ -28,5 +28,4 @@ jobs:
         uses: gradle/actions/wrapper-validation@v5
 
       - name: Build and verify
-        run: ./gradlew --no-daemon build quality
-
+        run: xvfb-run --auto-servernum ./gradlew --no-daemon build quality

@@ -1,7 +1,16 @@
-# Benutzerhandbuch – Phase 0
+# Benutzerhandbuch – Phase 1
 
-Die aktuelle Anwendung ist ein technischer Meilenstein. Nach `./gradlew :app:run` erscheint ein
-Fenster mit der erkannten Betriebssystemfamilie und Architektur. Es gibt absichtlich noch keine
-Navigation oder Systemaktionen. Diese Oberfläche verhindert, dass unfertige Module wie fertige
-Funktionen wirken.
+Nach `./gradlew :app:run` erscheint die Grundoberfläche mit Topbar, Navigation, Inhaltsbereich und
+Statusbereich. Die Seiten „Übersicht“, „System“ und „Einstellungen“ enthalten reale lokale Inhalte.
+Noch nicht implementierte Manager sind deaktiviert und zeigen ihre geplante Entwicklungsphase im
+Tooltip.
 
+Tastaturkürzel:
+
+- `Alt+1`: Übersicht
+- `Alt+2`: System
+- `Alt+3`: Einstellungen
+- `Strg+L`: späteres Eingabefeld fokussieren
+
+Unter „Einstellungen“ kann zwischen System-, hellem und dunklem Farbschema gewechselt werden.
+Systemaktionen sind in Phase 1 weiterhin nicht verfügbar.

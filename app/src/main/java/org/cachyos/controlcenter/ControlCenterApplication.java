@@ -16,7 +16,9 @@ public final class ControlCenterApplication extends Application {
 
   @Override
   public void start(Stage stage) {
-    Scene scene = new Scene(new MainView(context.platformInfo()).root(), 960, 600);
+    MainView mainView = new MainView(context.platformInfo());
+    Scene scene = new Scene(mainView.root(), 1100, 720);
+    mainView.install(scene);
     stage.setTitle("CachyOS Control Center AI");
     stage.setMinWidth(720);
     stage.setMinHeight(480);

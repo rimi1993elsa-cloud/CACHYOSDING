@@ -1,0 +1,14 @@
+.root {
+    -app-background: #f4f6f8;
+    -app-surface: #ffffff;
+    -app-sidebar: #fafbfc;
+    -app-border: #dce1e7;
+    -app-text: #1f2933;
+    -app-muted: #647383;
+    -app-accent: #1769aa;
+    -app-accent-soft: #dceeff;
+    -app-success: #17834f;
+    -app-toast: #ffffff;
+    -app-shadow: rgba(20, 32, 44, 0.45);
+}
+

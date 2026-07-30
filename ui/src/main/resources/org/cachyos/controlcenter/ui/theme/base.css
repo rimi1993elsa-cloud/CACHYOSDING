@@ -1,0 +1,144 @@
+.root {
+    -fx-font-family: "Noto Sans", "Segoe UI", sans-serif;
+    -fx-font-size: 13px;
+}
+
+.application-shell,
+.page {
+    -fx-background-color: -app-background;
+}
+
+.topbar,
+.statusbar,
+.inputbar {
+    -fx-background-color: -app-surface;
+    -fx-border-color: -app-border;
+}
+
+.topbar {
+    -fx-border-width: 0 0 1 0;
+}
+
+.statusbar {
+    -fx-border-width: 1 0 0 0;
+}
+
+.app-title,
+.page-title {
+    -fx-font-weight: bold;
+    -fx-text-fill: -app-text;
+}
+
+.app-title {
+    -fx-font-size: 18px;
+}
+
+.page-title {
+    -fx-font-size: 25px;
+}
+
+.page-description,
+.muted-label,
+.card-detail,
+.detail-name {
+    -fx-text-fill: -app-muted;
+}
+
+.phase-badge,
+.privacy-badge {
+    -fx-background-color: -app-accent-soft;
+    -fx-background-radius: 12;
+    -fx-padding: 3 9;
+    -fx-text-fill: -app-accent;
+}
+
+.status-ok {
+    -fx-text-fill: -app-success;
+}
+
+.sidebar {
+    -fx-background-color: -app-sidebar;
+    -fx-border-color: -app-border;
+    -fx-border-width: 0 1 0 0;
+}
+
+.sidebar-heading,
+.card-title,
+.detail-name {
+    -fx-font-weight: bold;
+}
+
+.navigation-list {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.navigation-list .list-cell {
+    -fx-background-color: transparent;
+    -fx-background-radius: 7;
+    -fx-padding: 9 12;
+    -fx-text-fill: -app-text;
+}
+
+.navigation-list .list-cell:selected {
+    -fx-background-color: -app-accent-soft;
+    -fx-text-fill: -app-accent;
+}
+
+.navigation-list .list-cell:disabled {
+    -fx-opacity: 0.48;
+}
+
+.status-card,
+.details-panel,
+.settings-group {
+    -fx-background-color: -app-surface;
+    -fx-background-radius: 10;
+    -fx-border-color: -app-border;
+    -fx-border-radius: 10;
+    -fx-effect: dropshadow(gaussian, -app-shadow, 8, 0.08, 0, 2);
+}
+
+.details-panel,
+.settings-group {
+    -fx-padding: 18;
+}
+
+.card-value,
+.detail-value {
+    -fx-text-fill: -app-text;
+}
+
+.card-value {
+    -fx-font-size: 19px;
+    -fx-font-weight: bold;
+}
+
+.toast {
+    -fx-background-color: -app-toast;
+    -fx-background-radius: 9;
+    -fx-effect: dropshadow(gaussian, -app-shadow, 14, 0.18, 0, 3);
+}
+
+.toast-title {
+    -fx-font-weight: bold;
+    -fx-text-fill: -app-text;
+}
+
+.toast-message {
+    -fx-text-fill: -app-muted;
+}
+
+.button,
+.combo-box,
+.text-field {
+    -fx-background-radius: 7;
+}
+
+.button:focused,
+.combo-box:focused,
+.text-field:focused,
+.navigation-list:focused {
+    -fx-effect: dropshadow(gaussian, -app-accent, 5, 0.25, 0, 0);
+}
+

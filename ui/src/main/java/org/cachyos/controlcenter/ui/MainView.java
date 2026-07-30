@@ -1,38 +1,30 @@
 package org.cachyos.controlcenter.ui;
 
-import javafx.geometry.Insets;
 import javafx.scene.Parent;
-import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.Scene;
 import org.cachyos.controlcenter.systeminfo.PlatformInfo;
+import org.cachyos.controlcenter.ui.navigation.NavigationCatalog;
+import org.cachyos.controlcenter.ui.notifications.NotificationCenter;
+import org.cachyos.controlcenter.ui.theme.ThemeManager;
 
-/** Minimal, honest Phase 0 window. Navigation belongs to Phase 1. */
+/** Public facade for the Phase 1 application shell. */
 public final class MainView {
-  private final BorderPane root;
+  private final ApplicationShell shell;
+  private final ThemeManager themeManager;
 
   public MainView(PlatformInfo platformInfo) {
-    Label title = new Label("CachyOS Control Center AI");
-    title.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
-
-    Label phase = new Label("Phase 0 – Architektur und Projektbasis");
-    Label platform =
-        new Label(
-            "Erkannte Plattform: "
-                + platformInfo.operatingSystemFamily().displayName()
-                + " · "
-                + platformInfo.architecture());
-    Label notice =
-        new Label(
-            "Systemaktionen und Verwaltungsfunktionen werden erst in den folgenden Phasen freigeschaltet.");
-    notice.setWrapText(true);
-
-    VBox content = new VBox(12, title, phase, platform, notice);
-    content.setPadding(new Insets(32));
-    root = new BorderPane(content);
+    NotificationCenter notifications = new NotificationCenter();
+    themeManager = new ThemeManager();
+    shell =
+        new ApplicationShell(platformInfo, new NavigationCatalog(), themeManager, notifications);
   }
 
   public Parent root() {
-    return root;
+    return shell.root();
+  }
+
+  public void install(Scene scene) {
+    themeManager.install(scene);
+    shell.installKeyboardNavigation(scene);
   }
 }

@@ -5,9 +5,10 @@ phasenweise nach dem verbindlichen Masterauftrag entwickelt.
 
 ## Aktueller Stand
 
-Phase 0 stellt ein reproduzierbares Gradle-Multi-Modul-Projekt, ein minimales startfähiges
-JavaFX-Fenster, XDG-Pfade, rotierendes Logging und eine sichere, rein lesende Plattform-Erkennung
-bereit. Es sind noch keine Systemaktionen oder Manager-Funktionen freigeschaltet.
+Phase 1 stellt ein reproduzierbares Gradle-Multi-Modul-Projekt und eine responsive JavaFX-Shell mit
+Navigation, Themes, Toasts, XDG-Pfaden, rotierendem Logging und sicherer, rein lesender
+Plattform-Erkennung bereit. Es sind noch keine Systemaktionen oder Manager-Funktionen
+freigeschaltet.
 
 ## Voraussetzungen
 
@@ -37,7 +38,7 @@ Unter Windows:
 ./gradlew :app:run
 ```
 
-Die Phase-0-Oberfläche zeigt ausschließlich reale JVM-/Sitzungsdaten. Sie führt keine Befehle aus,
+Die aktuelle Oberfläche zeigt ausschließlich reale JVM-/Sitzungsdaten. Sie führt keine Befehle aus,
 liest keine Systemdateien und fordert keine erhöhten Rechte an.
 
 ## Projektmodule
@@ -59,4 +60,3 @@ Architektur, Sicherheitsgrenzen und Entwicklungsablauf stehen unter [`docs/`](do
 ## Lizenz
 
 GPL-3.0-or-later, siehe [`LICENSE`](LICENSE).
-
