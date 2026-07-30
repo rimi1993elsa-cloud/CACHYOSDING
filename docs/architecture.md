@@ -3,9 +3,9 @@
 ## Ziel
 
 Die Anwendung trennt Anzeige, lokale Aktionen, privilegierte Aktionen und Online-KI technisch. In
-Phase 12 existieren die unprivilegierte UI, sichere Systemerkennung, das Live-Dashboard, eine
+Phase 13 existieren die unprivilegierte UI, sichere Systemerkennung, das Live-Dashboard, eine
 allowlist-basierte lokale Action Engine, Fachgrenzen für NetworkManager und PipeWire-Pulse sowie
-eine strikt textliefernde Speech-to-Text-Grenze.
+eine strikt textliefernde Speech-to-Text-Grenze und ein separater privilegierter Helper.
 
 ```mermaid
 flowchart TB
@@ -15,7 +15,7 @@ flowchart TB
     STT["Vosk STT (nur Push-to-Talk)"]
     ACTION["Typisierte Action Engine"]
     NETWORK["NetworkManager-Adapter (nmcli)"]
-    HELPER["D-Bus/Polkit Helper (spätere Phase)"]
+    HELPER["D-Bus/Polkit Helper (separater Root-Prozess)"]
     AI["OpenAI Responses (nur Text, keine Executor-Referenz)"]
     OS["Linux-Systemdienste"]
 
@@ -57,7 +57,11 @@ flowchart TB
 - `ai.knowledge` akzeptiert ausschließlich Registry-URLs der offiziellen CachyOS-/Arch-Wikis.
   Dokumente werden zu reinem Text reduziert, auf Prompt-Injection-Marker geprüft, lokal gecacht und
   nur als ausdrücklich unvertrauenswürdiger Kontext an den Provider angefügt.
-- `helper` ist kein Bestandteil des GUI-Prozesses und wird erst in Phase 13 implementiert.
+- `helper/helper-api` beschreibt nur acht typisierte D-Bus-Methoden und ein begrenztes
+  Fehlerprotokoll. Es gibt keine Methode für freien Shelltext oder freie Executables.
+- `helper/privileged-helper` ist ein eigener, per System-D-Bus aktivierbarer Root-Prozess. Er
+  autorisiert den eindeutigen Bus-Absender mit Polkit, prüft alle Parameter unabhängig erneut,
+  verwendet ausschließlich absolute Executable-Allowlists und auditiert ohne Nutzparameter.
 
 ## Nebenläufigkeit
 
@@ -90,3 +94,4 @@ Benutzer-Home zurück. Secrets gehören später in Secret Service/KDE Wallet, ni
 - Vosk Java 0.3.45 (neueste auf Maven Central verfügbare Desktop-Bibliothek; Upstream-Release 0.3.50)
 - Offizielles OpenAI Java SDK 4.43.0
 - jsoup 1.23.1
+- dbus-java 5.2.0

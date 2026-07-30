@@ -23,6 +23,8 @@ include(
     "system-info",
     "platform-linux",
     "persistence",
+    "helper:helper-api",
+    "helper:privileged-helper",
     "modules:system",
     "modules:security",
     "modules:network",
@@ -41,4 +43,3 @@ include(
     "modules:boot",
     "modules:browser",
 )
-

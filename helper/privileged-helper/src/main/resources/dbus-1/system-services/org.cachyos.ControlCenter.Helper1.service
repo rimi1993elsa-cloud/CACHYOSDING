@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=org.cachyos.ControlCenter.Helper1
+Exec=/usr/lib/cachyos-control-center/cachyos-control-center-helper
+User=root

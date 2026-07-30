@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node>
+  <interface name="org.cachyos.ControlCenter.Helper1">
+    <method name="installPackage"><arg name="packageName" type="s" direction="in"/>
+      <arg name="reply" type="s" direction="out"/></method>
+    <method name="removePackage"><arg name="packageName" type="s" direction="in"/>
+      <arg name="reply" type="s" direction="out"/></method>
+    <method name="setFirewallEnabled"><arg name="enabled" type="b" direction="in"/>
+      <arg name="reply" type="s" direction="out"/></method>
+    <method name="controlSystemService"><arg name="unitName" type="s" direction="in"/>
+      <arg name="operation" type="s" direction="in"/><arg name="reply" type="s" direction="out"/></method>
+    <method name="createSnapshot"><arg name="description" type="s" direction="in"/>
+      <arg name="reply" type="s" direction="out"/></method>
+    <method name="deleteSnapshot"><arg name="snapshotId" type="i" direction="in"/>
+      <arg name="reply" type="s" direction="out"/></method>
+    <method name="signalProcess"><arg name="processId" type="x" direction="in"/>
+      <arg name="signal" type="i" direction="in"/><arg name="reply" type="s" direction="out"/></method>
+    <method name="setProcessPriority"><arg name="processId" type="x" direction="in"/>
+      <arg name="priority" type="i" direction="in"/><arg name="reply" type="s" direction="out"/></method>
+  </interface>
+</node>

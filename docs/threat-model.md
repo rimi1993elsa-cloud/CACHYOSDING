@@ -28,8 +28,14 @@ Freier Shelltext und `sh -c` sind verboten. Spätere Prozesse werden nur mit
 
 ### Rechteausweitung
 
-Die GUI läuft nie als Root. Der spätere Helper besitzt eine kleine Allowlist, validiert jeden
-Parameter erneut und verweigert unbekannte Methoden. Polkit prüft Identität und Interaktion.
+Die GUI läuft nie als Root. Der Helper besitzt acht feste Methoden, validiert jeden Parameter
+innerhalb der privilegierten Grenze erneut und kann keine unbekannte Operation ausführen. Polkit
+prüft den vom System-Bus gelieferten eindeutigen Absender mit optionaler Benutzerinteraktion.
+
+Der Helper nimmt weder PID noch Benutzer-ID als behauptete Identität vom Aufrufer entgegen. Seine
+D-Bus-Policy erlaubt nur die eigene Schnittstelle; nur Root darf den Busnamen besitzen. Abgelehnte,
+fehlgeschlagene und erfolgreiche Aktionen werden ohne Paket-, Dienst- oder Beschreibungstext
+protokolliert. Polkit- und Systemwerkzeugaufrufe besitzen feste Zeitlimits.
 
 ### KI- und Prompt-Injection
 
@@ -61,7 +67,6 @@ Ereignis-IDs; Parameter werden vor dem Logging redigiert. Dateien rotieren und s
 
 ## Phase-0-Risiko
 
-Phase 0 startet keine externen Prozesse, liest keine Systemdateien, öffnet keine Netzwerkverbindung
-und fordert keine Privilegien an. Plattformdaten stammen nur aus JVM-Eigenschaften und ausgewählten
-Desktop-Sitzungsvariablen.
-
+Phase 0 startete keine externen Prozesse, las keine Systemdateien, öffnete keine Netzwerkverbindung
+und forderte keine Privilegien an. Seit Phase 13 sind administrative Prozesse ausschließlich im
+separat paketierten Helper mit D-Bus/Polkit-Grenze möglich.

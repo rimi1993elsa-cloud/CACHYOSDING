@@ -5,10 +5,10 @@ phasenweise nach dem verbindlichen Masterauftrag entwickelt.
 
 ## Aktueller Stand
 
-Phase 12 ergänzt einen vollständig lokal nutzbaren Diagnosemanager für Netzwerk, Audio, Dienste,
-Boot, Grafik und Pakete. Feste lesende Abfragen laufen asynchron und liefern ehrliche
-Capability-Fallbacks. Befunde werden zentral redigiert; eine KI-Erklärung wird nur als sichtbarer
-Chatentwurf vorbereitet. Abhilfen bleiben feste, bewusst anklickbare lokale Aktionen.
+Phase 13 ergänzt einen separaten privilegierten Helper über den System-D-Bus. Seine kleine,
+typisierte Methoden-Allowlist wird pro Aktion durch Polkit geschützt und innerhalb des
+Root-Prozesses erneut validiert. Zeitlimits, strukturierte Fehlercodes und parameterfreies Audit
+begrenzen Fehlerfolgen; die JavaFX-Anwendung bleibt vollständig unprivilegiert.
 
 ## Voraussetzungen
 
@@ -52,7 +52,9 @@ es gibt keine freie Shellausführung und keine erhöhten Rechte.
 | `input` | Vosk-Push-to-Talk und gemeinsamer lokaler Text-/Voice-Intent-Router |
 | `ai` | Strikt nur lesende Provider-Grenze und OpenAI-Responses-Adapter |
 | `system-info` | Plattform-, Hardware-, Netzwerk-, Boot- und Capability-Erkennung |
-| `platform-linux` | Spätere typisierte Linux-Adapter |
+| `platform-linux` | Typisierte, überwiegend lesende Linux-Adapter |
+| `helper/helper-api` | Kleine, typisierte D-Bus-Schnittstelle und Fehlerprotokoll |
+| `helper/privileged-helper` | Separater Polkit-geschützter Systemdienst |
 | `persistence` | Spätere SQLite-Persistenz |
 | `modules/*` | Fachmodule der nachfolgenden Phasen |
 

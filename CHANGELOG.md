@@ -7,6 +7,14 @@ Alle nennenswerten Änderungen werden in dieser Datei dokumentiert. Das Format o
 
 ### Added
 
+- Separater, per System-D-Bus aktivierbarer privilegierter Helper
+- Acht typisierte administrative Methoden ohne generische Shell- oder Executable-Schnittstelle
+- Polkit-Autorisierung anhand des eindeutigen System-Bus-Absenders
+- Doppelte Parameterprüfung an Transport- und privilegierter Fachgrenze
+- Absolute Executable-Allowlist für Pacman, systemd, Snapper und Prozesssignale
+- Zeitlimits, begrenzte Fehlercodes und parameterfreies strukturiertes Audit
+- D-Bus-Introspection, restriktive Bus-Policy und fünf minimale Polkit-Aktionen
+- Manipulations-, Autorisierungs-, Protokoll- und Timeout-Tests für den Helper
 - Lokaler Diagnosemanager für Netzwerk, Audio, Dienste, Boot, Grafik und Pakete
 - Serielle, abbrechbare Diagnoseausführung außerhalb des JavaFX-Threads
 - Zentraler Sanitizer für Kontaktdaten, Pfade, IPs, Secrets und Hardwarekennungen
