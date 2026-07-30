@@ -11,3 +11,4 @@ hs_err_pid*
 /packaging/pkg/
 /packaging/*.pkg.tar.*
 /packaging/vosk-model-small-de-0.15.zip
+/release/

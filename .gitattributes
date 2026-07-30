@@ -6,5 +6,7 @@
 *.yml text eol=lf
 *.yaml text eol=lf
 *.sh text eol=lf
+*.desktop text eol=lf
+*.txt text eol=lf
 gradlew text eol=lf
 gradlew.bat text eol=crlf

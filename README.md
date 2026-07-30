@@ -44,9 +44,16 @@ es gibt keine freie Shellausführung und keine erhöhten Rechte.
 
 ## Auf CachyOS installieren und testen
 
+Für die fertige Übergabe das Archiv `CachyOS-Control-Center-1.2.0.tar.gz` auf CachyOS
+entpacken und im Ordner `Installieren.desktop` doppelklicken. Falls KDE nachfragt, einmal
+„Vertrauen und starten“ bestätigen. Der One-Click-Installer protokolliert den gesamten Lauf in
+`install-cachyos.log`.
+
+Der manuelle Weg aus dem Projektordner:
+
 ```bash
 cd /pfad/zum/CachyOS-Projekt
-./scripts/install-cachyos.sh
+./install.sh
 cachyos-control-center-verify
 cachyos-control-center
 ```

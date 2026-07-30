@@ -95,6 +95,9 @@ val verifyPackaging = tasks.register("verifyPackaging") {
             "scripts/install-cachyos.sh",
             "scripts/verify-linux.sh",
             "scripts/verify-installed.sh",
+            "Installieren.desktop",
+            "install.sh",
+            "README-INSTALLATION.txt",
         ).map(::file)
         check(required.all { it.isFile }) { "Packaging asset is missing" }
         val desktop = required[2].readText()
@@ -112,9 +115,21 @@ val verifyPackaging = tasks.register("verifyPackaging") {
                 "b7e53c90b1f0a38456f4cd62b366ecd58803cd97cd42b06438e2c131713d5e43" in packageBuild
         ) { "Packaged Vosk model source or checksum is missing" }
         check("pkgver=1.2.0" in packageBuild) { "PKGBUILD version drifted" }
-        check(required.drop(8).all { it.readText().startsWith("#!/usr/bin/env bash") }) {
+        check(required.slice(8..10).all { it.readText().startsWith("#!/usr/bin/env bash") }) {
             "Linux helper script is not executable shell source"
         }
+        val oneClickDesktop = file("Installieren.desktop").readText()
+        check(
+            "Terminal=true" in oneClickDesktop &&
+                "Exec=/usr/bin/bash" in oneClickDesktop &&
+                "install.sh" in oneClickDesktop
+        ) { "One-click desktop launcher is invalid" }
+        val oneClickInstaller = file("install.sh").readText()
+        check(
+            oneClickInstaller.startsWith("#!/usr/bin/env bash") &&
+                "scripts/install-cachyos.sh" in oneClickInstaller &&
+                "PIPESTATUS[0]" in oneClickInstaller
+        ) { "One-click installer does not preserve the underlying exit status" }
         check(
             file("packaging/dbus/org.cachyos.ControlCenter.Helper1.service").readText() ==
                 file("helper/privileged-helper/src/main/resources/dbus-1/system-services/org.cachyos.ControlCenter.Helper1.service").readText()

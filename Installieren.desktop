@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=CachyOS Control Center installieren
+GenericName=One-Click-Installer
+Comment=Baut, prüft und installiert das CachyOS Control Center
+Icon=system-software-install
+Terminal=true
+TryExec=/usr/bin/bash
+Exec=/usr/bin/bash -c "desktop=${1#file://}; cd -- \"${desktop%/*}\" && exec ./install.sh" bash %k
+Categories=System;Settings;
+StartupNotify=true
+X-KDE-SubstituteUID=false
