@@ -1,6 +1,7 @@
 package org.cachyos.controlcenter.ui.voice;
 
 import java.io.File;
+import java.util.function.BiConsumer;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -10,6 +11,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
+import org.cachyos.controlcenter.core.action.InputSource;
 import org.cachyos.controlcenter.input.voice.MicrophoneCatalog;
 import org.cachyos.controlcenter.input.voice.MicrophoneDescriptor;
 import org.cachyos.controlcenter.input.voice.SpeechModelManager;
@@ -27,12 +29,17 @@ public final class VoiceView extends VBox {
   private final Label partial = new Label();
   private final TextArea transcript = new TextArea();
   private final Button pushToTalk = new Button("Gedrückt halten zum Sprechen");
+  private final BiConsumer<String, InputSource> onSubmit;
 
   public VoiceView(
-      MicrophoneCatalog microphones, SpeechModelManager models, SpeechToTextEngine engine) {
+      MicrophoneCatalog microphones,
+      SpeechModelManager models,
+      SpeechToTextEngine engine,
+      BiConsumer<String, InputSource> onSubmit) {
     this.microphones = microphones;
     this.models = models;
     this.engine = engine;
+    this.onSubmit = onSubmit;
     microphone.setId("voice-microphone");
     microphone.getItems().setAll(microphones.availableMicrophones());
     microphone.getSelectionModel().selectFirst();
@@ -62,6 +69,10 @@ public final class VoiceView extends VBox {
             event.consume();
           }
         });
+    Button submit = new Button("Transkript lokal auswerten");
+    submit.setId("voice-submit");
+    submit.disableProperty().bind(transcript.textProperty().isEmpty());
+    submit.setOnAction(ignored -> onSubmit.accept(transcript.getText(), InputSource.VOICE));
     setSpacing(14);
     setPadding(new Insets(2));
     getChildren()
@@ -76,8 +87,9 @@ public final class VoiceView extends VBox {
             partial,
             new Label("Bestätigtes Transkript"),
             transcript,
+            submit,
             new Label(
-                "Transkripte werden nur angezeigt. Sie lösen keine Aktion aus und werden nicht versendet."));
+                "Eine Auswertung erfolgt erst nach bewusstem Klick. Online wird nichts versendet."));
     updateAvailability();
   }
 

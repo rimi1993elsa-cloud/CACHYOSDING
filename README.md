@@ -5,10 +5,10 @@ phasenweise nach dem verbindlichen Masterauftrag entwickelt.
 
 ## Aktueller Stand
 
-Phase 8 ergänzt eine austauschbare Offline-Spracherkennung mit Vosk. Mikrofon und deutsches Modell
-werden bewusst ausgewählt; aufgenommen wird ausschließlich während Push-to-Talk. Teil- und
-Endtranskripte bleiben sichtbar, Audio wird weder gespeichert noch automatisch als Aktion oder
-KI-Anfrage weitergegeben.
+Phase 9 ergänzt einen deterministischen, lokalen Intent-Router. Text und bewusst übernommene
+Sprachtranskripte werden normalisiert und ausschließlich auf registrierte Aktionen, Navigation,
+Fragen, unbekannte oder mehrdeutige Eingaben abgebildet. Freier Shelltext bleibt wirkungslos;
+sitzungsverändernde Befehle benötigen eine zusätzliche Bestätigung.
 
 ## Voraussetzungen
 
@@ -49,7 +49,7 @@ es gibt keine freie Shellausführung und keine erhöhten Rechte.
 | `app` | Bootstrap, JavaFX-Lebenszyklus und Composition Root |
 | `core` | Gemeinsame Kernmodelle und XDG-Infrastruktur |
 | `ui` | JavaFX-Shell, Navigation, Statuskarten und Benachrichtigungen |
-| `input` | Vosk-Push-to-Talk, Mikrofon- und Modellverwaltung; Intent folgt in Phase 9 |
+| `input` | Vosk-Push-to-Talk und gemeinsamer lokaler Text-/Voice-Intent-Router |
 | `ai` | Spätere, strikt nur lesende KI-Grenze |
 | `system-info` | Plattform-, Hardware-, Netzwerk-, Boot- und Capability-Erkennung |
 | `platform-linux` | Spätere typisierte Linux-Adapter |

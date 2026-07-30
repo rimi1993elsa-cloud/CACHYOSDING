@@ -3,6 +3,7 @@ package org.cachyos.controlcenter;
 import org.cachyos.controlcenter.core.action.ActionDispatcher;
 import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
 import org.cachyos.controlcenter.core.module.ModuleRegistry;
+import org.cachyos.controlcenter.input.intent.GermanIntentRouter;
 import org.cachyos.controlcenter.input.voice.MicrophoneCatalog;
 import org.cachyos.controlcenter.input.voice.SpeechModelManager;
 import org.cachyos.controlcenter.input.voice.SpeechToTextEngine;
@@ -25,6 +26,7 @@ public record AppContext(
     AudioManagerModule audioManager,
     AudioEvents audioEvents,
     ApplicationManagerModule applicationManager,
+    GermanIntentRouter intentRouter,
     MicrophoneCatalog microphoneCatalog,
     SpeechModelManager speechModelManager,
     SpeechToTextEngine speechToTextEngine,

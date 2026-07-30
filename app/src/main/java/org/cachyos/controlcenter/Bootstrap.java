@@ -6,6 +6,8 @@ import org.cachyos.controlcenter.core.action.ActionRegistry;
 import org.cachyos.controlcenter.core.action.DefaultActionDispatcher;
 import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
 import org.cachyos.controlcenter.core.module.ModuleRegistry;
+import org.cachyos.controlcenter.input.intent.GermanIntentRouter;
+import org.cachyos.controlcenter.input.intent.RegisteredApplication;
 import org.cachyos.controlcenter.input.voice.MicrophoneCatalog;
 import org.cachyos.controlcenter.input.voice.SpeechModelManager;
 import org.cachyos.controlcenter.input.voice.VoskSpeechToTextEngine;
@@ -53,6 +55,12 @@ public final class Bootstrap {
         lifecycle.manage(new PactlEventMonitor(systemSnapshot.capabilities()));
     ApplicationManagerModule applicationManager =
         new ApplicationManagerModule(new DesktopApplicationBackend(systemSnapshot.capabilities()));
+    GermanIntentRouter intentRouter =
+        new GermanIntentRouter(
+            () ->
+                applicationManager.applications().stream()
+                    .map(entry -> new RegisteredApplication(entry.id(), entry.name()))
+                    .toList());
     MicrophoneCatalog microphoneCatalog = new MicrophoneCatalog();
     SpeechModelManager speechModelManager =
         new SpeechModelManager(XdgPaths.detect().dataDirectory());
@@ -94,6 +102,7 @@ public final class Bootstrap {
         audioManager,
         audioEvents,
         applicationManager,
+        intentRouter,
         microphoneCatalog,
         speechModelManager,
         speechToTextEngine,

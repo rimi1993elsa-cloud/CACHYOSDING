@@ -10,12 +10,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.cachyos.controlcenter.core.action.ActionId;
 import org.cachyos.controlcenter.core.action.ActionRequest;
 import org.cachyos.controlcenter.core.action.ActionResult;
 import org.cachyos.controlcenter.core.action.InputSource;
 import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
+import org.cachyos.controlcenter.input.intent.GermanIntentRouter;
 import org.cachyos.controlcenter.input.voice.MicrophoneCatalog;
 import org.cachyos.controlcenter.input.voice.MicrophoneDescriptor;
 import org.cachyos.controlcenter.input.voice.SpeechModelManager;
@@ -84,6 +86,7 @@ class ApplicationShellTest extends ApplicationTest {
               public void close() {}
             },
             new ApplicationManagerModule(new EmptyApplicationBackend()),
+            new GermanIntentRouter(java.util.List::of),
             new MicrophoneCatalog(),
             new SpeechModelManager(
                 java.nio.file.Path.of(System.getProperty("user.home")).toAbsolutePath()),
@@ -170,6 +173,25 @@ class ApplicationShellTest extends ApplicationTest {
     assertEquals(ActionId.OPEN_FIREFOX, dispatched.get().actionId());
     assertEquals(InputSource.BUTTON, dispatched.get().source());
     assertEquals(Map.of(), dispatched.get().parameters());
+  }
+
+  @Test
+  void textCommandUsesTheTypedLocalActionPath() {
+    TextField command = lookup("#command-field").queryAs(TextField.class);
+    clickOn(command).write("Öffne Firefox");
+    press(javafx.scene.input.KeyCode.ENTER).release(javafx.scene.input.KeyCode.ENTER);
+
+    assertEquals(ActionId.OPEN_FIREFOX, dispatched.get().actionId());
+    assertEquals(InputSource.TEXT, dispatched.get().source());
+  }
+
+  @Test
+  void unknownTextDoesNotDispatch() {
+    TextField command = lookup("#command-field").queryAs(TextField.class);
+    clickOn(command).write("rm -rf /");
+    press(javafx.scene.input.KeyCode.ENTER).release(javafx.scene.input.KeyCode.ENTER);
+
+    assertEquals(null, dispatched.get());
   }
 
   private static final class UnavailableNetworkBackend implements NetworkBackend {

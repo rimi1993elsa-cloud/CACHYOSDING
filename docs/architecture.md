@@ -3,7 +3,7 @@
 ## Ziel
 
 Die Anwendung trennt Anzeige, lokale Aktionen, privilegierte Aktionen und Online-KI technisch. In
-Phase 8 existieren die unprivilegierte UI, sichere Systemerkennung, das Live-Dashboard, eine
+Phase 9 existieren die unprivilegierte UI, sichere Systemerkennung, das Live-Dashboard, eine
 allowlist-basierte lokale Action Engine, Fachgrenzen für NetworkManager und PipeWire-Pulse sowie
 eine strikt textliefernde Speech-to-Text-Grenze.
 
@@ -11,7 +11,7 @@ eine strikt textliefernde Speech-to-Text-Grenze.
 flowchart TB
     UI["JavaFX-App (normaler Benutzer)"]
     INFO["System-Info (nur lesend)"]
-    ROUTER["Input Router (spätere Phase)"]
+    ROUTER["Lokaler Intent Router"]
     STT["Vosk STT (nur Push-to-Talk)"]
     ACTION["Typisierte Action Engine"]
     NETWORK["NetworkManager-Adapter (nmcli)"]
@@ -25,7 +25,7 @@ flowchart TB
     UI --> ACTION
     ACTION --> NETWORK
     NETWORK --> OS
-    UI -. später .-> ROUTER
+    UI --> ROUTER
     ROUTER -. registrierte Action-ID .-> ACTION
     ROUTER -. Frage .-> AI
     ACTION -. Allowlist .-> HELPER
@@ -41,6 +41,8 @@ flowchart TB
 - `system-info` liest lokale Daten und betreibt den lastarmen Dashboard-Monitor.
 - `input.voice` öffnet ein gewähltes Mikrofon nur während Push-to-Talk und liefert ausschließlich
   Transkriptereignisse. Es besitzt weder Dispatcher- noch KI-Abhängigkeit.
+- `input.intent` klassifiziert deterministisch und offline. Es kann eine registrierte Action-ID als
+  Daten liefern, besitzt aber selbst keine Dispatcher-Referenz. Fragen bleiben reine Textdaten.
 - `modules/network` enthält ausschließlich Netzwerkmodelle, Validierung und den Manager-Vertrag.
 - `modules/audio` enthält ausschließlich Audiomodelle, Mixer-Validierung und den Manager-Vertrag.
 - `ui` erhält den Netzwerkmanager als Fachschnittstelle und kennt weder `nmcli` noch Prozess-APIs.

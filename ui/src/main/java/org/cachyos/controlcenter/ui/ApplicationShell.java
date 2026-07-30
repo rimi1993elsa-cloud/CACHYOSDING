@@ -1,14 +1,18 @@
 package org.cachyos.controlcenter.ui;
 
+import java.time.Instant;
 import java.util.EnumMap;
 import java.util.Map;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -23,7 +27,11 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.cachyos.controlcenter.core.action.ActionDispatcher;
+import org.cachyos.controlcenter.core.action.ActionRequest;
+import org.cachyos.controlcenter.core.action.InputSource;
 import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
+import org.cachyos.controlcenter.input.intent.GermanIntentRouter;
+import org.cachyos.controlcenter.input.intent.IntentResult;
 import org.cachyos.controlcenter.input.voice.MicrophoneCatalog;
 import org.cachyos.controlcenter.input.voice.SpeechModelManager;
 import org.cachyos.controlcenter.input.voice.SpeechToTextEngine;
@@ -54,6 +62,8 @@ final class ApplicationShell {
   private final TextField commandField = new TextField();
   private final ContentRouter router;
   private final NotificationCenter notifications;
+  private final GermanIntentRouter intentRouter;
+  private final ActionDispatcher actionDispatcher;
   private boolean compact;
   private boolean compactSidebarOpen;
 
@@ -67,6 +77,7 @@ final class ApplicationShell {
       AudioManagerModule audioManager,
       AudioEvents audioEvents,
       ApplicationManagerModule applicationManager,
+      GermanIntentRouter intentRouter,
       MicrophoneCatalog microphoneCatalog,
       SpeechModelManager speechModelManager,
       SpeechToTextEngine speechToTextEngine,
@@ -75,6 +86,8 @@ final class ApplicationShell {
       NotificationCenter notifications,
       ActionDispatcher actionDispatcher) {
     this.notifications = notifications;
+    this.intentRouter = intentRouter;
+    this.actionDispatcher = actionDispatcher;
     router =
         new ContentRouter(
             createPages(
@@ -174,7 +187,7 @@ final class ApplicationShell {
 
     Label title = new Label("CachyOS Control Center");
     title.getStyleClass().add("app-title");
-    Label phase = new Label("Entwicklungsstand · Phase 8");
+    Label phase = new Label("Entwicklungsstand · Phase 9");
     phase.getStyleClass().add("phase-badge");
 
     Label statusDot = new Label("●");
@@ -202,13 +215,16 @@ final class ApplicationShell {
     statusLine.getStyleClass().add("statusbar");
     statusLine.setPadding(new Insets(5, 16, 5, 16));
 
-    commandField.setPromptText("Text- und Sprachsteuerung wird in Phase 8/9 aktiviert");
-    commandField.setDisable(true);
+    commandField.setId("command-field");
+    commandField.setPromptText("Lokaler Befehl, Navigation oder Frage …");
     commandField.setAccessibleHelp(
-        "Text- und Sprachsteuerung ist in diesem Entwicklungsstand noch nicht verfügbar.");
+        "Eingaben werden zuerst vollständig lokal klassifiziert. Unklares wird nicht ausgeführt.");
     Button send = new Button("→");
-    send.setDisable(true);
+    send.setId("command-submit");
     send.setAccessibleText("Eingabe senden");
+    send.disableProperty().bind(commandField.textProperty().isEmpty());
+    send.setOnAction(ignored -> submit(commandField.getText(), InputSource.TEXT));
+    commandField.setOnAction(ignored -> submit(commandField.getText(), InputSource.TEXT));
     HBox inputBar = new HBox(8, commandField, send);
     HBox.setHgrow(commandField, Priority.ALWAYS);
     inputBar.setPadding(new Insets(8, 16, 12, 16));
@@ -249,7 +265,7 @@ final class ApplicationShell {
         ShellPages.applications(applicationManager, actionDispatcher, notificationCenter));
     pages.put(
         NavigationId.VOICE,
-        ShellPages.voice(microphoneCatalog, speechModelManager, speechToTextEngine));
+        ShellPages.voice(microphoneCatalog, speechModelManager, speechToTextEngine, this::submit));
     pages.put(
         NavigationId.SETTINGS,
         ShellPages.settings(
@@ -258,6 +274,66 @@ final class ApplicationShell {
                 notificationCenter.show(
                     "Darstellung", "Theme auf „" + mode.displayName() + "“ gesetzt.")));
     return pages;
+  }
+
+  private void submit(String text, InputSource source) {
+    IntentResult result = intentRouter.route(text);
+    switch (result.kind()) {
+      case ACTION -> handleAction(result, source);
+      case NAVIGATION -> handleNavigation(result);
+      case QUESTION ->
+          notifications.show(
+              "Frage erkannt",
+              "Der lokale Router führt nichts aus. Der optionale KI-Chat folgt in Phase 10.");
+      case AMBIGUOUS -> notifications.show("Mehrdeutige Eingabe", result.message());
+      case UNKNOWN -> notifications.show("Nicht erkannt", result.message());
+      default -> notifications.show("Eingabe", "Die Eingabe wurde sicher verworfen.");
+    }
+  }
+
+  private void handleAction(IntentResult result, InputSource source) {
+    if (result.confirmationRequired() && !confirm(result.message())) {
+      notifications.show("Abgebrochen", "Die lokale Aktion wurde nicht ausgeführt.");
+      return;
+    }
+    ActionRequest request =
+        new ActionRequest(
+            result.actionId().orElseThrow(), source, result.parameters(), Instant.now());
+    actionDispatcher
+        .dispatch(request)
+        .whenComplete(
+            (actionResult, error) ->
+                Platform.runLater(
+                    () -> {
+                      if (error != null) {
+                        notifications.show(
+                            "Aktion fehlgeschlagen", "Die Aktion konnte nicht ausgeführt werden.");
+                      } else {
+                        notifications.show("Lokale Aktion", actionResult.userMessage());
+                      }
+                    }));
+  }
+
+  private void handleNavigation(IntentResult result) {
+    try {
+      select(
+          NavigationId.valueOf(
+              result.navigationTarget().orElseThrow().toUpperCase(java.util.Locale.ROOT)));
+    } catch (IllegalArgumentException ignored) {
+      notifications.show("Navigation", "Der erkannte Bereich ist nicht registriert.");
+    }
+  }
+
+  private boolean confirm(String description) {
+    Alert dialog =
+        new Alert(
+            Alert.AlertType.CONFIRMATION,
+            description + "\n\nDiese Aktion verändert den aktuellen Sitzungszustand.",
+            ButtonType.CANCEL,
+            ButtonType.OK);
+    dialog.setTitle("Lokale Aktion bestätigen");
+    dialog.setHeaderText("Sicherheitsbestätigung");
+    return dialog.showAndWait().filter(ButtonType.OK::equals).isPresent();
   }
 
   private void navigate(NavigationEntry selected, NavigationEntry previous) {

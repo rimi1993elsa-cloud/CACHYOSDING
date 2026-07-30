@@ -1,5 +1,6 @@
 package org.cachyos.controlcenter.ui;
 
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -10,6 +11,7 @@ import javafx.scene.control.Separator;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import org.cachyos.controlcenter.core.action.ActionDispatcher;
+import org.cachyos.controlcenter.core.action.InputSource;
 import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
 import org.cachyos.controlcenter.input.voice.MicrophoneCatalog;
 import org.cachyos.controlcenter.input.voice.SpeechModelManager;
@@ -126,11 +128,14 @@ final class ShellPages {
   }
 
   static Node voice(
-      MicrophoneCatalog microphones, SpeechModelManager models, SpeechToTextEngine engine) {
+      MicrophoneCatalog microphones,
+      SpeechModelManager models,
+      SpeechToTextEngine engine,
+      BiConsumer<String, InputSource> onSubmit) {
     return page(
         "Sprache",
         "Offline Push-to-Talk mit sichtbarem Transkript und ohne automatische Ausführung.",
-        new VoiceView(microphones, models, engine));
+        new VoiceView(microphones, models, engine, onSubmit));
   }
 
   static Node settings(ThemeManager themeManager, Consumer<ThemeMode> onChanged) {

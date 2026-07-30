@@ -7,6 +7,11 @@ Alle nennenswerten Änderungen werden in dieser Datei dokumentiert. Das Format o
 
 ### Added
 
+- Deterministischer deutscher Offline-Intent-Router für Aktion, Navigation, Frage und Unklarheit
+- Gemeinsame Auswertung für Texteingabe und bewusst übernommene Sprachtranskripte
+- Synonyme, Normalisierung, Konfidenz und Mehrdeutigkeitserkennung
+- Sicheres Starten exakt katalogisierter Anwendungen über deren interne ID
+- Zusätzliche Bestätigung für sitzungsverändernde Spracheingaben
 - Austauschbare Vosk-Speech-to-Text-Grenze mit deutschem 16-kHz-Mono-Profil
 - Mikrofon- und lokale Modellwahl mit expliziter Verfügbarkeitsprüfung
 - Push-to-Talk per Button oder Leertaste mit sichtbaren Teil- und Endtranskripten

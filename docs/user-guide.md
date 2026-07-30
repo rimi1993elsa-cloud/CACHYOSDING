@@ -1,4 +1,4 @@
-# Benutzerhandbuch – Phase 8
+# Benutzerhandbuch – Phase 9
 
 Nach `./gradlew :app:run` erscheint die Grundoberfläche mit Topbar, Navigation, Inhaltsbereich und
 Statusbereich. Die Seiten „Übersicht“, „System“ und „Einstellungen“ enthalten reale lokale Inhalte.
@@ -49,7 +49,15 @@ zeigt die Seite den Aufnahmezustand und Teiltranskripte, nach dem Loslassen das 
 Transkript. Ohne Modell oder Mikrofon bleibt Push-to-Talk deaktiviert und nennt den Grund.
 
 Die Aufnahme wird nur während Push-to-Talk geöffnet. Audiodaten werden nicht in Dateien geschrieben.
-Ein Transkript löst in dieser Phase weder eine lokale Aktion noch eine Online-Anfrage aus.
+Ein Transkript löst nicht automatisch eine Aktion aus. Erst „Transkript lokal auswerten“ übergibt
+den sichtbaren Text an denselben lokalen Router wie das Eingabefeld am unteren Fensterrand.
+
+Das Eingabefeld erkennt feste deutsche Formulierungen wie „Öffne Firefox“, „Zeige Netzwerk“,
+„WLAN suchen“ oder „Testton abspielen“. Exakt katalogisierte Anwendungen können mit
+„Starte GIMP“ geöffnet werden. Sind mehrere Programmnamen möglich, wird nichts gestartet.
+„Bildschirm sperren“ verlangt vor der Ausführung eine Bestätigung. Fragen werden erkannt, aber erst
+der optionale Chat aus Phase 10 kann sie online beantworten. Freie Terminalbefehle werden nicht
+ausgeführt.
 
 Auf der Übersicht stehen vier Schnellaktionen bereit:
 
