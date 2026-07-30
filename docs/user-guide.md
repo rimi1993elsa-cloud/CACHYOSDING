@@ -1,4 +1,4 @@
-# Benutzerhandbuch – Version 1.0
+# Benutzerhandbuch – Version 1.1
 
 Beim ersten Start erklärt ein Einrichtungsassistent die lokale/online Trennung. Dort werden
 Online-KI, Diagnosefreigabe, lokaler Chatverlauf und eine monatliche Warnschwelle gewählt. Der
@@ -44,9 +44,11 @@ Die Suche filtert Name und Beschreibung. Favoriten stehen während der laufenden
 Nach Auswahl zeigt die App die Paketzuordnung, sofern `pacman` verfügbar ist. „Starten“ sendet nur
 die interne Katalog-ID; der sichtbare Name und der Suchtext werden niemals als Befehl interpretiert.
 
-Unter „Sprache“ wird ein vorhandenes Java-Sound-Mikrofon ausgewählt. Über „Modell auswählen“ wird
-ein entpacktes deutsches Vosk-Modell festgelegt; erwartet werden unter anderem `am/final.mdl`,
-`conf/` und `graph/`. Halte den Aufnahmebutton oder die Leertaste gedrückt und sprich. Währenddessen
+Unter „Sprache“ wird ein vorhandenes Java-Sound-Mikrofon ausgewählt. Das Paket
+`cachyos-control-center-stt-de` installiert das offizielle deutsche Small-Modell und die Anwendung
+erkennt es beim Start automatisch. „Anderes Vosk-Modell auswählen“ bleibt für eigene kompatible
+Modelle verfügbar; erwartet werden `am/final.mdl`, `conf/` und `graph/`. Halte den Aufnahmebutton
+oder die Leertaste gedrückt und sprich. Währenddessen
 zeigt die Seite den Aufnahmezustand und Teiltranskripte, nach dem Loslassen das bestätigte
 Transkript. Ohne Modell oder Mikrofon bleibt Push-to-Talk deaktiviert und nennt den Grund.
 
@@ -76,6 +78,11 @@ reine Entwicklungssitzung kann alternativ `OPENAI_API_KEY` gesetzt werden. Das M
 `CACHYOS_CC_OPENAI_MAX_OUTPUT_TOKENS` konfigurierbar. Voreingestellt sind `gpt-5.6-sol` und 2048
 Ausgabetokens. Prüfe vor Nutzung die aktuellen API-Preise. Der Chat besitzt keine lokale
 Ausführungsfunktion.
+
+Unter „Einstellungen“ stehen drei verständliche Modellprofile bereit: „Beste Qualität“
+(`gpt-5.6-sol`), „Ausgewogen“ (`gpt-5.6-terra`) und „Sparsam & schnell“ (`gpt-5.6-luna`). Die Wahl
+wird lokal gespeichert und bei jeder neuen Anfrage angewendet. Bestehende Chats besitzen weiterhin
+keinen Aktionskanal.
 
 Mit „Offizielle Quellen aktualisieren“ werden fünf fest eingebaute CachyOS-/ArchWiki-Seiten in den
 lokalen Cache geladen. Dieser Netzwerkzugriff geschieht nie automatisch beim Start. Ein Cacheeintrag

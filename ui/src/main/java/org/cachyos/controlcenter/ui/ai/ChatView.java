@@ -36,6 +36,7 @@ public final class ChatView extends VBox {
   private final Button send = new Button("Frage senden");
   private final Button cancel = new Button("Abbrechen");
   private final Label status = new Label();
+  private final Label modelStatus = new Label();
   private final TextArea sources = new TextArea();
   private StringBuilder currentAnswer;
 
@@ -80,14 +81,8 @@ public final class ChatView extends VBox {
     status.setText(provider.availabilityMessage());
     status.getStyleClass().add("muted-label");
 
-    Label model =
-        new Label(
-            "Modell: "
-                + configuration.model()
-                + " · Ausgabegrenze: "
-                + configuration.maximumOutputTokens()
-                + " Tokens");
-    model.getStyleClass().add("muted-label");
+    updateModelStatus();
+    modelStatus.getStyleClass().add("muted-label");
     Hyperlink pricing = new Hyperlink("API-Nutzung kann Kosten verursachen · Preise prüfen");
     pricing.setOnAction(ignored -> status.setText("Preise: https://openai.com/api/pricing/"));
     Button refreshKnowledge = new Button("Offizielle Quellen aktualisieren");
@@ -119,7 +114,7 @@ public final class ChatView extends VBox {
     setPadding(new Insets(2));
     getChildren()
         .addAll(
-            model,
+            modelStatus,
             pricing,
             status,
             conversation,
@@ -144,11 +139,32 @@ public final class ChatView extends VBox {
   }
 
   public void applySettings() {
+    updateModelStatus();
     send.setDisable(!onlineAllowed());
     status.setText(
         onlineAllowed()
             ? provider.availabilityMessage()
             : "Online-KI ist durch Anbieterwahl, Budget oder Datenschutz deaktiviert.");
+  }
+
+  private void updateModelStatus() {
+    modelStatus.setText(
+        "Modellprofil: "
+            + profileLabel(settings.current().aiModel())
+            + " ("
+            + settings.current().aiModel()
+            + ")"
+            + " · Ausgabegrenze: "
+            + configuration.maximumOutputTokens()
+            + " Tokens");
+  }
+
+  private static String profileLabel(String modelId) {
+    return switch (modelId) {
+      case "gpt-5.6-terra" -> "Ausgewogen";
+      case "gpt-5.6-luna" -> "Sparsam & schnell";
+      default -> "Beste Qualität";
+    };
   }
 
   private void send() {

@@ -24,6 +24,11 @@ class SettingsServiceTest {
     assertFalse(json.toLowerCase(java.util.Locale.ROOT).contains("token"));
     service.importSettings(exported);
     assertEquals(ApplicationSettings.defaults(), service.current());
+
+    Path legacy = temporary.resolve("legacy-v1.json");
+    Files.writeString(legacy, json.replaceAll("(?m)^\\s*\"aiModel\"\\s*:\\s*\"[^\"]+\",?\\R", ""));
+    service.importSettings(legacy);
+    assertEquals("gpt-5.6-sol", service.current().aiModel());
   }
 
   @Test
@@ -79,5 +84,45 @@ class SettingsServiceTest {
 
     service.deletePersonalData();
     assertTrue(service.firstRunRequired());
+  }
+
+  @Test
+  void persistsAValidatedUserSelectedAiModel() {
+    SettingsService service = new SettingsService(temporary.resolve("config"));
+    ApplicationSettings defaults = service.current();
+    service.update(
+        new ApplicationSettings(
+            defaults.enabledModules(),
+            defaults.quickButtons(),
+            defaults.microphoneEnabled(),
+            defaults.microphoneId(),
+            true,
+            "openai",
+            "gpt-5.6-terra",
+            defaults.monthlyBudgetCents(),
+            defaults.shareDocumentation(),
+            defaults.shareDiagnostics(),
+            defaults.shareHardware(),
+            defaults.shareSystemContext(),
+            defaults.storeChatHistory()));
+
+    assertEquals("gpt-5.6-terra", service.current().aiModel());
+    assertThrows(
+        IllegalArgumentException.class,
+        () ->
+            new ApplicationSettings(
+                defaults.enabledModules(),
+                defaults.quickButtons(),
+                false,
+                "",
+                true,
+                "openai",
+                "untrusted-model",
+                500,
+                false,
+                false,
+                false,
+                false,
+                false));
   }
 }

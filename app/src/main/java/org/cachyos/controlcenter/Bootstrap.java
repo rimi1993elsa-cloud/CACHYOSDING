@@ -144,16 +144,21 @@ public final class Bootstrap {
     SpeechModelManager speechModelManager = new SpeechModelManager(xdgPaths.dataDirectory());
     VoskSpeechToTextEngine speechToTextEngine =
         lifecycle.manage(new VoskSpeechToTextEngine(microphoneCatalog));
+    SettingsService settingsService = new SettingsService(xdgPaths.configDirectory());
     AiConfiguration aiConfiguration = AiConfiguration.fromEnvironment();
     AiProvider aiProvider =
-        lifecycle.manage(new OpenAiResponsesProvider(aiConfiguration, new DesktopSecretStore()));
+        lifecycle.manage(
+            new OpenAiResponsesProvider(
+                () ->
+                    new AiConfiguration(
+                        settingsService.current().aiModel(), aiConfiguration.maximumOutputTokens()),
+                new DesktopSecretStore()));
     KnowledgeService knowledgeService =
         lifecycle.manage(
             new KnowledgeService(
                 OfficialSourceRegistry.sources(),
                 new KnowledgeCache(xdgPaths.cacheDirectory()),
                 new HttpKnowledgeFetcher()));
-    SettingsService settingsService = new SettingsService(xdgPaths.configDirectory());
     InMemoryAuditLog auditLog = new InMemoryAuditLog();
     ModuleRegistry moduleRegistry = new ModuleRegistry();
     ActionRegistry actionRegistry = new ActionRegistry();

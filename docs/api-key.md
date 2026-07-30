@@ -31,3 +31,12 @@ secret-tool clear application cachyos-control-center key openai-api-key
 Ist der Schlüssel nicht vorhanden, zeigt der Chat einen Offlinezustand. Alle lokalen Manager
 arbeiten weiter. Kosten, Kontingente und Sperren werden vom API-Konto verwaltet; die lokale
 Budgetangabe ist nur eine Warnschwelle.
+
+## Modellprofil wählen
+
+- **Beste Qualität – GPT-5.6 Sol:** komplexe technische Analysen und schwierige Fragen.
+- **Ausgewogen – GPT-5.6 Terra:** guter Alltagspunkt zwischen Qualität und Kosten.
+- **Sparsam & schnell – GPT-5.6 Luna:** kurze oder häufige Anfragen mit niedrigerem Preis.
+
+Die Anwendung akzeptiert nur diese drei fest eingebauten Modell-IDs. Freie Modellnamen werden weder
+importiert noch an die API weitergereicht.

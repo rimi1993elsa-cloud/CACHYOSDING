@@ -540,6 +540,10 @@ class ApplicationShellTest extends ApplicationTest {
                         .orElseThrow()));
     assertEquals("Einstellungen", lookup(".page-title").queryAs(Label.class).getText());
     lookup("#privacy-settings-view").query();
+    javafx.scene.control.ComboBox<?> models =
+        lookup("#ai-model").queryAs(javafx.scene.control.ComboBox.class);
+    assertEquals(3, models.getItems().size());
+    assertEquals("Beste Qualität", models.getItems().getFirst().toString());
   }
 
   @Test

@@ -21,6 +21,8 @@ import org.cachyos.controlcenter.persistence.SettingsService;
 import org.cachyos.controlcenter.ui.notifications.NotificationCenter;
 
 public final class SettingsView extends VBox {
+  private static final String OPENAI_LABEL = "OpenAI (online)";
+  private static final String OFFLINE_LABEL = "Nur lokal (keine Online-KI)";
   private final SettingsService service;
   private final InMemoryAuditLog auditLog;
   private final NotificationCenter notifications;
@@ -31,6 +33,8 @@ public final class SettingsView extends VBox {
   private final CheckBox microphone = new CheckBox("Mikrofon/Push-to-Talk erlauben");
   private final CheckBox onlineAi = new CheckBox("Online-KI erlauben");
   private final ComboBox<String> provider = new ComboBox<>();
+  private final ComboBox<AiModelChoice> model = new ComboBox<>();
+  private final Label modelDescription = new Label();
   private final TextField budget = new TextField();
   private final CheckBox documentation = new CheckBox("Dokumentationsauszüge freigeben");
   private final CheckBox diagnostics = new CheckBox("Diagnoseübergabe an Chat erlauben");
@@ -51,9 +55,31 @@ public final class SettingsView extends VBox {
     this.applySettings = applySettings;
     this.clearLiveChat = clearLiveChat;
     setId("privacy-settings-view");
+    provider.setId("ai-provider");
+    model.setId("ai-model");
     setSpacing(10);
     setPadding(new Insets(4));
-    provider.getItems().setAll("openai", "offline");
+    provider.getItems().setAll(OPENAI_LABEL, OFFLINE_LABEL);
+    model
+        .getItems()
+        .setAll(
+            new AiModelChoice(
+                "gpt-5.6-sol",
+                "Beste Qualität",
+                "Für schwierige Analysen und komplexe technische Fragen."),
+            new AiModelChoice(
+                "gpt-5.6-terra",
+                "Ausgewogen",
+                "Gute Qualität bei geringerem Preis – empfohlen für den Alltag."),
+            new AiModelChoice(
+                "gpt-5.6-luna",
+                "Sparsam & schnell",
+                "Für kurze, häufige Fragen mit möglichst niedrigen Kosten."));
+    provider.setOnAction(ignored -> refreshAiControls());
+    onlineAi.setOnAction(ignored -> refreshAiControls());
+    model.setOnAction(ignored -> refreshAiControls());
+    modelDescription.setWrapText(true);
+    modelDescription.getStyleClass().add("muted-label");
     FlowPane moduleChoices = choices(modules, moduleKeys());
     FlowPane quickChoices =
         choices(quickButtons, List.of("firefox", "file-manager", "terminal", "lock-screen"));
@@ -95,6 +121,8 @@ public final class SettingsView extends VBox {
             microphone,
             onlineAi,
             new HBox(8, new Label("KI-Anbieter"), provider),
+            new HBox(8, new Label("Modellprofil"), model),
+            modelDescription,
             new HBox(8, new Label("Monatsbudget in Cent (0 deaktiviert Online-KI)"), budget),
             documentation,
             diagnostics,
@@ -117,13 +145,18 @@ public final class SettingsView extends VBox {
     quickButtons.forEach((key, box) -> box.setSelected(value.quickButtons().contains(key)));
     microphone.setSelected(value.microphoneEnabled());
     onlineAi.setSelected(value.onlineAiEnabled());
-    provider.setValue(value.aiProvider());
+    provider.setValue("openai".equals(value.aiProvider()) ? OPENAI_LABEL : OFFLINE_LABEL);
+    model.getItems().stream()
+        .filter(choice -> choice.modelId().equals(value.aiModel()))
+        .findFirst()
+        .ifPresent(model::setValue);
     budget.setText(Integer.toString(value.monthlyBudgetCents()));
     documentation.setSelected(value.shareDocumentation());
     diagnostics.setSelected(value.shareDiagnostics());
     hardware.setSelected(value.shareHardware());
     system.setSelected(value.shareSystemContext());
     history.setSelected(value.storeChatHistory());
+    refreshAiControls();
     refreshStatus();
   }
 
@@ -138,7 +171,8 @@ public final class SettingsView extends VBox {
               microphone.isSelected(),
               old.microphoneId(),
               onlineAi.isSelected(),
-              provider.getValue(),
+              OPENAI_LABEL.equals(provider.getValue()) ? "openai" : "offline",
+              model.getValue().modelId(),
               budgetCents,
               documentation.isSelected(),
               diagnostics.isSelected(),
@@ -192,6 +226,16 @@ public final class SettingsView extends VBox {
             + " Einträge");
   }
 
+  private void refreshAiControls() {
+    boolean openAi = onlineAi.isSelected() && OPENAI_LABEL.equals(provider.getValue());
+    model.setDisable(!openAi);
+    AiModelChoice choice = model.getValue();
+    modelDescription.setText(
+        choice == null
+            ? "Wähle ein verständliches Modellprofil."
+            : choice.description() + " Technische ID: " + choice.modelId());
+  }
+
   private static FlowPane choices(Map<String, CheckBox> target, List<String> keys) {
     FlowPane pane = new FlowPane(8, 8);
     for (String key : keys) {
@@ -228,5 +272,12 @@ public final class SettingsView extends VBox {
         "diagnostics",
         "voice",
         "ai");
+  }
+
+  private record AiModelChoice(String modelId, String label, String description) {
+    @Override
+    public String toString() {
+      return label;
+    }
   }
 }

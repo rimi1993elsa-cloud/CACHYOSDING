@@ -5,6 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -35,6 +36,19 @@ final class SetupWizard {
     heading.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
     CheckBox onlineAi = new CheckBox("Online-KI aktivieren");
     onlineAi.setSelected(current.onlineAiEnabled());
+    ComboBox<ModelChoice> aiModel = new ComboBox<>();
+    aiModel
+        .getItems()
+        .setAll(
+            new ModelChoice("gpt-5.6-sol", "Beste Qualität"),
+            new ModelChoice("gpt-5.6-terra", "Ausgewogen"),
+            new ModelChoice("gpt-5.6-luna", "Sparsam & schnell"));
+    aiModel.getItems().stream()
+        .filter(choice -> choice.modelId().equals(current.aiModel()))
+        .findFirst()
+        .ifPresent(aiModel::setValue);
+    aiModel.setDisable(!onlineAi.isSelected());
+    onlineAi.setOnAction(ignored -> aiModel.setDisable(!onlineAi.isSelected()));
     CheckBox diagnostics = new CheckBox("Diagnosedaten nach Bestätigung mit der KI teilen");
     diagnostics.setSelected(current.shareDiagnostics());
     CheckBox history = new CheckBox("Lokalen Chatverlauf speichern");
@@ -69,6 +83,7 @@ final class SetupWizard {
             heading,
             explanation,
             onlineAi,
+            new HBox(8, new Label("Modellprofil"), aiModel),
             diagnostics,
             history,
             budgetLabel,
@@ -89,6 +104,7 @@ final class SetupWizard {
                   current.microphoneId(),
                   onlineAi.isSelected(),
                   onlineAi.isSelected() ? "openai" : "offline",
+                  aiModel.getValue().modelId(),
                   budget.getValue() * 100,
                   current.shareDocumentation(),
                   diagnostics.isSelected(),
@@ -102,5 +118,12 @@ final class SetupWizard {
     wizard.setMinWidth(500);
     wizard.setMinHeight(430);
     wizard.showAndWait();
+  }
+
+  private record ModelChoice(String modelId, String label) {
+    @Override
+    public String toString() {
+      return label;
+    }
   }
 }

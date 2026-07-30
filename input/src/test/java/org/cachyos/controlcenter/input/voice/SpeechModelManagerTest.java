@@ -28,9 +28,32 @@ class SpeechModelManagerTest {
   }
 
   @Test
+  void discoversPackagedSystemModelBeforeUserFallback() throws IOException {
+    Path packaged = temporary.resolve(SpeechModelManager.PACKAGED_MODEL_NAME);
+    Files.createDirectories(packaged.resolve("am"));
+    Files.createDirectories(packaged.resolve("conf"));
+    Files.createDirectories(packaged.resolve("graph"));
+    Files.createFile(packaged.resolve("am/final.mdl"));
+
+    SpeechModelManager manager =
+        new SpeechModelManager(temporary.resolve("data"), java.util.List.of(packaged));
+
+    assertTrue(manager.status().available());
+    org.junit.jupiter.api.Assertions.assertEquals(packaged, manager.modelDirectory());
+  }
+
+  @Test
   void rejectsMissingSelectedDirectory() {
     SpeechModelManager manager = new SpeechModelManager(temporary);
     org.junit.jupiter.api.Assertions.assertThrows(
         IllegalArgumentException.class, () -> manager.select(temporary.resolve("missing")));
+  }
+
+  @Test
+  void rejectsIncompleteSelectedDirectory() throws IOException {
+    Path incomplete = Files.createDirectory(temporary.resolve("incomplete"));
+    SpeechModelManager manager = new SpeechModelManager(temporary);
+    org.junit.jupiter.api.Assertions.assertThrows(
+        IllegalArgumentException.class, () -> manager.select(incomplete));
   }
 }

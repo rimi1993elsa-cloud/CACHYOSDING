@@ -6,7 +6,7 @@ pkgname=(
   cachyos-control-center-stt-de
   cachyos-control-center-doc-index
 )
-pkgver=1.0.0
+pkgver=1.1.0
 pkgrel=1
 pkgdesc='Sichere deutschsprachige Verwaltungszentrale für CachyOS'
 arch=('x86_64')
@@ -14,6 +14,8 @@ url='https://github.com/CachyOS'
 license=('GPL-3.0-or-later')
 makedepends=('jdk21-openjdk')
 options=('!strip')
+source=('vosk-model-small-de-0.15.zip::https://alphacephei.com/vosk/models/vosk-model-small-de-0.15.zip')
+sha256sums=('b7e53c90b1f0a38456f4cd62b366ecd58803cd97cd42b06438e2c131713d5e43')
 
 # This repository PKGBUILD intentionally builds the checked-out tree one level above packaging/.
 # Release automation must replace this local-source layout with a checksummed source archive.
@@ -75,10 +77,16 @@ package_cachyos-control-center-helper() {
 }
 
 package_cachyos-control-center-stt-de() {
-  pkgdesc='Integrationsverzeichnis und Anleitung für das deutsche Vosk-STT-Modell'
+  pkgdesc='Offizielles kompaktes deutsches Vosk-STT-Modell'
   depends=('cachyos-control-center')
+  license=('Apache-2.0')
+  install -d "$pkgdir/usr/share/vosk/models"
+  cp -a "$srcdir/vosk-model-small-de-0.15" \
+    "$pkgdir/usr/share/vosk/models/vosk-model-small-de-0.15"
   install -Dm644 "$startdir/stt/README.de.md" \
     "$pkgdir/usr/share/cachyos-control-center/models/de/README.md"
+  install -Dm644 "$srcdir/vosk-model-small-de-0.15/COPYING" \
+    "$pkgdir/usr/share/licenses/cachyos-control-center-stt-de/COPYING"
 }
 
 package_cachyos-control-center-doc-index() {
@@ -96,4 +104,6 @@ package_cachyos-control-center-doc-index() {
     "$pkgdir/usr/share/doc/cachyos-control-center/known-limitations.md"
   install -Dm644 "$startdir/../docs/release-notes-1.0.0.md" \
     "$pkgdir/usr/share/doc/cachyos-control-center/release-notes-1.0.0.md"
+  install -Dm644 "$startdir/../docs/release-notes-1.1.0.md" \
+    "$pkgdir/usr/share/doc/cachyos-control-center/release-notes-1.1.0.md"
 }

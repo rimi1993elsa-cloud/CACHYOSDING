@@ -15,6 +15,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import org.cachyos.controlcenter.ai.api.AiProvider;
 import org.cachyos.controlcenter.ai.api.AiRequest;
 import org.cachyos.controlcenter.ai.api.AiStreamEvent;
@@ -24,12 +25,16 @@ import org.cachyos.controlcenter.ai.provider.SecretStore;
 
 /** Official-SDK Responses API adapter with no dependency on local execution components. */
 public final class OpenAiResponsesProvider implements AiProvider {
-  private final AiConfiguration configuration;
+  private final Supplier<AiConfiguration> configuration;
   private final Optional<OpenAIClient> client;
   private final ExecutorService executor;
   private final AtomicReference<Future<?>> active = new AtomicReference<>();
 
   public OpenAiResponsesProvider(AiConfiguration configuration, SecretStore secrets) {
+    this(() -> Objects.requireNonNull(configuration, "configuration"), secrets);
+  }
+
+  public OpenAiResponsesProvider(Supplier<AiConfiguration> configuration, SecretStore secrets) {
     this.configuration = Objects.requireNonNull(configuration, "configuration");
     Objects.requireNonNull(secrets, "secrets");
     char[] secret = secrets.readSecret("openai-api-key").orElse(null);
@@ -79,12 +84,13 @@ public final class OpenAiResponsesProvider implements AiProvider {
         executor.submit(
             () -> {
               try {
+                AiConfiguration selected = configuration.get();
                 ResponseCreateParams params =
                     ResponseCreateParams.builder()
-                        .model(configuration.model())
+                        .model(selected.model())
                         .instructions(SystemPromptBuilder.build(request))
                         .input(buildInput(request))
-                        .maxOutputTokens(configuration.maximumOutputTokens())
+                        .maxOutputTokens(selected.maximumOutputTokens())
                         .store(false)
                         .build();
                 try (StreamResponse<ResponseStreamEvent> response =

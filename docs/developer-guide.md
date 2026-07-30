@@ -35,7 +35,8 @@ Argumentlisten, begrenzte Ausgabe, harte Zeitlimits und Abbruchbereinigung. Frei
 
 ## Paket und Release
 
-`packaging/PKGBUILD` erzeugt getrennte App-, Helper-, STT- und Dokumentindexpakete. D-Bus-Ressourcen
+`packaging/PKGBUILD` erzeugt getrennte App-, Helper-, STT- und Dokumentindexpakete. Das STT-Paket
+verwendet eine feste offizielle Modell-URL und SHA-256-Prüfsumme. D-Bus-Ressourcen
 im Helper und unter `packaging/dbus` müssen bytegleich bleiben. Für ein Release auf einem sauberen
 CachyOS-System `makepkg --syncdeps --cleanbuild`, Installation, KDE-Menü, D-Bus-Aktivierung,
 Polkit-Dialoge, Update und Entfernung prüfen. Benutzerdaten dürfen bei Entfernung nicht automatisch

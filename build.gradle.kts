@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "org.cachyos.controlcenter"
-version = "1.0.0"
+version = "1.1.0"
 
 subprojects {
     apply(plugin = "java-library")
@@ -104,6 +104,10 @@ val verifyPackaging = tasks.register("verifyPackaging") {
         check("rm -r" !in installScript && "XDG_CONFIG_HOME" in installScript)
         val packageBuild = required[0].readText()
         check("chmod 777" !in packageBuild && "package_cachyos-control-center-helper" in packageBuild)
+        check(
+            "vosk-model-small-de-0.15.zip" in packageBuild &&
+                "b7e53c90b1f0a38456f4cd62b366ecd58803cd97cd42b06438e2c131713d5e43" in packageBuild
+        ) { "Packaged Vosk model source or checksum is missing" }
         check(
             file("packaging/dbus/org.cachyos.ControlCenter.Helper1.service").readText() ==
                 file("helper/privileged-helper/src/main/resources/dbus-1/system-services/org.cachyos.ControlCenter.Helper1.service").readText()

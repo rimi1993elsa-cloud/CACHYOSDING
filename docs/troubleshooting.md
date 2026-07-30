@@ -20,9 +20,10 @@ Werkzeug: NetworkManager/`nmcli`, PipeWire-Pulse/`pactl`, `pciutils`, `usbutils`
 
 ## Sprache funktioniert nicht
 
-Installiere das optionale STT-Paket, entpacke ein kompatibles deutsches Vosk-Modell und wähle dessen
-Wurzelverzeichnis aus. Es müssen unter anderem `am/final.mdl`, `conf/` und `graph/` existieren.
-Prüfe außerdem die Mikrofonfreigabe in KDE.
+Installiere das optionale Paket `cachyos-control-center-stt-de` und starte die Anwendung neu. Sie
+erkennt das enthaltene Modell automatisch. Nur für ein eigenes Modell muss dessen Wurzelverzeichnis
+gewählt werden; dort müssen `am/final.mdl`, `conf/` und `graph/` existieren. Prüfe außerdem die
+Mikrofonfreigabe in KDE.
 
 ## KI bleibt offline
 

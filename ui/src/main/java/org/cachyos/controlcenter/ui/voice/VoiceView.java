@@ -54,7 +54,7 @@ public final class VoiceView extends VBox {
     partial.setWrapText(true);
     partial.getStyleClass().add("muted-label");
     recordingStatus.getStyleClass().add("muted-label");
-    Button selectModel = new Button("Vosk-Modellordner auswählen");
+    Button selectModel = new Button("Anderes Vosk-Modell auswählen");
     selectModel.setOnAction(ignored -> chooseModel());
     pushToTalk.setId("push-to-talk");
     pushToTalk.setOnMousePressed(ignored -> start());
@@ -99,7 +99,7 @@ public final class VoiceView extends VBox {
 
   private void chooseModel() {
     DirectoryChooser chooser = new DirectoryChooser();
-    chooser.setTitle("Entpacktes deutsches Vosk-Modell auswählen");
+    chooser.setTitle("Alternatives entpacktes deutsches Vosk-Modell auswählen");
     File selected = chooser.showDialog(getScene().getWindow());
     if (selected != null) {
       try {

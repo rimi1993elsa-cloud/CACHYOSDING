@@ -5,6 +5,15 @@ Alle nennenswerten Änderungen werden in dieser Datei dokumentiert. Das Format o
 
 ## Unreleased
 
+## [1.1.0] - 2026-07-31
+
+### Added
+
+- Echtes offizielles deutsches Vosk-Small-Modell als prüfsummenfixiertes optionales Paket
+- Automatische Erkennung des installierten Systemmodells ohne manuelle Ordnerauswahl
+- Verständliche OpenAI-Profile für beste Qualität, ausgewogene Nutzung und geringe Kosten
+- Persistente, strikt allowlist-validierte Modellauswahl pro Responses-API-Anfrage
+
 ## [1.0.0] - 2026-07-30
 
 ### Added

@@ -5,7 +5,8 @@ phasenweise nach dem verbindlichen Masterauftrag entwickelt.
 
 ## Aktueller Stand
 
-Version 1.0 umfasst die lokale Systemverwaltung, optionale Sprach- und Online-KI, den getrennten
+Version 1.1 umfasst die lokale Systemverwaltung, ein direkt paketiertes deutsches Vosk-Modell,
+eine benutzerfreundliche Auswahl aktueller OpenAI-Modellprofile, den getrennten
 Polkit-Helper, private XDG-Einstellungen, den Ersteinrichtungsassistenten und die CachyOS-
 Paketintegration. Online-Funktionen sind optional; administrative Aktionen verwenden ausschließlich
 typisierte und erneut validierte D-Bus-Aufrufe.
@@ -66,6 +67,7 @@ Einstiegspunkte:
 - [Fehlerbehebung](docs/troubleshooting.md)
 - [Entwicklerhandbuch](docs/developer-guide.md)
 - [Release Notes 1.0](docs/release-notes-1.0.0.md)
+- [Release Notes 1.1](docs/release-notes-1.1.0.md)
 - [Bekannte Einschränkungen](docs/known-limitations.md)
 
 ## Lizenz

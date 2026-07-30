@@ -1,5 +1,9 @@
 # Deutsches Vosk-Modell
 
-Aus Lizenz- und Größen-Gründen enthält dieses Paket kein Modellarchiv. Installiere ein offizielles
-deutsches Vosk-Modell, entpacke es ohne Symlinks in ein benutzereigenes Verzeichnis und wähle den
-Ordner in der Sprachseite aus. Die Anwendung prüft die erwartete Modellstruktur vor der Nutzung.
+Dieses Paket enthält das offizielle Apache-2.0-Modell `vosk-model-small-de-0.15` von Alphacephei.
+Es wird unter `/usr/share/vosk/models/vosk-model-small-de-0.15` installiert und vom CachyOS Control
+Center beim Start automatisch erkannt. Eine manuelle Ordnerauswahl ist nur noch für alternative
+Modelle nötig.
+
+Das Modell arbeitet vollständig offline. Mikrofon-Audio wird nur während Push-to-Talk verarbeitet
+und nicht als Datei gespeichert.
