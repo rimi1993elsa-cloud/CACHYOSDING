@@ -54,6 +54,8 @@ package_cachyos-control-center() {
     "$pkgdir/usr/share/icons/hicolor/scalable/apps/org.cachyos.ControlCenter.svg"
   install -Dm644 "$startdir/../LICENSE" \
     "$pkgdir/usr/share/licenses/cachyos-control-center/LICENSE"
+  install -Dm644 "$startdir/../docs/api-key.md" \
+    "$pkgdir/usr/share/doc/cachyos-control-center/api-key.md"
 }
 
 package_cachyos-control-center-helper() {
@@ -86,4 +88,12 @@ package_cachyos-control-center-doc-index() {
     "$pkgdir/usr/share/cachyos-control-center/doc-index/sources.json"
   install -Dm644 "$startdir/../docs/user-guide.md" \
     "$pkgdir/usr/share/doc/cachyos-control-center/user-guide.md"
+  install -Dm644 "$startdir/../docs/privacy.md" \
+    "$pkgdir/usr/share/doc/cachyos-control-center/privacy.md"
+  install -Dm644 "$startdir/../docs/troubleshooting.md" \
+    "$pkgdir/usr/share/doc/cachyos-control-center/troubleshooting.md"
+  install -Dm644 "$startdir/../docs/known-limitations.md" \
+    "$pkgdir/usr/share/doc/cachyos-control-center/known-limitations.md"
+  install -Dm644 "$startdir/../docs/release-notes-1.0.0.md" \
+    "$pkgdir/usr/share/doc/cachyos-control-center/release-notes-1.0.0.md"
 }

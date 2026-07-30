@@ -27,6 +27,7 @@ public final class SettingsService {
   private final Path configDirectory;
   private final Path settingsFile;
   private final Path historyFile;
+  private final Path firstRunMarker;
   private final ObjectMapper mapper =
       JsonMapper.builder()
           .addModule(new JavaTimeModule())
@@ -44,6 +45,7 @@ public final class SettingsService {
     }
     settingsFile = this.configDirectory.resolve("settings.json");
     historyFile = this.configDirectory.resolve("chat-history.json");
+    firstRunMarker = this.configDirectory.resolve("setup-v1.complete");
     settings = new AtomicReference<>(loadSettings());
     history = new CopyOnWriteArrayList<>(loadHistory());
   }
@@ -83,7 +85,16 @@ public final class SettingsService {
   public synchronized void deletePersonalData() {
     clearHistory();
     deleteRegularFile(settingsFile);
+    deleteRegularFile(firstRunMarker);
     settings.set(ApplicationSettings.defaults());
+  }
+
+  public boolean firstRunRequired() {
+    return !safeExistingFile(firstRunMarker);
+  }
+
+  public synchronized void completeFirstRun() {
+    write(firstRunMarker, java.util.Map.of("schema", 1, "completedAt", Instant.now().toString()));
   }
 
   public void exportSettings(Path destination) {

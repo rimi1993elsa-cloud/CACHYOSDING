@@ -5,8 +5,13 @@ Alle nennenswerten Änderungen werden in dieser Datei dokumentiert. Das Format o
 
 ## Unreleased
 
+## [1.0.0] - 2026-07-30
+
 ### Added
 
+- Datenschutzorientierter Ersteinrichtungsassistent ohne Erfassung von Zugangsdaten
+- Vollständiges Benutzer-, Datenschutz-, API-Key-, Troubleshooting- und Entwicklerhandbuch
+- Release-Notes, bekannte Einschränkungen, Abnahmematrix und Referenz-Screenshots
 - Arch/CachyOS-PKGBUILD mit vier getrennten Paketen für App, Helper, STT und Dokumentindex
 - KDE-Desktopdatei, AppStream-Metadaten und skalierbares SVG-Icon
 - Installierbare D-Bus-Aktivierung und Polkit-Policy mit Root-Busnamenschutz

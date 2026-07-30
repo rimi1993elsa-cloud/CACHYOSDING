@@ -5,10 +5,10 @@ phasenweise nach dem verbindlichen Masterauftrag entwickelt.
 
 ## Aktueller Stand
 
-Phase 24 liefert einen Arch/CachyOS-PKGBUILD mit vier Split-Packages, KDE-Menüeintrag,
-AppStream-Metadaten, skalierbarem Icon sowie synchronisierten D-Bus- und Polkit-Regeln. Entfernung
-behält Nutzerdaten ausdrücklich bei. Ein Gradle-Gate prüft Assets, Pfade und sicherheitsrelevante
-Paketregeln bei jedem Qualitätslauf.
+Version 1.0 umfasst die lokale Systemverwaltung, optionale Sprach- und Online-KI, den getrennten
+Polkit-Helper, private XDG-Einstellungen, den Ersteinrichtungsassistenten und die CachyOS-
+Paketintegration. Online-Funktionen sind optional; administrative Aktionen verwenden ausschließlich
+typisierte und erneut validierte D-Bus-Aufrufe.
 
 ## Voraussetzungen
 
@@ -58,7 +58,15 @@ es gibt keine freie Shellausführung und keine erhöhten Rechte.
 | `persistence` | Atomare XDG-Einstellungen und begrenzter opt-in Chatverlauf |
 | `modules/*` | Fachmodule der nachfolgenden Phasen |
 
-Architektur, Sicherheitsgrenzen und Entwicklungsablauf stehen unter [`docs/`](docs/).
+Einstiegspunkte:
+
+- [Benutzerhandbuch](docs/user-guide.md)
+- [API-Key-Hilfe](docs/api-key.md)
+- [Datenschutz](docs/privacy.md)
+- [Fehlerbehebung](docs/troubleshooting.md)
+- [Entwicklerhandbuch](docs/developer-guide.md)
+- [Release Notes 1.0](docs/release-notes-1.0.0.md)
+- [Bekannte Einschränkungen](docs/known-limitations.md)
 
 ## Lizenz
 

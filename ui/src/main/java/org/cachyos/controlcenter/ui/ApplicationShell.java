@@ -236,7 +236,7 @@ final class ApplicationShell {
 
     Label title = new Label("CachyOS Control Center");
     title.getStyleClass().add("app-title");
-    Label phase = new Label("Entwicklungsstand \u00b7 Phase 24");
+    Label phase = new Label("Version 1.0");
     phase.getStyleClass().add("phase-badge");
 
     Label statusDot = new Label("●");

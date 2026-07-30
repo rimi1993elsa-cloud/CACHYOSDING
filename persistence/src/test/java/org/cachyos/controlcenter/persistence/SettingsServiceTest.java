@@ -65,4 +65,19 @@ class SettingsServiceTest {
     }
     assertThrows(IllegalArgumentException.class, () -> new SettingsService(link));
   }
+
+  @Test
+  void recordsFirstRunWithoutMixingSetupStateIntoExportedSettings() throws Exception {
+    SettingsService service = new SettingsService(temporary.resolve("config"));
+    assertTrue(service.firstRunRequired());
+
+    service.completeFirstRun();
+    assertFalse(service.firstRunRequired());
+    Path exported = temporary.resolve("export.json");
+    service.exportSettings(exported);
+    assertFalse(Files.readString(exported).contains("completedAt"));
+
+    service.deletePersonalData();
+    assertTrue(service.firstRunRequired());
+  }
 }

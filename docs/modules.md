@@ -22,10 +22,9 @@
 | Boot/Kernel | lesende Bootanalyse und fester CachyOS-Manager-Start | Phase 20 |
 | Einstellungen/Persistenz | Module, Freigaben, Verlauf, Audit und sicherer Transfer | Phase 21 |
 | Packaging | PKGBUILD, Desktop/AppStream, D-Bus, Polkit und Split-Packages | Phase 24 |
-| Packaging | nur Verzeichnisstruktur | Phase 24 |
+| Release | Ersteinrichtung, Handbücher, Screenshots und Release-Abnahme | Phase 25 |
 
-Eine vorhandene Projektstruktur bedeutet ausdrücklich nicht, dass das jeweilige Fachmodul bereits
-implementiert oder in der Oberfläche freigeschaltet ist.
+Alle in dieser Tabelle als aktiv beschriebenen Fachmodule sind in Version 1.0 verdrahtet.
 # Paketmanager
 
 `modules/packages` koordiniert lesende Snapshots, Suche, Details, Fortschritt und bestätigte

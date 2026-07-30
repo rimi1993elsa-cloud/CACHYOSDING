@@ -64,6 +64,7 @@ public final class ControlCenterApplication extends Application {
               }
             });
     context.lifecycleManager().applicationStarted();
+    SetupWizard.showIfRequired(stage, context.settingsService());
   }
 
   @Override
