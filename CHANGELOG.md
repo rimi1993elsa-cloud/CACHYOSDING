@@ -7,6 +7,13 @@ Alle nennenswerten Änderungen werden in dieser Datei dokumentiert. Das Format o
 
 ### Added
 
+- Aktualisiertes Threat Model für alle implementierten Vertrauensgrenzen
+- Zusätzliche deutsche, englische und strukturierte Prompt-Injection-Marker
+- Symlink-Ablehnung bereits am XDG-Konfigurationswurzelverzeichnis
+- Helper-Blockade für PID 1/2 und konservative Sperre zentraler Linux-Prozesse
+- Logredaktionstest für manipulierte D-Bus-Absender und parameterfreie Helper-Audits
+- Dokumentierter Sicherheitsreview ohne offenen kritischen Befund
+
 - Parameterfreie Bootstrap-Zeitmessung für reproduzierbare Startanalyse
 - Auf 100 Proben begrenzte Laufzeit-Telemetrie fester Systemwerkzeuge
 - Zusammengeführte Dashboard-Aktualisierung ohne parallele Pollingläufe

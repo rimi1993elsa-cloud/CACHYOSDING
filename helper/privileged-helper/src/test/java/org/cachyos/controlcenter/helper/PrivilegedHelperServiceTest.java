@@ -4,9 +4,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.ByteArrayOutputStream;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+import java.util.logging.StreamHandler;
 import org.cachyos.controlcenter.helper.api.HelperErrorCode;
 import org.junit.jupiter.api.Test;
 
@@ -35,9 +39,29 @@ class PrivilegedHelperServiceTest {
       assertEquals(
           HelperErrorCode.INVALID_ARGUMENT, service.createSnapshot(SENDER, "$(id)").code());
       assertEquals(HelperErrorCode.INVALID_ARGUMENT, service.signalProcess(SENDER, 2, 1).code());
+      assertEquals(HelperErrorCode.INVALID_ARGUMENT, service.signalProcess(SENDER, 2, 15).code());
     }
     assertFalse(executor.called);
-    assertEquals(5, audit.size());
+    assertEquals(6, audit.size());
+  }
+
+  @Test
+  void structuredAuditRedactsInvalidSenderAndNeverLogsParameters() {
+    ByteArrayOutputStream output = new ByteArrayOutputStream();
+    StreamHandler handler = new StreamHandler(output, new SimpleFormatter());
+    Logger logger = Logger.getLogger(StructuredAuditSink.class.getName());
+    logger.addHandler(handler);
+    try {
+      new StructuredAuditSink()
+          .record("bad\nsecret-parameter", HelperAction.PACKAGE_MANAGE, "INVALID_ARGUMENT");
+      handler.flush();
+      String log = output.toString(java.nio.charset.StandardCharsets.UTF_8);
+      assertFalse(log.contains("secret-parameter"));
+      assertTrue(log.contains("sender=invalid"));
+    } finally {
+      logger.removeHandler(handler);
+      handler.close();
+    }
   }
 
   @Test

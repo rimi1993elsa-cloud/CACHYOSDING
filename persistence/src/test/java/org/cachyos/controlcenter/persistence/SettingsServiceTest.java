@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -51,5 +52,17 @@ class SettingsServiceTest {
     Path malformed = temporary.resolve("unknown.json");
     Files.writeString(malformed, "{\"unknown\":\"field\"}");
     assertThrows(IllegalArgumentException.class, () -> service.importSettings(malformed));
+  }
+
+  @Test
+  void rejectsSymlinkAsConfigurationRoot() throws Exception {
+    Path real = Files.createDirectory(temporary.resolve("real"));
+    Path link = temporary.resolve("linked-config");
+    try {
+      Files.createSymbolicLink(link, real);
+    } catch (UnsupportedOperationException | java.io.IOException exception) {
+      Assumptions.assumeTrue(false, "Symlinks sind auf diesem Testsystem nicht verfügbar");
+    }
+    assertThrows(IllegalArgumentException.class, () -> new SettingsService(link));
   }
 }

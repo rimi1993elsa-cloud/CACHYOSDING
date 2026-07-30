@@ -37,6 +37,11 @@ public final class SettingsService {
 
   public SettingsService(Path configDirectory) {
     this.configDirectory = configDirectory.toAbsolutePath().normalize();
+    if (Files.exists(this.configDirectory, LinkOption.NOFOLLOW_LINKS)
+        && (!Files.isDirectory(this.configDirectory, LinkOption.NOFOLLOW_LINKS)
+            || Files.isSymbolicLink(this.configDirectory))) {
+      throw new IllegalArgumentException("Unsicheres XDG-Konfigurationsverzeichnis");
+    }
     settingsFile = this.configDirectory.resolve("settings.json");
     historyFile = this.configDirectory.resolve("chat-history.json");
     settings = new AtomicReference<>(loadSettings());

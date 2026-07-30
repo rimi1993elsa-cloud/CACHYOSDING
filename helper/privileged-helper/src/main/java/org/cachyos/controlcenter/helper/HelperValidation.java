@@ -35,7 +35,7 @@ final class HelperValidation {
   }
 
   static boolean processId(long value) {
-    return value > 1;
+    return value > 2;
   }
 
   static boolean signal(int value) {

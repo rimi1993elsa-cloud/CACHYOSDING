@@ -70,3 +70,18 @@ Ereignis-IDs; Parameter werden vor dem Logging redigiert. Dateien rotieren und s
 Phase 0 startete keine externen Prozesse, las keine Systemdateien, öffnete keine Netzwerkverbindung
 und forderte keine Privilegien an. Seit Phase 13 sind administrative Prozesse ausschließlich im
 separat paketierten Helper mit D-Bus/Polkit-Grenze möglich.
+
+## Reviewstand Phase 23
+
+- Die Online-KI besitzt keine Abhängigkeit zu Dispatcher, Helper, Plattform oder UI.
+- Dokumentkontext wird als `UNTRUSTED DATA` markiert und typische deutsche, englische sowie
+  strukturierte Anweisungsmarker werden vor Retrieval entfernt.
+- Der Helper besitzt nur acht typisierte Methoden, absolute Executables und parameterfreie Audits.
+  PID 1/2, zentrale Prozessnamen und nicht lesbare `/proc`-Identitäten sind zusätzlich gesperrt.
+- Pacman-Änderungen benötigen frische Vorschau, zweite Bestätigung, Lock-Prüfung in GUI und Helper
+  sowie Polkit.
+- XDG-Einstellungen, Verlauf und Importe lehnen Symlinks und unbegrenzte Daten ab. Exporte besitzen
+  konstruktionsbedingt kein Secret-Feld.
+- Diagnose-, Action- und Helper-Logs übernehmen weder Exceptiontexte noch Aktionsparameter.
+
+Der vollständige Befund- und Maßnahmenstand steht in `security-review-phase-23.md`.

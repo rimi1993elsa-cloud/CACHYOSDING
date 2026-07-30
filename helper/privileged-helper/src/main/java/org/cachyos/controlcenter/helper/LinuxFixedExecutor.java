@@ -6,10 +6,21 @@ import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 final class LinuxFixedExecutor implements HelperExecutor {
   private static final Duration PROCESS_TIMEOUT = Duration.ofMinutes(5);
+  private static final Set<String> CRITICAL_PROCESSES =
+      Set.of(
+          "systemd",
+          "init",
+          "kthreadd",
+          "dbus-daemon",
+          "systemd-logind",
+          "systemd-journald",
+          "systemd-udevd",
+          "polkitd");
 
   @Override
   public int installPackage(String packageName) throws Exception {
@@ -62,6 +73,7 @@ final class LinuxFixedExecutor implements HelperExecutor {
   public int signalProcess(long processId, int signal) throws Exception {
     require(HelperValidation.processId(processId));
     require(HelperValidation.signal(signal));
+    require(!criticalProcess(processId));
     return run(
         List.of("/usr/bin/kill", signal == 9 ? "-KILL" : "-TERM", "--", Long.toString(processId)));
   }
@@ -70,6 +82,7 @@ final class LinuxFixedExecutor implements HelperExecutor {
   public int setProcessPriority(long processId, int priority) throws Exception {
     require(HelperValidation.processId(processId));
     require(HelperValidation.priority(priority));
+    require(!criticalProcess(processId));
     return run(
         List.of(
             "/usr/bin/renice",
@@ -105,5 +118,17 @@ final class LinuxFixedExecutor implements HelperExecutor {
 
   private static boolean pacmanLocked() {
     return Files.exists(Path.of("/var/lib/pacman/db.lck"), LinkOption.NOFOLLOW_LINKS);
+  }
+
+  private static boolean criticalProcess(long processId) {
+    Path comm = Path.of("/proc", Long.toString(processId), "comm");
+    if (!Files.isRegularFile(comm, LinkOption.NOFOLLOW_LINKS) || Files.isSymbolicLink(comm)) {
+      return true;
+    }
+    try {
+      return CRITICAL_PROCESSES.contains(Files.readString(comm).strip());
+    } catch (IOException | SecurityException exception) {
+      return true;
+    }
   }
 }

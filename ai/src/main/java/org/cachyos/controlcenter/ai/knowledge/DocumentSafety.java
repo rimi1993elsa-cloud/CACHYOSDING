@@ -11,9 +11,14 @@ public final class DocumentSafety {
           "ignore all previous",
           "system prompt",
           "developer message",
+          "developer:",
+          "<system",
+          "### instruction",
           "disregard instructions",
           "ignoriere vorherige",
-          "ignoriere alle regeln");
+          "ignoriere alle regeln",
+          "vergiss alle regeln",
+          "du bist jetzt");
 
   private DocumentSafety() {}
 
