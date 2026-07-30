@@ -2,6 +2,7 @@ package org.cachyos.controlcenter.ui.voice;
 
 import java.io.File;
 import java.util.function.BiConsumer;
+import java.util.function.BooleanSupplier;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -30,15 +31,18 @@ public final class VoiceView extends VBox {
   private final TextArea transcript = new TextArea();
   private final Button pushToTalk = new Button("Gedrückt halten zum Sprechen");
   private final BiConsumer<String, InputSource> onSubmit;
+  private final BooleanSupplier microphoneEnabled;
 
   public VoiceView(
       MicrophoneCatalog microphones,
       SpeechModelManager models,
       SpeechToTextEngine engine,
+      BooleanSupplier microphoneEnabled,
       BiConsumer<String, InputSource> onSubmit) {
     this.microphones = microphones;
     this.models = models;
     this.engine = engine;
+    this.microphoneEnabled = microphoneEnabled;
     this.onSubmit = onSubmit;
     microphone.setId("voice-microphone");
     microphone.getItems().setAll(microphones.availableMicrophones());
@@ -110,13 +114,20 @@ public final class VoiceView extends VBox {
   private void updateAvailability() {
     SpeechModelManager.ModelStatus status = models.status();
     modelStatus.setText(status.message() + "\n" + status.directory());
-    pushToTalk.setDisable(!status.available() || microphone.getItems().isEmpty());
+    pushToTalk.setDisable(
+        !microphoneEnabled.getAsBoolean()
+            || !status.available()
+            || microphone.getItems().isEmpty());
+    recordingStatus.setText(
+        microphoneEnabled.getAsBoolean()
+            ? "Mikrofon ist aus."
+            : "Mikrofon ist in den Datenschutzeinstellungen deaktiviert.");
   }
 
   private void start() {
     MicrophoneDescriptor selected = microphone.getValue();
     SpeechModelManager.ModelStatus model = models.status();
-    if (selected != null && model.available()) {
+    if (microphoneEnabled.getAsBoolean() && selected != null && model.available()) {
       engine.start(model.directory(), selected, this::handle);
     }
   }

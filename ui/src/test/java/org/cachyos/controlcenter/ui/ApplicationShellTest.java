@@ -91,6 +91,8 @@ import org.cachyos.controlcenter.modules.snapshots.SnapshotState;
 import org.cachyos.controlcenter.modules.storage.StorageBackend;
 import org.cachyos.controlcenter.modules.storage.StorageManager;
 import org.cachyos.controlcenter.modules.storage.StorageSnapshot;
+import org.cachyos.controlcenter.persistence.ApplicationSettings;
+import org.cachyos.controlcenter.persistence.SettingsService;
 import org.cachyos.controlcenter.systeminfo.DashboardDataSource;
 import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
 import org.cachyos.controlcenter.systeminfo.OperatingSystemFamily;
@@ -117,6 +119,7 @@ class ApplicationShellTest extends ApplicationTest {
   private DisplayManager displayManager;
   private PowerManager powerManager;
   private BootManager bootManager;
+  private SettingsService settingsService;
 
   @Override
   public void start(Stage stage) {
@@ -276,6 +279,25 @@ class ApplicationShellTest extends ApplicationTest {
                 return new BootResult(false, "Test");
               }
             });
+    settingsService =
+        new SettingsService(
+            java.nio.file.Path.of(System.getProperty("java.io.tmpdir"))
+                .resolve("cachyos-control-center-settings-ui-test"));
+    ApplicationSettings defaults = ApplicationSettings.defaults();
+    settingsService.update(
+        new ApplicationSettings(
+            defaults.enabledModules(),
+            defaults.quickButtons(),
+            true,
+            "",
+            defaults.onlineAiEnabled(),
+            defaults.aiProvider(),
+            defaults.monthlyBudgetCents(),
+            defaults.shareDocumentation(),
+            true,
+            defaults.shareHardware(),
+            defaults.shareSystemContext(),
+            false));
     MainView view =
         new MainView(
             platformInfo,
@@ -318,6 +340,7 @@ class ApplicationShellTest extends ApplicationTest {
             new UnavailableAiProvider(),
             AiConfiguration.defaults(),
             knowledgeService,
+            settingsService,
             request -> {
               dispatched.set(request);
               return CompletableFuture.completedFuture(ActionResult.success("Test"));
@@ -501,6 +524,22 @@ class ApplicationShellTest extends ApplicationTest {
   void opensBootAndKernelPage() {
     clickOn("Boot & Kernel");
     assertEquals("Boot & Kernel", lookup(".page-title").queryAs(Label.class).getText());
+  }
+
+  @Test
+  void opensPrivacySettingsPage() {
+    ListView<NavigationEntry> navigation = lookup("#primary-navigation").queryListView();
+    interact(
+        () ->
+            navigation
+                .getSelectionModel()
+                .select(
+                    navigation.getItems().stream()
+                        .filter(entry -> entry.id() == NavigationId.SETTINGS)
+                        .findFirst()
+                        .orElseThrow()));
+    assertEquals("Einstellungen", lookup(".page-title").queryAs(Label.class).getText());
+    lookup("#privacy-settings-view").query();
   }
 
   @Test

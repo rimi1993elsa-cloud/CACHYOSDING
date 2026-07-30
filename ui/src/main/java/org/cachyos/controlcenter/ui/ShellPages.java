@@ -1,6 +1,7 @@
 package org.cachyos.controlcenter.ui;
 
 import java.util.function.BiConsumer;
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -35,6 +36,7 @@ import org.cachyos.controlcenter.modules.security.SecurityManager;
 import org.cachyos.controlcenter.modules.services.ServiceManager;
 import org.cachyos.controlcenter.modules.snapshots.SnapshotManager;
 import org.cachyos.controlcenter.modules.storage.StorageManager;
+import org.cachyos.controlcenter.persistence.SettingsService;
 import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
 import org.cachyos.controlcenter.systeminfo.PlatformInfo;
 import org.cachyos.controlcenter.systeminfo.SystemSnapshot;
@@ -53,6 +55,7 @@ import org.cachyos.controlcenter.ui.power.PowerView;
 import org.cachyos.controlcenter.ui.processes.ProcessesView;
 import org.cachyos.controlcenter.ui.security.SecurityView;
 import org.cachyos.controlcenter.ui.services.ServicesView;
+import org.cachyos.controlcenter.ui.settings.SettingsView;
 import org.cachyos.controlcenter.ui.storage.SnapshotsView;
 import org.cachyos.controlcenter.ui.storage.StorageView;
 import org.cachyos.controlcenter.ui.theme.ThemeManager;
@@ -67,11 +70,12 @@ final class ShellPages {
       DashboardMonitor dashboardMonitor,
       InMemoryAuditLog auditLog,
       ActionDispatcher actionDispatcher,
-      NotificationCenter notifications) {
+      NotificationCenter notifications,
+      SettingsService settings) {
     return page(
         "Übersicht",
         "Lokaler Systemstatus mit lastarmer Aktualisierung und ohne erhöhte Rechte.",
-        new DashboardView(dashboardMonitor, auditLog, actionDispatcher, notifications));
+        new DashboardView(dashboardMonitor, auditLog, actionDispatcher, notifications, settings));
   }
 
   static Node system(PlatformInfo info, SystemSnapshot snapshot) {
@@ -157,16 +161,36 @@ final class ShellPages {
       MicrophoneCatalog microphones,
       SpeechModelManager models,
       SpeechToTextEngine engine,
+      BooleanSupplier microphoneEnabled,
       BiConsumer<String, InputSource> onSubmit) {
     return page(
         "Sprache",
         "Offline Push-to-Talk mit sichtbarem Transkript und ohne automatische Ausführung.",
-        new VoiceView(microphones, models, engine, onSubmit));
+        new VoiceView(microphones, models, engine, microphoneEnabled, onSubmit));
   }
 
   static ChatView createChat(
-      AiProvider provider, AiConfiguration configuration, KnowledgeService knowledgeService) {
-    return new ChatView(provider, configuration, knowledgeService);
+      AiProvider provider,
+      AiConfiguration configuration,
+      KnowledgeService knowledgeService,
+      SettingsService settings,
+      SystemSnapshot snapshot) {
+    String systemContext =
+        "Distribution="
+            + snapshot.distribution().prettyName()
+            + "\nKernel="
+            + snapshot.kernel()
+            + "\nBootmanager="
+            + snapshot.bootManager().displayName();
+    String hardwareContext =
+        "CPU="
+            + snapshot.hardware().cpuModel()
+            + "\nLogische Prozessoren="
+            + snapshot.hardware().logicalProcessors()
+            + "\nRAM-Bytes="
+            + snapshot.hardware().totalMemoryBytes();
+    return new ChatView(
+        provider, configuration, knowledgeService, settings, systemContext, hardwareContext);
   }
 
   static Node chat(ChatView chat) {
@@ -257,7 +281,14 @@ final class ShellPages {
         new BootView(manager, notifications));
   }
 
-  static Node settings(ThemeManager themeManager, Consumer<ThemeMode> onChanged) {
+  static Node settings(
+      ThemeManager themeManager,
+      Consumer<ThemeMode> onChanged,
+      SettingsService settingsService,
+      InMemoryAuditLog auditLog,
+      NotificationCenter notifications,
+      Runnable applySettings,
+      Runnable clearLiveChat) {
     ComboBox<ThemeMode> selector = new ComboBox<>();
     selector.getItems().setAll(ThemeMode.values());
     selector.setValue(themeManager.mode());
@@ -280,10 +311,16 @@ final class ShellPages {
             new Label(
                 "„System“ berücksichtigt verfügbare Desktop-Hinweise und fällt sicher auf Hell zurück."));
     themeSetting.getStyleClass().add("settings-group");
+    VBox content =
+        new VBox(
+            18,
+            themeSetting,
+            new SettingsView(
+                settingsService, auditLog, notifications, applySettings, clearLiveChat));
     return page(
         "Einstellungen",
-        "In Phase 1 ist ausschließlich die lokale Darstellung konfigurierbar.",
-        themeSetting);
+        "Lokale Module, Datenschutzfreigaben, Verlauf, Audit und secret-freier Datentransfer.",
+        content);
   }
 
   private static Node page(String title, String subtitle, Node content) {

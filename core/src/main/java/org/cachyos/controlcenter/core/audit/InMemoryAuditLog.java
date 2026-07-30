@@ -15,4 +15,8 @@ public final class InMemoryAuditLog implements AuditSink {
   public List<ActionAuditEvent> events() {
     return List.copyOf(events);
   }
+
+  public void clear() {
+    events.clear();
+  }
 }

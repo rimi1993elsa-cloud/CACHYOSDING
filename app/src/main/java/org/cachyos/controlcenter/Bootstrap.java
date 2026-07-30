@@ -32,6 +32,7 @@ import org.cachyos.controlcenter.modules.security.SecurityManager;
 import org.cachyos.controlcenter.modules.services.ServiceManager;
 import org.cachyos.controlcenter.modules.snapshots.SnapshotManager;
 import org.cachyos.controlcenter.modules.storage.StorageManager;
+import org.cachyos.controlcenter.persistence.SettingsService;
 import org.cachyos.controlcenter.platform.applications.DesktopApplicationBackend;
 import org.cachyos.controlcenter.platform.audio.PactlAudioBackend;
 import org.cachyos.controlcenter.platform.audio.PactlEventMonitor;
@@ -151,6 +152,7 @@ public final class Bootstrap {
                 OfficialSourceRegistry.sources(),
                 new KnowledgeCache(xdgPaths.cacheDirectory()),
                 new HttpKnowledgeFetcher()));
+    SettingsService settingsService = new SettingsService(xdgPaths.configDirectory());
     InMemoryAuditLog auditLog = new InMemoryAuditLog();
     ModuleRegistry moduleRegistry = new ModuleRegistry();
     ActionRegistry actionRegistry = new ActionRegistry();
@@ -205,6 +207,7 @@ public final class Bootstrap {
         aiProvider,
         aiConfiguration,
         knowledgeService,
+        settingsService,
         lifecycle,
         dispatcher,
         auditLog,

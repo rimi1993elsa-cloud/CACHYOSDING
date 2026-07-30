@@ -24,6 +24,7 @@ dependencies {
     implementation(project(":modules:boot"))
     implementation(project(":input"))
     implementation(project(":ai"))
+    implementation(project(":persistence"))
     implementation("org.slf4j:slf4j-api:2.0.18")
     runtimeOnly("ch.qos.logback:logback-classic:1.5.38")
 }

@@ -1,6 +1,7 @@
 package org.cachyos.controlcenter.ui.navigation;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.EnumSet;
@@ -17,6 +18,17 @@ class NavigationCatalogTest {
         catalog.entries().stream()
             .map(NavigationEntry::id)
             .collect(() -> EnumSet.noneOf(NavigationId.class), EnumSet::add, EnumSet::addAll));
+  }
+
+  @Test
+  void disablesModulesExcludedByLocalConfiguration() {
+    NavigationCatalog catalog = new NavigationCatalog(java.util.Set.of("system"));
+    NavigationEntry network =
+        catalog.entries().stream()
+            .filter(entry -> entry.id() == NavigationId.NETWORK)
+            .findFirst()
+            .orElseThrow();
+    assertFalse(network.enabled());
   }
 
   @Test

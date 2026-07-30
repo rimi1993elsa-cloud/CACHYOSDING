@@ -5,10 +5,10 @@ phasenweise nach dem verbindlichen Masterauftrag entwickelt.
 
 ## Aktueller Stand
 
-Phase 20 ergänzt eine ausschließlich lesende Boot- und Kernelansicht. Aktiver und installierte
-Kernel, Bootmanager, Kernelparameter, Bootdauer und langsame Units werden transparent angezeigt.
-Der vorhandene CachyOS Kernel Manager kann über einen festen unprivilegierten Pfad geöffnet werden;
-eigene Boot- oder Kerneländerungen führt die Anwendung nicht aus.
+Phase 21 ergänzt lokale XDG-Einstellungen, Modul- und Schnellbuttonkonfiguration, Mikrofon- und
+KI-Freigaben, Budgetgrenze, opt-in Chatverlauf, Audit-Löschung sowie sicheren Export/Import.
+Das Exportschema enthält konstruktionsbedingt keine Secrets; API-Keys bleiben im Secret Service
+beziehungsweise KDE Wallet.
 
 ## Voraussetzungen
 
@@ -55,7 +55,7 @@ es gibt keine freie Shellausführung und keine erhöhten Rechte.
 | `platform-linux` | Typisierte, überwiegend lesende Linux-Adapter |
 | `helper/helper-api` | Kleine, typisierte D-Bus-Schnittstelle und Fehlerprotokoll |
 | `helper/privileged-helper` | Separater Polkit-geschützter Systemdienst |
-| `persistence` | Spätere SQLite-Persistenz |
+| `persistence` | Atomare XDG-Einstellungen und begrenzter opt-in Chatverlauf |
 | `modules/*` | Fachmodule der nachfolgenden Phasen |
 
 Architektur, Sicherheitsgrenzen und Entwicklungsablauf stehen unter [`docs/`](docs/).

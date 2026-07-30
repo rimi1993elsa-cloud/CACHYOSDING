@@ -7,6 +7,15 @@ Alle nennenswerten Änderungen werden in dieser Datei dokumentiert. Das Format o
 
 ### Added
 
+- Atomare, private XDG-Persistenz für ein streng validiertes Einstellungsschema
+- Modul- und Schnellbuttonkonfiguration mit Anwendung beim nächsten Start
+- Wirksamer Mikrofon-, Online-KI-, Provider- und Nullbudget-Schalter
+- Einzelne Freigaben für Dokumentation, Diagnose, Systembasis und anonymisierte Hardware
+- Standardmäßig deaktivierter, auf 200 Einträge begrenzter lokaler Chatverlauf
+- Vollständiges Löschen von Verlauf, Audit und persönlichen Einstellungen
+- Größenbegrenzter Import mit unbekannte-Felder-Ablehnung und Symlink-Schutz
+- Secret-freier JSON-Export; API-Key-Felder existieren nicht im Schema
+
 - Lesende Übersicht für aktiven und installierte CachyOS-/Arch-Kernel
 - Erkennung von systemd-boot, GRUB und nicht eindeutigem UEFI
 - Kernelparameter direkt aus procfs ohne Änderungspfad

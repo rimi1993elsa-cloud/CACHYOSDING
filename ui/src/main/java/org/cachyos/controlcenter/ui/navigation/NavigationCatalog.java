@@ -1,9 +1,11 @@
 package org.cachyos.controlcenter.ui.navigation;
 
 import java.util.List;
+import java.util.Set;
 
 /** Ordered catalog for the sidebar. */
 public final class NavigationCatalog {
+  private final Set<String> enabledModules;
   private final List<NavigationEntry> entries =
       List.of(
           active(NavigationId.OVERVIEW, "Übersicht", "Aktueller lokaler Status"),
@@ -26,8 +28,33 @@ public final class NavigationCatalog {
           active(NavigationId.AI_ASSISTANT, "KI-Assistent", "Optionale Online-Hilfe"),
           active(NavigationId.SETTINGS, "Einstellungen", "Lokale Darstellung"));
 
+  public NavigationCatalog() {
+    this(Set.of());
+  }
+
+  public NavigationCatalog(Set<String> enabledModules) {
+    this.enabledModules = Set.copyOf(enabledModules);
+  }
+
   public List<NavigationEntry> entries() {
-    return entries;
+    if (enabledModules.isEmpty()) {
+      return entries;
+    }
+    return entries.stream().map(this::configured).toList();
+  }
+
+  private NavigationEntry configured(NavigationEntry entry) {
+    String key =
+        switch (entry.id()) {
+          case OVERVIEW, SETTINGS -> "";
+          case AI_ASSISTANT -> "ai";
+          case APPLICATIONS -> "applications";
+          default -> entry.id().name().toLowerCase(java.util.Locale.ROOT);
+        };
+    return key.isEmpty() || enabledModules.contains(key)
+        ? entry
+        : new NavigationEntry(
+            entry.id(), entry.label(), entry.description(), false, "In Einstellungen deaktiviert");
   }
 
   private static NavigationEntry active(NavigationId id, String label, String description) {

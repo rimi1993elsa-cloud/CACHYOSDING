@@ -1,6 +1,7 @@
 package org.cachyos.controlcenter.ui.components;
 
 import java.util.Objects;
+import java.util.Set;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
@@ -15,17 +16,39 @@ public final class QuickActionBar extends FlowPane {
   private final ActionDispatcher dispatcher;
   private final NotificationCenter notifications;
 
-  public QuickActionBar(ActionDispatcher dispatcher, NotificationCenter notifications) {
+  public QuickActionBar(
+      ActionDispatcher dispatcher, NotificationCenter notifications, Set<String> enabledButtons) {
     this.dispatcher = Objects.requireNonNull(dispatcher, "dispatcher");
     this.notifications = Objects.requireNonNull(notifications, "notifications");
     setHgap(10);
     setVgap(10);
-    getChildren()
-        .addAll(
-            button("Firefox öffnen", "action-open-firefox", ActionId.OPEN_FIREFOX),
-            button("Dateimanager öffnen", "action-open-file-manager", ActionId.OPEN_FILE_MANAGER),
-            button("Terminal öffnen", "action-open-terminal", ActionId.OPEN_TERMINAL),
-            button("Bildschirm sperren", "action-lock-screen", ActionId.LOCK_SCREEN));
+    addIfEnabled(
+        enabledButtons, "firefox", "Firefox öffnen", "action-open-firefox", ActionId.OPEN_FIREFOX);
+    addIfEnabled(
+        enabledButtons,
+        "file-manager",
+        "Dateimanager öffnen",
+        "action-open-file-manager",
+        ActionId.OPEN_FILE_MANAGER);
+    addIfEnabled(
+        enabledButtons,
+        "terminal",
+        "Terminal öffnen",
+        "action-open-terminal",
+        ActionId.OPEN_TERMINAL);
+    addIfEnabled(
+        enabledButtons,
+        "lock-screen",
+        "Bildschirm sperren",
+        "action-lock-screen",
+        ActionId.LOCK_SCREEN);
+  }
+
+  private void addIfEnabled(
+      Set<String> enabled, String setting, String label, String id, ActionId actionId) {
+    if (enabled.contains(setting)) {
+      getChildren().add(button(label, id, actionId));
+    }
   }
 
   private Button button(String label, String id, ActionId actionId) {

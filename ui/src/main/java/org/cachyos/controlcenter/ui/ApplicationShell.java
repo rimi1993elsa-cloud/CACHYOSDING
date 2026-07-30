@@ -54,6 +54,7 @@ import org.cachyos.controlcenter.modules.security.SecurityManager;
 import org.cachyos.controlcenter.modules.services.ServiceManager;
 import org.cachyos.controlcenter.modules.snapshots.SnapshotManager;
 import org.cachyos.controlcenter.modules.storage.StorageManager;
+import org.cachyos.controlcenter.persistence.SettingsService;
 import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
 import org.cachyos.controlcenter.systeminfo.PlatformInfo;
 import org.cachyos.controlcenter.systeminfo.SystemSnapshot;
@@ -79,6 +80,7 @@ final class ApplicationShell {
   private final NotificationCenter notifications;
   private final GermanIntentRouter intentRouter;
   private final ActionDispatcher actionDispatcher;
+  private final SettingsService settingsService;
   private ChatView chatView;
   private boolean compact;
   private boolean compactSidebarOpen;
@@ -111,6 +113,7 @@ final class ApplicationShell {
       AiProvider aiProvider,
       AiConfiguration aiConfiguration,
       KnowledgeService knowledgeService,
+      SettingsService settingsService,
       NavigationCatalog catalog,
       ThemeManager themeManager,
       NotificationCenter notifications,
@@ -118,6 +121,7 @@ final class ApplicationShell {
     this.notifications = notifications;
     this.intentRouter = intentRouter;
     this.actionDispatcher = actionDispatcher;
+    this.settingsService = settingsService;
     router =
         new ContentRouter(
             createPages(
@@ -147,6 +151,7 @@ final class ApplicationShell {
                 aiProvider,
                 aiConfiguration,
                 knowledgeService,
+                settingsService,
                 themeManager,
                 notifications,
                 actionDispatcher));
@@ -231,7 +236,7 @@ final class ApplicationShell {
 
     Label title = new Label("CachyOS Control Center");
     title.getStyleClass().add("app-title");
-    Label phase = new Label("Entwicklungsstand \u00b7 Phase 20");
+    Label phase = new Label("Entwicklungsstand \u00b7 Phase 21");
     phase.getStyleClass().add("phase-badge");
 
     Label statusDot = new Label("●");
@@ -304,13 +309,15 @@ final class ApplicationShell {
       AiProvider aiProvider,
       AiConfiguration aiConfiguration,
       KnowledgeService knowledgeService,
+      SettingsService settingsService,
       ThemeManager themeManager,
       NotificationCenter notificationCenter,
       ActionDispatcher actionDispatcher) {
     Map<NavigationId, Node> pages = new EnumMap<>(NavigationId.class);
     pages.put(
         NavigationId.OVERVIEW,
-        ShellPages.overview(dashboardMonitor, auditLog, actionDispatcher, notificationCenter));
+        ShellPages.overview(
+            dashboardMonitor, auditLog, actionDispatcher, notificationCenter, settingsService));
     pages.put(NavigationId.SYSTEM, ShellPages.system(platformInfo, systemSnapshot));
     pages.put(
         NavigationId.NETWORK,
@@ -333,8 +340,15 @@ final class ApplicationShell {
     pages.put(NavigationId.BOOT, ShellPages.boot(bootManager, notificationCenter));
     pages.put(
         NavigationId.VOICE,
-        ShellPages.voice(microphoneCatalog, speechModelManager, speechToTextEngine, this::submit));
-    chatView = ShellPages.createChat(aiProvider, aiConfiguration, knowledgeService);
+        ShellPages.voice(
+            microphoneCatalog,
+            speechModelManager,
+            speechToTextEngine,
+            () -> settingsService.current().microphoneEnabled(),
+            this::submit));
+    chatView =
+        ShellPages.createChat(
+            aiProvider, aiConfiguration, knowledgeService, settingsService, systemSnapshot);
     pages.put(NavigationId.AI_ASSISTANT, ShellPages.chat(chatView));
     pages.put(
         NavigationId.DIAGNOSTICS,
@@ -343,8 +357,14 @@ final class ApplicationShell {
             actionDispatcher,
             notificationCenter,
             report -> {
-              chatView.setDraft(report);
-              select(NavigationId.AI_ASSISTANT);
+              if (settingsService.current().shareDiagnostics()) {
+                chatView.setDraft(report);
+                select(NavigationId.AI_ASSISTANT);
+              } else {
+                notifications.show(
+                    "Datenschutz",
+                    "Diagnoseübergabe ist deaktiviert. Aktiviere sie zuerst in Einstellungen.");
+              }
             }));
     pages.put(
         NavigationId.SETTINGS,
@@ -352,7 +372,15 @@ final class ApplicationShell {
             themeManager,
             mode ->
                 notificationCenter.show(
-                    "Darstellung", "Theme auf „" + mode.displayName() + "“ gesetzt.")));
+                    "Darstellung", "Theme auf „" + mode.displayName() + "“ gesetzt."),
+            settingsService,
+            auditLog,
+            notificationCenter,
+            chatView::applySettings,
+            () -> {
+              chatView.clearHistory();
+              chatView.applySettings();
+            }));
     return pages;
   }
 

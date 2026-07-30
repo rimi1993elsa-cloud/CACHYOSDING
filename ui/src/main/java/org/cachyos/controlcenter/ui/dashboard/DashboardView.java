@@ -4,6 +4,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -14,6 +15,7 @@ import javafx.scene.layout.VBox;
 import org.cachyos.controlcenter.core.action.ActionDispatcher;
 import org.cachyos.controlcenter.core.audit.ActionAuditEvent;
 import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
+import org.cachyos.controlcenter.persistence.SettingsService;
 import org.cachyos.controlcenter.systeminfo.DashboardMetrics;
 import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
 import org.cachyos.controlcenter.ui.components.QuickActionBar;
@@ -43,7 +45,8 @@ public final class DashboardView extends VBox {
       DashboardMonitor monitor,
       InMemoryAuditLog auditLog,
       ActionDispatcher actionDispatcher,
-      NotificationCenter notifications) {
+      NotificationCenter notifications,
+      SettingsService settings) {
     this.auditLog = auditLog;
     FlowPane cards = new FlowPane(14, 14);
     cards
@@ -70,7 +73,8 @@ public final class DashboardView extends VBox {
         .addAll(
             cards,
             new Label("Schnellaktionen"),
-            new QuickActionBar(actionDispatcher, notifications),
+            new QuickActionBar(
+                actionDispatcher, notifications, Set.copyOf(settings.current().quickButtons())),
             refreshedAt,
             section("Warnungen", warnings),
             section("Letzte Aktionen", recentActions));

@@ -71,6 +71,11 @@ flowchart TB
   procfs, feste Bootpfade, Pacman-Metadaten und begrenzte `systemd-analyze`-Ausgaben.
 - Der CachyOS Kernel Manager wird ausschließlich gestartet, wenn eine von zwei fest eingebauten
   absoluten Executables vorhanden ist; Benutzerparameter oder Shelltext existieren nicht.
+- `persistence` speichert nur das explizite `ApplicationSettings`-Schema und optional bis zu 200
+  Chatnachrichten. Temporärdatei und atomarer Move verhindern Teilstände; Symlinks werden abgelehnt.
+- API-Keys, Tokens und Wallet-Inhalte besitzen kein Feld im Einstellungs- oder Exportschema.
+- Der Chat prüft Online-Freigabe, Anbieter und Budget bei jedem Senden. Dokumentations-, System-
+  und Hardwarekontext wird nur bei der jeweiligen aktuellen Freigabe aufgebaut.
 - `platform-linux` liest Pacman-Daten mit `LC_ALL=C`, begrenzter Ausgabe und getrennten
   validierten Argumenten. Nur der Mutation-Gateway kennt `helper-api`.
 - `platform-linux` enthält typisierte Adapter. Der aktuelle Prozessadapter akzeptiert eine absolute

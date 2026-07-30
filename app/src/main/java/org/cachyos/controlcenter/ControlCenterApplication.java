@@ -45,6 +45,7 @@ public final class ControlCenterApplication extends Application {
             context.aiProvider(),
             context.aiConfiguration(),
             context.knowledgeService(),
+            context.settingsService(),
             context.actionDispatcher());
     Scene scene = new Scene(mainView.root(), 1100, 720);
     mainView.install(scene);

@@ -20,7 +20,7 @@
 | Dienste/Prozesse | systemd-Scopes, Logs, Ressourcen und geschützte Aktionen | Phase 18 |
 | Anzeige/Energie | KDE/Wayland, Backlight, Grafik, Akku, Profile und Sleep | Phase 19 |
 | Boot/Kernel | lesende Bootanalyse und fester CachyOS-Manager-Start | Phase 20 |
-| Weitere Manager | nur Projektstruktur | Phase 21 |
+| Einstellungen/Persistenz | Module, Freigaben, Verlauf, Audit und sicherer Transfer | Phase 21 |
 | Packaging | nur Verzeichnisstruktur | Phase 24 |
 
 Eine vorhandene Projektstruktur bedeutet ausdrücklich nicht, dass das jeweilige Fachmodul bereits

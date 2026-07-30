@@ -27,6 +27,7 @@ import org.cachyos.controlcenter.modules.security.SecurityManager;
 import org.cachyos.controlcenter.modules.services.ServiceManager;
 import org.cachyos.controlcenter.modules.snapshots.SnapshotManager;
 import org.cachyos.controlcenter.modules.storage.StorageManager;
+import org.cachyos.controlcenter.persistence.SettingsService;
 import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
 import org.cachyos.controlcenter.systeminfo.PlatformInfo;
 import org.cachyos.controlcenter.systeminfo.SystemSnapshot;
@@ -67,6 +68,7 @@ public final class MainView {
       AiProvider aiProvider,
       AiConfiguration aiConfiguration,
       KnowledgeService knowledgeService,
+      SettingsService settingsService,
       ActionDispatcher actionDispatcher) {
     NotificationCenter notifications = new NotificationCenter();
     themeManager = new ThemeManager();
@@ -99,7 +101,8 @@ public final class MainView {
             aiProvider,
             aiConfiguration,
             knowledgeService,
-            new NavigationCatalog(),
+            settingsService,
+            new NavigationCatalog(settingsService.current().enabledModules()),
             themeManager,
             notifications,
             actionDispatcher);

@@ -172,3 +172,16 @@ lesend. „CachyOS Kernel Manager öffnen“ ist nur aktiv, wenn dessen fest erw
 installiert ist. Das Control Center selbst bearbeitet keine Bootdateien und installiert keine
 Kernel; Backup-, Rollback- und Transaktionskonzepte bleiben damit Voraussetzung einer späteren
 Integration.
+
+# Einstellungen und Datenschutz
+
+Unter „Einstellungen“ lassen sich Module und Schnellbuttons für den nächsten App-Start auswählen.
+Mikrofon, Online-KI, Anbieter und Budget wirken unmittelbar; ein Budget von `0` sperrt Online-
+Anfragen. Dokumentation, Diagnose, Systembasisdaten und anonymisierte Hardware besitzen getrennte
+Freigaben. Ohne Diagnosefreigabe kann ein lokaler Bericht nicht in den Chat übernommen werden.
+
+Der Chatverlauf wird standardmäßig nicht gespeichert. Bei ausdrücklichem Opt-in bleiben höchstens
+200 begrenzte Textnachrichten lokal erhalten. „Chatverlauf löschen“, „Audit leeren“ und „Lokale
+persönliche Daten löschen“ entfernen die jeweiligen Daten. Der JSON-Export enthält nur das
+validierte Einstellungsschema. API-Key und andere Secrets bleiben immer im Secret Service/KDE
+Wallet. Importe mit unbekannten Feldern, Symlinks oder mehr als 64 KiB werden abgelehnt.
