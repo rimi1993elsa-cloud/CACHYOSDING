@@ -8,7 +8,7 @@ public final class NavigationCatalog {
       List.of(
           active(NavigationId.OVERVIEW, "Übersicht", "Aktueller lokaler Status"),
           active(NavigationId.SYSTEM, "System", "Sichere Plattforminformationen"),
-          planned(NavigationId.SECURITY, "Sicherheit", "Sicherheitsstatus", 15),
+          active(NavigationId.SECURITY, "Sicherheit", "Sicherheitsstatus"),
           active(NavigationId.NETWORK, "Netzwerk", "Verbindungen und Diagnose"),
           active(NavigationId.APPLICATIONS, "Programme", "Installierte Anwendungen"),
           active(NavigationId.VOICE, "Sprache", "Offline Push-to-Talk"),

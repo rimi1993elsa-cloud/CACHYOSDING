@@ -23,6 +23,7 @@ import org.cachyos.controlcenter.modules.audio.AudioManagerModule;
 import org.cachyos.controlcenter.modules.diagnostics.DiagnosticManager;
 import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
 import org.cachyos.controlcenter.modules.packages.PackageManager;
+import org.cachyos.controlcenter.modules.security.SecurityManager;
 import org.cachyos.controlcenter.platform.applications.DesktopApplicationBackend;
 import org.cachyos.controlcenter.platform.audio.PactlAudioBackend;
 import org.cachyos.controlcenter.platform.audio.PactlEventMonitor;
@@ -33,6 +34,8 @@ import org.cachyos.controlcenter.platform.packages.DbusPackageMutationGateway;
 import org.cachyos.controlcenter.platform.packages.PacmanPackageBackend;
 import org.cachyos.controlcenter.platform.process.DesktopIntegrationModule;
 import org.cachyos.controlcenter.platform.secrets.DesktopSecretStore;
+import org.cachyos.controlcenter.platform.security.DbusSecurityMutationGateway;
+import org.cachyos.controlcenter.platform.security.LinuxSecurityBackend;
 import org.cachyos.controlcenter.platform.status.LinuxSupplementalStatusProbe;
 import org.cachyos.controlcenter.systeminfo.DashboardDataSource;
 import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
@@ -78,6 +81,13 @@ public final class Bootstrap {
             new PackageManager(
                 new PacmanPackageBackend(systemSnapshot.capabilities()),
                 new DbusPackageMutationGateway(
+                    platformInfo.operatingSystemFamily() == OperatingSystemFamily.LINUX)));
+    SecurityManager securityManager =
+        lifecycle.manage(
+            new SecurityManager(
+                new LinuxSecurityBackend(
+                    platformInfo.operatingSystemFamily() == OperatingSystemFamily.LINUX),
+                new DbusSecurityMutationGateway(
                     platformInfo.operatingSystemFamily() == OperatingSystemFamily.LINUX)));
     GermanIntentRouter intentRouter =
         new GermanIntentRouter(
@@ -136,6 +146,7 @@ public final class Bootstrap {
         applicationManager,
         diagnosticManager,
         packageManager,
+        securityManager,
         intentRouter,
         microphoneCatalog,
         speechModelManager,

@@ -5,10 +5,10 @@ phasenweise nach dem verbindlichen Masterauftrag entwickelt.
 
 ## Aktueller Stand
 
-Phase 14 ergänzt einen Pacman-Paketmanager mit installierten Paketen, Repository-Suche, Details,
-Updates, verwaisten Paketen, Cachegröße und Lock-Erkennung. Installieren und Entfernen benötigen
-immer eine konkrete, kurzlebige Transaktionsvorschau und eine bewusste Bestätigung; erst danach
-wird die typisierte Polkit-geschützte Helper-Methode aufgerufen.
+Phase 15 ergänzt eine lokale Sicherheitszentrale für Firewall, lauschende Ports, SSH,
+fehlgeschlagene Logins, Updates, Secure Boot, AppArmor und kritische Dateirechte. Jeder Befund
+zeigt eigene Evidenz und Unsicherheit; bewusst gibt es keinen irreführenden Gesamtscore.
+Firewall-Änderungen laufen ausschließlich über die typisierte Polkit-Helper-Methode.
 
 ## Voraussetzungen
 

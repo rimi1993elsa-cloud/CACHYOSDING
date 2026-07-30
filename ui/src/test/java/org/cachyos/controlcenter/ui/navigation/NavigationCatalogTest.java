@@ -33,6 +33,7 @@ class NavigationCatalogTest {
     assertTrue(entry(catalog, NavigationId.DIAGNOSTICS).enabled());
     assertTrue(entry(catalog, NavigationId.SETTINGS).enabled());
     assertTrue(entry(catalog, NavigationId.PACKAGES).enabled());
+    assertTrue(entry(catalog, NavigationId.SECURITY).enabled());
     assertEquals("Verfügbar", entry(catalog, NavigationId.PACKAGES).availability());
   }
 

@@ -14,6 +14,7 @@
 | Diagnose | sechs lokale Probes, Sanitizer und feste Abhilfen aktiv | Phase 13 |
 | Helper | D-Bus, Polkit, Allowlist, Audit und Timeouts aktiv | Phase 13 |
 | Pakete | Pacman-Lesen, Vorschau und Helper-Mutation aktiv | Phase 14 |
+| Sicherheit | Einzelbefunde und Firewall-Helper aktiv | Phase 15 |
 | Weitere Manager | nur Projektstruktur | Phase 15–21 |
 | Packaging | nur Verzeichnisstruktur | Phase 24 |
 

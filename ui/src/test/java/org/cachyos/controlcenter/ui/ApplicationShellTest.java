@@ -55,6 +55,10 @@ import org.cachyos.controlcenter.modules.packages.PackageManager;
 import org.cachyos.controlcenter.modules.packages.PackageMutationGateway;
 import org.cachyos.controlcenter.modules.packages.PackageOperationResult;
 import org.cachyos.controlcenter.modules.packages.PackageSnapshot;
+import org.cachyos.controlcenter.modules.security.SecurityManager;
+import org.cachyos.controlcenter.modules.security.SecurityMutationGateway;
+import org.cachyos.controlcenter.modules.security.SecurityOperationResult;
+import org.cachyos.controlcenter.modules.security.SecuritySnapshot;
 import org.cachyos.controlcenter.systeminfo.DashboardDataSource;
 import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
 import org.cachyos.controlcenter.systeminfo.OperatingSystemFamily;
@@ -72,6 +76,7 @@ class ApplicationShellTest extends ApplicationTest {
   private KnowledgeService knowledgeService;
   private DiagnosticManager diagnosticManager;
   private PackageManager packageManager;
+  private SecurityManager securityManager;
 
   @Override
   public void start(Stage stage) {
@@ -100,6 +105,17 @@ class ApplicationShellTest extends ApplicationTest {
                     category, DiagnosticStatus.UNAVAILABLE, "Im Test nicht verfügbar.", ""));
     packageManager =
         new PackageManager(new UnavailablePackageBackend(), new UnavailablePackageGateway());
+    securityManager =
+        new SecurityManager(
+            () ->
+                new SecuritySnapshot(
+                    true,
+                    false,
+                    java.util.List.of(),
+                    java.util.List.of(),
+                    java.time.Instant.now(),
+                    "Test"),
+            new UnavailableSecurityGateway());
     MainView view =
         new MainView(
             platformInfo,
@@ -125,6 +141,7 @@ class ApplicationShellTest extends ApplicationTest {
             new ApplicationManagerModule(new EmptyApplicationBackend()),
             diagnosticManager,
             packageManager,
+            securityManager,
             new GermanIntentRouter(java.util.List::of),
             new MicrophoneCatalog(),
             new SpeechModelManager(
@@ -149,6 +166,7 @@ class ApplicationShellTest extends ApplicationTest {
     knowledgeService.close();
     diagnosticManager.close();
     packageManager.close();
+    securityManager.close();
   }
 
   @Test
@@ -225,6 +243,15 @@ class ApplicationShellTest extends ApplicationTest {
     Label heading = lookup(".page-title").queryAs(Label.class);
     assertEquals("Pakete", heading.getText());
     lookup("#package-list").queryListView();
+  }
+
+  @Test
+  void opensImplementedSecurityManagerPage() {
+    clickOn("Sicherheit");
+
+    Label heading = lookup(".page-title").queryAs(Label.class);
+    assertEquals("Sicherheit", heading.getText());
+    lookup("#security-checks").queryListView();
   }
 
   @Test
@@ -407,6 +434,18 @@ class ApplicationShellTest extends ApplicationTest {
     @Override
     public PackageOperationResult execute(PackageAction action, String packageName) {
       return new PackageOperationResult(false, "Test");
+    }
+  }
+
+  private static final class UnavailableSecurityGateway implements SecurityMutationGateway {
+    @Override
+    public boolean available() {
+      return false;
+    }
+
+    @Override
+    public SecurityOperationResult setFirewallEnabled(boolean enabled) {
+      return new SecurityOperationResult(false, "Test");
     }
   }
 

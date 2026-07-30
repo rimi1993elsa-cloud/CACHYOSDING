@@ -7,6 +7,13 @@ Alle nennenswerten Änderungen werden in dieser Datei dokumentiert. Das Format o
 
 ### Added
 
+- Lokale Sicherheitszentrale mit acht getrennt nachvollziehbaren Prüfbereichen
+- Firewall-, Port-, SSH-, Login-, Update-, Secure-Boot-, AppArmor- und Rechtebefunde
+- Bewusster Verzicht auf einen irreführenden aggregierten Sicherheits-Score
+- Begrenzte, sprachstabile, lesende Linux-Sicherheitsprobes
+- Kritische Dateirechteprüfung ohne externen Prozess und ohne Symlink-Folgen
+- Explizit bestätigte Firewall-Aktion ausschließlich über D-Bus/Polkit-Helper
+- Ehrliche Unknown-Zustände bei fehlenden Werkzeugen, Rechten oder Evidenz
 - Pacman-Paketmanager mit installierter Liste, Suche, Details und Updates
 - Anzeige verwaister Pakete, Cachegröße und Pacman-Datenbanksperre
 - 60-Sekunden-Lesecache und serielle Hintergrundausführung ohne UI-Blockade

@@ -1,4 +1,4 @@
-# Benutzerhandbuch – Phase 14
+# Benutzerhandbuch – Phase 15
 
 Nach `./gradlew :app:run` erscheint die Grundoberfläche mit Topbar, Navigation, Inhaltsbereich und
 Statusbereich. Die Seiten „Übersicht“, „System“ und „Einstellungen“ enthalten reale lokale Inhalte.
@@ -111,3 +111,14 @@ Vor „Installieren“ oder „Entfernen“ zeigt die Anwendung die von Pacman b
 Größen. Erst der Button „Authentifizieren und ausführen“ öffnet Polkit. Wenn eine andere
 Pacman-Anwendung die Datenbank sperrt oder die Vorschau älter als zwei Minuten ist, wird die Aktion
 verworfen. AUR-Unterstützung ist in Version 1 optional und derzeit nicht aktiviert.
+# Sicherheit
+
+Die Sicherheitsseite prüft lokal Firewall, lauschende Ports, SSH, fehlgeschlagene Loginversuche,
+den vorhandenen Pacman-Updatestand, Secure Boot, AppArmor und Schreibrechte kritischer Dateien.
+„Unbekannt“ bedeutet ausdrücklich, dass Werkzeug, Berechtigung oder Evidenz fehlen; es ist keine
+Entwarnung. Arch-Pakete besitzen keinen separaten Security-Updatekanal, daher wird die gesamte
+Updateliste gezeigt.
+
+Die Anwendung berechnet keinen Gesamtscore. Firewall-Änderungen zeigen ihre Wirkung vorab, benötigen
+eine Bestätigung und anschließend Polkit. Andere Befunde enthalten nur Empfehlungen und lösen keine
+automatische Änderung aus.

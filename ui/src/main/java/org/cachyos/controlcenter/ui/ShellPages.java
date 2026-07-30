@@ -26,6 +26,7 @@ import org.cachyos.controlcenter.modules.diagnostics.DiagnosticManager;
 import org.cachyos.controlcenter.modules.network.NetworkEvents;
 import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
 import org.cachyos.controlcenter.modules.packages.PackageManager;
+import org.cachyos.controlcenter.modules.security.SecurityManager;
 import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
 import org.cachyos.controlcenter.systeminfo.PlatformInfo;
 import org.cachyos.controlcenter.systeminfo.SystemSnapshot;
@@ -37,6 +38,7 @@ import org.cachyos.controlcenter.ui.diagnostics.DiagnosticsView;
 import org.cachyos.controlcenter.ui.network.NetworkView;
 import org.cachyos.controlcenter.ui.notifications.NotificationCenter;
 import org.cachyos.controlcenter.ui.packages.PackagesView;
+import org.cachyos.controlcenter.ui.security.SecurityView;
 import org.cachyos.controlcenter.ui.theme.ThemeManager;
 import org.cachyos.controlcenter.ui.theme.ThemeMode;
 import org.cachyos.controlcenter.ui.voice.VoiceView;
@@ -174,6 +176,13 @@ final class ShellPages {
         "Pakete",
         "Pacman-Suche und Details; Änderungen benötigen Vorschau, Bestätigung und Polkit.",
         new PackagesView(manager, notifications));
+  }
+
+  static Node security(SecurityManager manager, NotificationCenter notifications) {
+    return page(
+        "Sicherheit",
+        "Nachvollziehbare lokale Einzelbefunde ohne irreführenden Gesamtscore.",
+        new SecurityView(manager, notifications));
   }
 
   static Node settings(ThemeManager themeManager, Consumer<ThemeMode> onChanged) {
