@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=CachyOS Control Center
+GenericName=Systemverwaltung
+Comment=Sichere Systemverwaltung und optionale KI-Hilfe für CachyOS
+Exec=cachyos-control-center
+Icon=org.cachyos.ControlCenter
+Terminal=false
+Categories=System;Settings;
+Keywords=CachyOS;Arch;System;Network;Audio;Hardware;
+StartupNotify=true
+StartupWMClass=org.cachyos.controlcenter.ControlCenterApplication

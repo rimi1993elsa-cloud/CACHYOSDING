@@ -5,10 +5,10 @@ phasenweise nach dem verbindlichen Masterauftrag entwickelt.
 
 ## Aktueller Stand
 
-Phase 23 schließt das produktionsnahe Sicherheitsreview ohne offenen kritischen Befund ab.
-Helper, Prozessgrenzen, Pakettransaktionen, Prompt-Injection, Secret-Leaks, Pfade/Symlinks,
-Berechtigungen und Logredaktion sind durch Codeprüfung und gezielte Tests abgedeckt. Verbleibende
-Zielsystem-Integrationsprüfungen sind im Reviewbericht transparent als mittlere Befunde geplant.
+Phase 24 liefert einen Arch/CachyOS-PKGBUILD mit vier Split-Packages, KDE-Menüeintrag,
+AppStream-Metadaten, skalierbarem Icon sowie synchronisierten D-Bus- und Polkit-Regeln. Entfernung
+behält Nutzerdaten ausdrücklich bei. Ein Gradle-Gate prüft Assets, Pfade und sicherheitsrelevante
+Paketregeln bei jedem Qualitätslauf.
 
 ## Voraussetzungen
 

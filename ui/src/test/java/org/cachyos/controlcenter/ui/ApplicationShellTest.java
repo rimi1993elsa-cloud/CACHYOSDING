@@ -593,8 +593,11 @@ class ApplicationShellTest extends ApplicationTest {
   @Test
   void questionMovesToChatDraftWithoutDispatching() {
     TextField command = lookup("#command-field").queryAs(TextField.class);
-    clickOn(command).write("Warum ist mein WLAN langsam?");
-    press(javafx.scene.input.KeyCode.ENTER).release(javafx.scene.input.KeyCode.ENTER);
+    interact(
+        () -> {
+          command.setText("Warum ist mein WLAN langsam?");
+          command.fireEvent(new javafx.event.ActionEvent());
+        });
 
     Label heading = lookup(".page-title").queryAs(Label.class);
     assertEquals("KI-Assistent", heading.getText());

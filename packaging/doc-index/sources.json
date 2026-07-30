@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {"id": "cachyos-wiki", "url": "https://wiki.cachyos.org/"},
+    {"id": "arch-wiki", "url": "https://wiki.archlinux.org/"}
+  ]
+}

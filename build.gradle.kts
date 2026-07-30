@@ -79,3 +79,42 @@ tasks.register("quality") {
     dependsOn(subprojects.map { it.tasks.named("check") })
 }
 
+val verifyPackaging = tasks.register("verifyPackaging") {
+    group = "verification"
+    description = "Validates Phase 24 desktop, AppStream, D-Bus, Polkit and PKGBUILD assets."
+    doLast {
+        val required = listOf(
+            "packaging/PKGBUILD",
+            "packaging/.SRCINFO",
+            "packaging/desktop/org.cachyos.ControlCenter.desktop",
+            "packaging/appstream/org.cachyos.ControlCenter.metainfo.xml",
+            "packaging/icons/org.cachyos.ControlCenter.svg",
+            "packaging/dbus/org.cachyos.ControlCenter.Helper1.service",
+            "packaging/dbus/org.cachyos.ControlCenter.Helper1.conf",
+            "packaging/polkit/org.cachyos.controlcenter.policy",
+        ).map(::file)
+        check(required.all { it.isFile }) { "Packaging asset is missing" }
+        val desktop = required[2].readText()
+        check("Exec=cachyos-control-center" in desktop && "Terminal=false" in desktop)
+        val service = required[5].readText()
+        check("User=root" in service && "/usr/lib/cachyos-control-center-helper/" in service)
+        val policy = required[7].readText()
+        check("<allow_any>no</allow_any>" in policy && "allow_active>yes" !in policy)
+        val installScript = file("packaging/cachyos-control-center.install").readText()
+        check("rm -r" !in installScript && "XDG_CONFIG_HOME" in installScript)
+        val packageBuild = required[0].readText()
+        check("chmod 777" !in packageBuild && "package_cachyos-control-center-helper" in packageBuild)
+        check(
+            file("packaging/dbus/org.cachyos.ControlCenter.Helper1.service").readText() ==
+                file("helper/privileged-helper/src/main/resources/dbus-1/system-services/org.cachyos.ControlCenter.Helper1.service").readText()
+        ) { "D-Bus service assets drifted" }
+        check(
+            file("packaging/dbus/org.cachyos.ControlCenter.Helper1.conf").readText() ==
+                file("helper/privileged-helper/src/main/resources/dbus-1/system.d/org.cachyos.ControlCenter.Helper1.conf").readText()
+        ) { "D-Bus policy assets drifted" }
+    }
+}
+
+tasks.named("quality") {
+    dependsOn(verifyPackaging)
+}

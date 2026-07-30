@@ -1,0 +1,13 @@
+post_install() {
+  echo 'CachyOS Control Center: API-Keys werden über Secret Service/KDE Wallet verwaltet.'
+  echo 'Der optionale Helper wird erst bei einer bestätigten Polkit-Aktion aktiviert.'
+}
+
+post_upgrade() {
+  echo 'Benutzereinstellungen unter XDG_CONFIG_HOME bleiben erhalten und werden nicht überschrieben.'
+}
+
+post_remove() {
+  echo 'Persönliche Einstellungen und Verläufe wurden absichtlich nicht gelöscht.'
+  echo 'Sie können in der Anwendung oder manuell unter XDG_CONFIG_HOME entfernt werden.'
+}

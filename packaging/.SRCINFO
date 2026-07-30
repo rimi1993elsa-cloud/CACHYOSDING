@@ -1,0 +1,32 @@
+pkgbase = cachyos-control-center
+	pkgdesc = Sichere deutschsprachige Verwaltungszentrale für CachyOS
+	pkgver = 1.0.0
+	pkgrel = 1
+	url = https://github.com/CachyOS
+	arch = x86_64
+	license = GPL-3.0-or-later
+	makedepends = jdk21-openjdk
+
+pkgname = cachyos-control-center
+	depends = java-runtime=21
+	depends = gtk3
+	optdepends = cachyos-control-center-helper: administrative operations through Polkit
+	optdepends = cachyos-control-center-stt-de: German Vosk model integration directory
+	optdepends = cachyos-control-center-doc-index: offline source registry and documentation
+	optdepends = libsecret: OpenAI API key through Secret Service or KDE Wallet
+	optdepends = networkmanager: network management
+	optdepends = pipewire-pulse: audio management
+	optdepends = power-profiles-daemon: power profiles
+
+pkgname = cachyos-control-center-helper
+	depends = java-runtime=21
+	depends = polkit
+	depends = dbus
+
+pkgname = cachyos-control-center-stt-de
+	pkgdesc = Integrationsverzeichnis und Anleitung für das deutsche Vosk-STT-Modell
+	depends = cachyos-control-center
+
+pkgname = cachyos-control-center-doc-index
+	pkgdesc = Offline-Quellenmanifest und Dokumentation für das CachyOS Control Center
+	depends = cachyos-control-center

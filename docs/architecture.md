@@ -80,6 +80,10 @@ flowchart TB
   Weitere Manager laden auf Sicht/Aktion oder reagieren auf NetworkManager-/PipeWire-Ereignisse.
 - Feste Systemprozesse besitzen Zeitlimits, begrenzte Ausgabe und werden bei Interrupt zerstört.
   Performanceproben enthalten nur Executable-Name, Dauer und Erfolg, niemals Argumente.
+- Die Paketierung trennt die unprivilegierte App vom optionalen Root-Helper. Nur das Helper-Paket
+  installiert System-Bus- und Polkit-Dateien; deren installierter Exec-Pfad wird im Build geprüft.
+- Paketentfernung verändert keine Benutzerdateien. Datenmigrationen müssen schema-validiert,
+  rückwärtsverträglich und unabhängig vom Paketmanager erfolgen.
 - `platform-linux` liest Pacman-Daten mit `LC_ALL=C`, begrenzter Ausgabe und getrennten
   validierten Argumenten. Nur der Mutation-Gateway kennt `helper-api`.
 - `platform-linux` enthält typisierte Adapter. Der aktuelle Prozessadapter akzeptiert eine absolute

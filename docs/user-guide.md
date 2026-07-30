@@ -193,3 +193,15 @@ Aktualisierungen werden zusammengeführt, damit keine parallelen Probe-Wellen en
 langsameren Managerarbeiten laufen außerhalb des UI-Threads und besitzen bei externen Werkzeugen
 Zeitlimits. Ohne Netzwerk bleiben lokale Verwaltung, Diagnose und vorhandene Wissenscaches
 verfügbar; nur ausdrücklich gestartete Online-Funktionen melden ihre Nichtverfügbarkeit.
+
+# Installation und Entfernung
+
+Auf CachyOS/Arch erzeugt `cd packaging && makepkg --syncdeps --cleanbuild` vier Pakete. Für die
+normale Oberfläche genügt `cachyos-control-center`; administrative Paket-, Firewall-, Systemdienst-,
+Snapshot- und Fremdprozessaktionen benötigen zusätzlich `cachyos-control-center-helper`.
+STT-Anleitung und Offline-Quellenmanifest sind optionale Pakete.
+
+Nach Installation erscheint „CachyOS Control Center“ im KDE-Menü. Eine Deinstallation entfernt
+Programme und Systemintegration, aber niemals Einstellungen oder Chatverlauf im Benutzerkonto.
+Diese Daten lassen sich vor oder nach der Entfernung ausdrücklich über die Datenschutzseite
+beziehungsweise das XDG-Konfigurationsverzeichnis löschen.

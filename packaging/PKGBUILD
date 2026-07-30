@@ -1,0 +1,89 @@
+# Maintainer: CachyOS Control Center AI contributors
+pkgbase=cachyos-control-center
+pkgname=(
+  cachyos-control-center
+  cachyos-control-center-helper
+  cachyos-control-center-stt-de
+  cachyos-control-center-doc-index
+)
+pkgver=1.0.0
+pkgrel=1
+pkgdesc='Sichere deutschsprachige Verwaltungszentrale für CachyOS'
+arch=('x86_64')
+url='https://github.com/CachyOS'
+license=('GPL-3.0-or-later')
+makedepends=('jdk21-openjdk')
+options=('!strip')
+
+# This repository PKGBUILD intentionally builds the checked-out tree one level above packaging/.
+# Release automation must replace this local-source layout with a checksummed source archive.
+build() {
+  cd "$startdir/.."
+  export JAVA_HOME=/usr/lib/jvm/java-21-openjdk
+  ./gradlew --no-daemon :app:installDist :helper:privileged-helper:installDist
+}
+
+check() {
+  cd "$startdir/.."
+  export JAVA_HOME=/usr/lib/jvm/java-21-openjdk
+  ./gradlew --no-daemon quality
+}
+
+package_cachyos-control-center() {
+  depends=('java-runtime=21' 'gtk3')
+  optdepends=(
+    'cachyos-control-center-helper: administrative operations through Polkit'
+    'cachyos-control-center-stt-de: German Vosk model integration directory'
+    'cachyos-control-center-doc-index: offline source registry and documentation'
+    'libsecret: OpenAI API key through Secret Service or KDE Wallet'
+    'networkmanager: network management'
+    'pipewire-pulse: audio management'
+    'power-profiles-daemon: power profiles'
+  )
+  install=cachyos-control-center.install
+
+  install -d "$pkgdir/usr/lib/cachyos-control-center"
+  cp -a "$startdir/../app/build/install/app/." "$pkgdir/usr/lib/cachyos-control-center/"
+  install -d "$pkgdir/usr/bin"
+  ln -s /usr/lib/cachyos-control-center/bin/app "$pkgdir/usr/bin/cachyos-control-center"
+  install -Dm644 "$startdir/desktop/org.cachyos.ControlCenter.desktop" \
+    "$pkgdir/usr/share/applications/org.cachyos.ControlCenter.desktop"
+  install -Dm644 "$startdir/appstream/org.cachyos.ControlCenter.metainfo.xml" \
+    "$pkgdir/usr/share/metainfo/org.cachyos.ControlCenter.metainfo.xml"
+  install -Dm644 "$startdir/icons/org.cachyos.ControlCenter.svg" \
+    "$pkgdir/usr/share/icons/hicolor/scalable/apps/org.cachyos.ControlCenter.svg"
+  install -Dm644 "$startdir/../LICENSE" \
+    "$pkgdir/usr/share/licenses/cachyos-control-center/LICENSE"
+}
+
+package_cachyos-control-center-helper() {
+  depends=('java-runtime=21' 'polkit' 'dbus')
+
+  install -d "$pkgdir/usr/lib/cachyos-control-center-helper"
+  cp -a "$startdir/../helper/privileged-helper/build/install/privileged-helper/." \
+    "$pkgdir/usr/lib/cachyos-control-center-helper/"
+  install -Dm644 "$startdir/dbus/org.cachyos.ControlCenter.Helper1.service" \
+    "$pkgdir/usr/share/dbus-1/system-services/org.cachyos.ControlCenter.Helper1.service"
+  install -Dm644 "$startdir/dbus/org.cachyos.ControlCenter.Helper1.conf" \
+    "$pkgdir/usr/share/dbus-1/system.d/org.cachyos.ControlCenter.Helper1.conf"
+  install -Dm644 "$startdir/polkit/org.cachyos.controlcenter.policy" \
+    "$pkgdir/usr/share/polkit-1/actions/org.cachyos.controlcenter.policy"
+  install -Dm644 "$startdir/../LICENSE" \
+    "$pkgdir/usr/share/licenses/cachyos-control-center-helper/LICENSE"
+}
+
+package_cachyos-control-center-stt-de() {
+  pkgdesc='Integrationsverzeichnis und Anleitung für das deutsche Vosk-STT-Modell'
+  depends=('cachyos-control-center')
+  install -Dm644 "$startdir/stt/README.de.md" \
+    "$pkgdir/usr/share/cachyos-control-center/models/de/README.md"
+}
+
+package_cachyos-control-center-doc-index() {
+  pkgdesc='Offline-Quellenmanifest und Dokumentation für das CachyOS Control Center'
+  depends=('cachyos-control-center')
+  install -Dm644 "$startdir/doc-index/sources.json" \
+    "$pkgdir/usr/share/cachyos-control-center/doc-index/sources.json"
+  install -Dm644 "$startdir/../docs/user-guide.md" \
+    "$pkgdir/usr/share/doc/cachyos-control-center/user-guide.md"
+}

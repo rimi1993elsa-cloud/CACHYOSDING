@@ -7,6 +7,13 @@ Alle nennenswerten Änderungen werden in dieser Datei dokumentiert. Das Format o
 
 ### Added
 
+- Arch/CachyOS-PKGBUILD mit vier getrennten Paketen für App, Helper, STT und Dokumentindex
+- KDE-Desktopdatei, AppStream-Metadaten und skalierbares SVG-Icon
+- Installierbare D-Bus-Aktivierung und Polkit-Policy mit Root-Busnamenschutz
+- Synchronitätsprüfung zwischen Helper-Ressourcen und Paketierungsassets
+- Update-/Deinstallationsskript ohne automatische Löschung von XDG-Nutzerdaten
+- Gradle-`verifyPackaging`-Gate für erforderliche Assets, Pfade und Richtlinien
+
 - Aktualisiertes Threat Model für alle implementierten Vertrauensgrenzen
 - Zusätzliche deutsche, englische und strukturierte Prompt-Injection-Marker
 - Symlink-Ablehnung bereits am XDG-Konfigurationswurzelverzeichnis

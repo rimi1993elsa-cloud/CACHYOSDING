@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>org.cachyos.ControlCenter</id>
+  <name>CachyOS Control Center</name>
+  <summary>Sichere Systemverwaltung und optionale KI-Hilfe</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  <description>
+    <p>Das CachyOS Control Center vereint lokale Systeminformationen, Netzwerk, Audio,
+    Anwendungen, Pakete, Sicherheit, Hardware, Speicher, Dienste, Prozesse und Diagnose.</p>
+    <p>Administrative Änderungen verwenden einen kleinen D-Bus-/Polkit-Helper. Der optionale
+    KI-Chat besitzt keine lokalen Ausführungsrechte.</p>
+  </description>
+  <launchable type="desktop-id">org.cachyos.ControlCenter.desktop</launchable>
+  <provides><binary>cachyos-control-center</binary></provides>
+  <developer_name>CachyOS Control Center AI contributors</developer_name>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="1.0.0" date="2026-07-30"/>
+  </releases>
+</component>
