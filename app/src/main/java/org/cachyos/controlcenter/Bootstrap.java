@@ -71,6 +71,7 @@ public final class Bootstrap {
   private Bootstrap() {}
 
   public static AppContext createContext() {
+    long bootstrapStarted = System.nanoTime();
     XdgPaths xdgPaths = XdgPaths.detect();
     PlatformInfo platformInfo = PlatformDetector.detect();
     SystemSnapshot systemSnapshot = SystemSnapshotDetector.detect(platformInfo);
@@ -180,6 +181,8 @@ public final class Bootstrap {
                       return thread;
                     }),
                 auditLog));
+    lifecycle.recordBootstrapDuration(
+        java.util.concurrent.TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - bootstrapStarted));
     return new AppContext(
         platformInfo,
         systemSnapshot,

@@ -185,3 +185,11 @@ Der Chatverlauf wird standardmäßig nicht gespeichert. Bei ausdrücklichem Opt-
 persönliche Daten löschen“ entfernen die jeweiligen Daten. Der JSON-Export enthält nur das
 validierte Einstellungsschema. API-Key und andere Secrets bleiben immer im Secret Service/KDE
 Wallet. Importe mit unbekannten Feldern, Symlinks oder mehr als 64 KiB werden abgelehnt.
+
+# Leistung, Offlinebetrieb und Resume
+
+Das Dashboard aktualisiert sich lastarm alle 30 Sekunden. Manuelle und nach Standby notwendige
+Aktualisierungen werden zusammengeführt, damit keine parallelen Probe-Wellen entstehen. Alle
+langsameren Managerarbeiten laufen außerhalb des UI-Threads und besitzen bei externen Werkzeugen
+Zeitlimits. Ohne Netzwerk bleiben lokale Verwaltung, Diagnose und vorhandene Wissenscaches
+verfügbar; nur ausdrücklich gestartete Online-Funktionen melden ihre Nichtverfügbarkeit.

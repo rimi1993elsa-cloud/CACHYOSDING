@@ -1,6 +1,7 @@
 package org.cachyos.controlcenter;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -37,6 +38,7 @@ class BootstrapTest {
     assertNotNull(context.actionDispatcher());
     assertNotNull(context.auditLog());
     assertNotNull(context.moduleRegistry());
+    assertTrue(context.lifecycleManager().bootstrapMillis() >= 0);
     context.lifecycleManager().close();
   }
 }

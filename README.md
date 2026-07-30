@@ -5,10 +5,10 @@ phasenweise nach dem verbindlichen Masterauftrag entwickelt.
 
 ## Aktueller Stand
 
-Phase 21 ergänzt lokale XDG-Einstellungen, Modul- und Schnellbuttonkonfiguration, Mikrofon- und
-KI-Freigaben, Budgetgrenze, opt-in Chatverlauf, Audit-Löschung sowie sicheren Export/Import.
-Das Exportschema enthält konstruktionsbedingt keine Secrets; API-Keys bleiben im Secret Service
-beziehungsweise KDE Wallet.
+Phase 22 stabilisiert Laufzeit und Resume: Startdauer und langsame feste Systemprobes werden ohne
+Parameterinhalte gemessen, Dashboard-Polling bleibt bei 30 Sekunden und manuelle/Resume-Refreshes
+werden zusammengeführt. Unterbrochene Systemprozesse werden beendet; Offline-Caches bleiben
+nutzbar und alle Manager arbeiten außerhalb des JavaFX-Threads.
 
 ## Voraussetzungen
 

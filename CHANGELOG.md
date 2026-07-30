@@ -7,6 +7,13 @@ Alle nennenswerten Änderungen werden in dieser Datei dokumentiert. Das Format o
 
 ### Added
 
+- Parameterfreie Bootstrap-Zeitmessung für reproduzierbare Startanalyse
+- Auf 100 Proben begrenzte Laufzeit-Telemetrie fester Systemwerkzeuge
+- Zusammengeführte Dashboard-Aktualisierung ohne parallele Pollingläufe
+- Stale-Refresh bei Rückkehr der Anwendung nach Sleep/Resume
+- Prozessbeendigung bei Thread-Abbruch und bestehende harte Befehlszeitlimits
+- Stabilitätstests für Refresh-Coalescing und redigierte Performanceproben
+
 - Atomare, private XDG-Persistenz für ein streng validiertes Einstellungsschema
 - Modul- und Schnellbuttonkonfiguration mit Anwendung beim nächsten Start
 - Wirksamer Mikrofon-, Online-KI-, Provider- und Nullbudget-Schalter

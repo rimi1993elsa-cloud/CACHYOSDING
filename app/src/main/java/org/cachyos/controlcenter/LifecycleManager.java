@@ -13,6 +13,7 @@ public final class LifecycleManager implements AutoCloseable {
   private static final Logger LOGGER = LoggerFactory.getLogger(LifecycleManager.class);
   private final AtomicBoolean closed = new AtomicBoolean();
   private final CopyOnWriteArrayList<AutoCloseable> resources = new CopyOnWriteArrayList<>();
+  private volatile long bootstrapMillis;
 
   public <T extends AutoCloseable> T manage(T resource) {
     if (closed.get()) {
@@ -23,7 +24,18 @@ public final class LifecycleManager implements AutoCloseable {
   }
 
   public void applicationStarted() {
-    LOGGER.info("Application started without elevated privileges");
+    LOGGER.info("Application started without elevated privileges bootstrapMs={}", bootstrapMillis);
+  }
+
+  public void recordBootstrapDuration(long durationMillis) {
+    if (durationMillis < 0) {
+      throw new IllegalArgumentException("Bootstrap duration must not be negative");
+    }
+    bootstrapMillis = durationMillis;
+  }
+
+  public long bootstrapMillis() {
+    return bootstrapMillis;
   }
 
   @Override

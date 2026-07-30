@@ -76,6 +76,10 @@ flowchart TB
 - API-Keys, Tokens und Wallet-Inhalte besitzen kein Feld im Einstellungs- oder Exportschema.
 - Der Chat prüft Online-Freigabe, Anbieter und Budget bei jedem Senden. Dokumentations-, System-
   und Hardwarekontext wird nur bei der jeweiligen aktuellen Freigabe aufgebaut.
+- Das einzige periodische Basispolling ist der Dashboard-Monitor mit 30 Sekunden Mindestintervall.
+  Weitere Manager laden auf Sicht/Aktion oder reagieren auf NetworkManager-/PipeWire-Ereignisse.
+- Feste Systemprozesse besitzen Zeitlimits, begrenzte Ausgabe und werden bei Interrupt zerstört.
+  Performanceproben enthalten nur Executable-Name, Dauer und Erfolg, niemals Argumente.
 - `platform-linux` liest Pacman-Daten mit `LC_ALL=C`, begrenzter Ausgabe und getrennten
   validierten Argumenten. Nur der Mutation-Gateway kennt `helper-api`.
 - `platform-linux` enthält typisierte Adapter. Der aktuelle Prozessadapter akzeptiert eine absolute

@@ -1,5 +1,6 @@
 package org.cachyos.controlcenter;
 
+import java.time.Duration;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -54,6 +55,14 @@ public final class ControlCenterApplication extends Application {
     stage.setMinHeight(480);
     stage.setScene(scene);
     stage.show();
+    stage
+        .focusedProperty()
+        .addListener(
+            (ignored, previous, focused) -> {
+              if (focused) {
+                context.dashboardMonitor().refreshIfStale(Duration.ofMinutes(2));
+              }
+            });
     context.lifecycleManager().applicationStarted();
   }
 
