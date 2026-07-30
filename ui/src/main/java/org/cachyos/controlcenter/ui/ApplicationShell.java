@@ -24,6 +24,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.cachyos.controlcenter.core.action.ActionDispatcher;
 import org.cachyos.controlcenter.systeminfo.PlatformInfo;
+import org.cachyos.controlcenter.systeminfo.SystemSnapshot;
 import org.cachyos.controlcenter.ui.navigation.ContentRouter;
 import org.cachyos.controlcenter.ui.navigation.NavigationCatalog;
 import org.cachyos.controlcenter.ui.navigation.NavigationEntry;
@@ -48,13 +49,16 @@ final class ApplicationShell {
 
   ApplicationShell(
       PlatformInfo platformInfo,
+      SystemSnapshot systemSnapshot,
       NavigationCatalog catalog,
       ThemeManager themeManager,
       NotificationCenter notifications,
       ActionDispatcher actionDispatcher) {
     this.notifications = notifications;
     router =
-        new ContentRouter(createPages(platformInfo, themeManager, notifications, actionDispatcher));
+        new ContentRouter(
+            createPages(
+                platformInfo, systemSnapshot, themeManager, notifications, actionDispatcher));
     sidebar = createSidebar(catalog);
 
     frame.getStyleClass().add("application-shell");
@@ -136,7 +140,7 @@ final class ApplicationShell {
 
     Label title = new Label("CachyOS Control Center");
     title.getStyleClass().add("app-title");
-    Label phase = new Label("Entwicklungsstand · Phase 2");
+    Label phase = new Label("Entwicklungsstand · Phase 3");
     phase.getStyleClass().add("phase-badge");
 
     Label statusDot = new Label("●");
@@ -181,14 +185,15 @@ final class ApplicationShell {
 
   private Map<NavigationId, Node> createPages(
       PlatformInfo platformInfo,
+      SystemSnapshot systemSnapshot,
       ThemeManager themeManager,
       NotificationCenter notificationCenter,
       ActionDispatcher actionDispatcher) {
     Map<NavigationId, Node> pages = new EnumMap<>(NavigationId.class);
     pages.put(
         NavigationId.OVERVIEW,
-        ShellPages.overview(platformInfo, actionDispatcher, notificationCenter));
-    pages.put(NavigationId.SYSTEM, ShellPages.system(platformInfo));
+        ShellPages.overview(platformInfo, systemSnapshot, actionDispatcher, notificationCenter));
+    pages.put(NavigationId.SYSTEM, ShellPages.system(platformInfo, systemSnapshot));
     pages.put(
         NavigationId.SETTINGS,
         ShellPages.settings(

@@ -8,6 +8,8 @@ import org.cachyos.controlcenter.core.module.ModuleRegistry;
 import org.cachyos.controlcenter.platform.process.DesktopIntegrationModule;
 import org.cachyos.controlcenter.systeminfo.PlatformDetector;
 import org.cachyos.controlcenter.systeminfo.PlatformInfo;
+import org.cachyos.controlcenter.systeminfo.SystemSnapshot;
+import org.cachyos.controlcenter.systeminfo.SystemSnapshotDetector;
 
 /** Creates the unprivileged application context. */
 public final class Bootstrap {
@@ -15,6 +17,7 @@ public final class Bootstrap {
 
   public static AppContext createContext() {
     PlatformInfo platformInfo = PlatformDetector.detect();
+    SystemSnapshot systemSnapshot = SystemSnapshotDetector.detect(platformInfo);
     LifecycleManager lifecycle = new LifecycleManager();
     InMemoryAuditLog auditLog = new InMemoryAuditLog();
     ModuleRegistry moduleRegistry = new ModuleRegistry();
@@ -37,6 +40,7 @@ public final class Bootstrap {
                       return thread;
                     }),
                 auditLog));
-    return new AppContext(platformInfo, lifecycle, dispatcher, auditLog, moduleRegistry);
+    return new AppContext(
+        platformInfo, systemSnapshot, lifecycle, dispatcher, auditLog, moduleRegistry);
   }
 }

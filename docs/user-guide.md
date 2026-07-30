@@ -1,4 +1,4 @@
-# Benutzerhandbuch – Phase 1
+# Benutzerhandbuch – Phase 3
 
 Nach `./gradlew :app:run` erscheint die Grundoberfläche mit Topbar, Navigation, Inhaltsbereich und
 Statusbereich. Die Seiten „Übersicht“, „System“ und „Einstellungen“ enthalten reale lokale Inhalte.
@@ -13,6 +13,10 @@ Tastaturkürzel:
 - `Strg+L`: späteres Eingabefeld fokussieren
 
 Unter „Einstellungen“ kann zwischen System-, hellem und dunklem Farbschema gewechselt werden.
+
+Die Seite „System“ zeigt erkannte Angaben zu Distribution, CachyOS, Kernel, Desktop, Sitzung,
+Prozessor, Arbeitsspeicher, Speicherplatz, Akku, Netzwerk, Bootmanager und optionalen Werkzeugen.
+Nicht verfügbare Werte werden nicht geschätzt. Der Inhalt ist auf kleinen Displays scrollbar.
 
 Auf der Übersicht stehen vier Schnellaktionen bereit:
 

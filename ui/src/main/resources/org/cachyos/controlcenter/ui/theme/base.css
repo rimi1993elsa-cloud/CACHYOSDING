@@ -8,6 +8,15 @@
     -fx-background-color: -app-background;
 }
 
+.page-scroll,
+.page-scroll > .viewport {
+    -fx-background-color: transparent;
+}
+
+.page-scroll {
+    -fx-border-color: transparent;
+}
+
 .topbar,
 .statusbar,
 .inputbar {

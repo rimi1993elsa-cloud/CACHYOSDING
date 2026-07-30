@@ -7,6 +7,10 @@ Alle nennenswerten Änderungen werden in dieser Datei dokumentiert. Das Format o
 
 ### Added
 
+- Schreibgeschützter System-Snapshot für Distribution, Kernel, Sitzung und Hardware
+- Dynamische Erkennung von Speicher, Akku, Netzwerk und Bootmanager
+- Zentrale Capability Registry mit Gründen und Installationshinweisen für fehlende Werkzeuge
+- Reale, scrollbare Systemansicht mit sicheren Fallbacks
 - Typisierte Action-Requests und -Results mit allowlist-basierter Registry
 - Asynchroner Dispatcher mit Fehlerabbildung und parameterfreiem Audit
 - Modulregistrierung und gemeinsame Manager-Schnittstelle

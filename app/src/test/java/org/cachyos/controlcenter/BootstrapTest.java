@@ -10,6 +10,7 @@ class BootstrapTest {
     AppContext context = Bootstrap.createContext();
 
     assertNotNull(context.platformInfo());
+    assertNotNull(context.systemSnapshot());
     assertNotNull(context.lifecycleManager());
     assertNotNull(context.actionDispatcher());
     assertNotNull(context.auditLog());

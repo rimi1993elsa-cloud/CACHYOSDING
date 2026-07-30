@@ -15,6 +15,7 @@ import org.cachyos.controlcenter.core.action.ActionResult;
 import org.cachyos.controlcenter.core.action.InputSource;
 import org.cachyos.controlcenter.systeminfo.OperatingSystemFamily;
 import org.cachyos.controlcenter.systeminfo.PlatformInfo;
+import org.cachyos.controlcenter.systeminfo.SystemSnapshotDetector;
 import org.cachyos.controlcenter.ui.navigation.NavigationEntry;
 import org.cachyos.controlcenter.ui.navigation.NavigationId;
 import org.junit.jupiter.api.Test;
@@ -31,6 +32,7 @@ class ApplicationShellTest extends ApplicationTest {
     MainView view =
         new MainView(
             platformInfo,
+            SystemSnapshotDetector.detect(platformInfo),
             request -> {
               dispatched.set(request);
               return CompletableFuture.completedFuture(ActionResult.success("Test"));

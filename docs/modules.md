@@ -2,9 +2,9 @@
 
 | Modulgruppe | Phase 0 | Geplante Aktivierung |
 |---|---|---|
-| App/Core/UI | Shell, Navigation, Theme und sichere Schnellbuttons aktiv | Phase 3 |
-| Desktop-Integration | Vier unprivilegierte, feste Aktionen aktiv | Phase 3 |
-| System-Info | sichere Plattformbasis | Phase 3 |
+| App/Core/UI | Shell, Navigation, Theme und sichere Schnellbuttons aktiv | Phase 4 |
+| Desktop-Integration | Vier unprivilegierte, feste Aktionen aktiv | Phase 4 |
+| System-Info | realer System-Snapshot und Capability Registry aktiv | Phase 4 |
 | Netzwerk/Audio/Anwendungen | nur Projektstruktur | Phase 5–7 |
 | Input/STT/Intent | nur Projektstruktur | Phase 8–9 |
 | KI/RAG | nur Projektstruktur | Phase 10–11 |

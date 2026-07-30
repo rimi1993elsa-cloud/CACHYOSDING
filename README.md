@@ -5,10 +5,10 @@ phasenweise nach dem verbindlichen Masterauftrag entwickelt.
 
 ## Aktueller Stand
 
-Phase 2 stellt eine responsive JavaFX-Shell und ein typisiertes, allowlist-basiertes Action
-Framework bereit. Vier unprivilegierte Schnellaktionen können Firefox, Dateimanager und Terminal
-öffnen oder die Bildschirmsperre anfordern. Nicht verfügbare Programme werden ehrlich gemeldet;
-Manager-Funktionen sind noch nicht freigeschaltet.
+Phase 3 stellt eine responsive JavaFX-Shell, ein typisiertes Action Framework und einen realen,
+schreibgeschützten System-Snapshot bereit. Die Anwendung erkennt Betriebssystem, CachyOS, Kernel,
+Sitzung, CPU, GPU, RAM, Speicher, Akku, Netzwerk, Bootmanager und optionale Werkzeuge dynamisch.
+Fehlende Daten oder Programme werden ehrlich als nicht verfügbar angezeigt.
 
 ## Voraussetzungen
 
@@ -38,8 +38,9 @@ Unter Windows:
 ./gradlew :app:run
 ```
 
-Die aktuelle Oberfläche zeigt reale JVM-/Sitzungsdaten. Schnellbuttons senden ausschließlich feste
-Action-IDs an den lokalen Dispatcher. Es gibt keine freie Shellausführung und keine erhöhten Rechte.
+Die aktuelle Oberfläche zeigt reale lokale Systemdaten. Schnellbuttons senden ausschließlich feste
+Action-IDs an den lokalen Dispatcher. Die Erkennung verwendet sichere Java- und Kernel-Schnittstellen;
+es gibt keine freie Shellausführung und keine erhöhten Rechte.
 
 ## Projektmodule
 
@@ -47,10 +48,10 @@ Action-IDs an den lokalen Dispatcher. Es gibt keine freie Shellausführung und k
 |---|---|
 | `app` | Bootstrap, JavaFX-Lebenszyklus und Composition Root |
 | `core` | Gemeinsame Kernmodelle und XDG-Infrastruktur |
-| `ui` | JavaFX-Komponenten; in Phase 0 nur das Startfenster |
+| `ui` | JavaFX-Shell, Navigation, Statuskarten und Benachrichtigungen |
 | `input` | Spätere Text-, Voice- und Intent-Grenze |
 | `ai` | Spätere, strikt nur lesende KI-Grenze |
-| `system-info` | Sichere Plattform- und später Systemerkennung |
+| `system-info` | Plattform-, Hardware-, Netzwerk-, Boot- und Capability-Erkennung |
 | `platform-linux` | Spätere typisierte Linux-Adapter |
 | `persistence` | Spätere SQLite-Persistenz |
 | `modules/*` | Fachmodule der nachfolgenden Phasen |

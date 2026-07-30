@@ -5,11 +5,14 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import org.cachyos.controlcenter.core.action.ActionDispatcher;
 import org.cachyos.controlcenter.systeminfo.PlatformInfo;
+import org.cachyos.controlcenter.systeminfo.SystemSnapshot;
 import org.cachyos.controlcenter.ui.components.QuickActionBar;
 import org.cachyos.controlcenter.ui.components.StatusCard;
 import org.cachyos.controlcenter.ui.notifications.NotificationCenter;
@@ -22,17 +25,23 @@ final class ShellPages {
 
   static Node overview(
       PlatformInfo platformInfo,
+      SystemSnapshot snapshot,
       ActionDispatcher actionDispatcher,
       NotificationCenter notifications) {
     FlowPane cards = new FlowPane(14, 14);
     cards
         .getChildren()
         .addAll(
-            new StatusCard(
-                "Plattform",
-                platformInfo.operatingSystemFamily().displayName(),
-                platformInfo.operatingSystemName()),
+            new StatusCard("Plattform", snapshot.distribution().prettyName(), snapshot.kernel()),
             new StatusCard("Sitzung", platformInfo.sessionType(), platformInfo.desktopSession()),
+            new StatusCard(
+                "Arbeitsspeicher",
+                formatBytes(snapshot.hardware().totalMemoryBytes()),
+                snapshot.hardware().cpuModel()),
+            new StatusCard(
+                "Speicher",
+                formatBytes(snapshot.storage().usableBytes()) + " frei",
+                snapshot.storage().fileSystem()),
             new StatusCard(
                 "Sicherheitsmodus", "Unprivilegiert", "Nur registrierte lokale Aktionen"));
     VBox content =
@@ -47,15 +56,46 @@ final class ShellPages {
         content);
   }
 
-  static Node system(PlatformInfo info) {
+  static Node system(PlatformInfo info, SystemSnapshot snapshot) {
+    long availableCapabilities =
+        snapshot.capabilities().statuses().values().stream()
+            .filter(status -> status.available())
+            .count();
     VBox details =
         new VBox(
             10,
-            detail("Betriebssystem", info.operatingSystemName()),
-            detail("Version", info.operatingSystemVersion()),
+            detail("Betriebssystem", snapshot.distribution().prettyName()),
+            detail("CachyOS", snapshot.distribution().cachyOs() ? "Erkannt" : "Nicht erkannt"),
+            detail("Kernel", snapshot.kernel()),
             detail("Architektur", info.architecture()),
             detail("Desktop", info.desktopSession()),
-            detail("Sitzungstyp", info.sessionType()));
+            detail("Sitzungstyp", info.sessionType()),
+            detail("CPU", snapshot.hardware().cpuModel()),
+            detail(
+                "Logische Prozessoren", Integer.toString(snapshot.hardware().logicalProcessors())),
+            detail("Arbeitsspeicher", formatBytes(snapshot.hardware().totalMemoryBytes())),
+            detail(
+                "Systemspeicher",
+                formatBytes(snapshot.storage().usableBytes())
+                    + " frei von "
+                    + formatBytes(snapshot.storage().totalBytes())),
+            detail(
+                "Akku",
+                snapshot.battery().present()
+                    ? snapshot.battery().percentage() + " % · " + snapshot.battery().status()
+                    : "Nicht verfügbar"),
+            detail(
+                "Netzwerk",
+                snapshot.network().online()
+                    ? "Verbunden · " + snapshot.network().interfaces().size() + " Schnittstellen"
+                    : "Offline oder nicht verfügbar"),
+            detail("Bootmanager", snapshot.bootManager().displayName()),
+            detail(
+                "Optionale Werkzeuge",
+                availableCapabilities
+                    + " von "
+                    + snapshot.capabilities().statuses().size()
+                    + " erkannt"));
     details.getStyleClass().add("details-panel");
     return page(
         "System",
@@ -98,7 +138,11 @@ final class ShellPages {
     Label description = new Label(subtitle);
     description.setWrapText(true);
     description.getStyleClass().add("page-description");
-    VBox page = new VBox(14, heading, description, new Separator(), content);
+    ScrollPane scrollPane = new ScrollPane(content);
+    scrollPane.setFitToWidth(true);
+    scrollPane.getStyleClass().add("page-scroll");
+    VBox page = new VBox(14, heading, description, new Separator(), scrollPane);
+    VBox.setVgrow(scrollPane, Priority.ALWAYS);
     page.setId("page-" + title.toLowerCase(java.util.Locale.ROOT));
     page.setPadding(new Insets(26));
     page.getStyleClass().add("page");
@@ -112,5 +156,13 @@ final class ShellPages {
     content.getStyleClass().add("detail-value");
     VBox row = new VBox(3, name, content);
     return row;
+  }
+
+  private static String formatBytes(long bytes) {
+    if (bytes <= 0) {
+      return "Nicht verfügbar";
+    }
+    double gibibytes = bytes / (1024.0 * 1024.0 * 1024.0);
+    return String.format(java.util.Locale.GERMAN, "%.1f GiB", gibibytes);
   }
 }
