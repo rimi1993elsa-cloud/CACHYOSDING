@@ -5,10 +5,10 @@ phasenweise nach dem verbindlichen Masterauftrag entwickelt.
 
 ## Aktueller Stand
 
-Phase 3 stellt eine responsive JavaFX-Shell, ein typisiertes Action Framework und einen realen,
-schreibgeschützten System-Snapshot bereit. Die Anwendung erkennt Betriebssystem, CachyOS, Kernel,
-Sitzung, CPU, GPU, RAM, Speicher, Akku, Netzwerk, Bootmanager und optionale Werkzeuge dynamisch.
-Fehlende Daten oder Programme werden ehrlich als nicht verfügbar angezeigt.
+Phase 4 stellt zusätzlich ein dauerhaft nutzbares Dashboard bereit. CPU, RAM, Systemspeicher,
+Netzwerk und Akku werden alle 30 Sekunden lastarm im Hintergrund aktualisiert. Verfügbare
+Paketupdates und fehlgeschlagene systemd-Dienste werden über feste, schreibgeschützte Aufrufe
+ermittelt und fünf Minuten gecacht. Warnungen und die letzten lokalen Aktionen bleiben sichtbar.
 
 ## Voraussetzungen
 

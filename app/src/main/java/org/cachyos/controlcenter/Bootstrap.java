@@ -1,11 +1,15 @@
 package org.cachyos.controlcenter;
 
+import java.time.Duration;
 import java.util.concurrent.Executors;
 import org.cachyos.controlcenter.core.action.ActionRegistry;
 import org.cachyos.controlcenter.core.action.DefaultActionDispatcher;
 import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
 import org.cachyos.controlcenter.core.module.ModuleRegistry;
 import org.cachyos.controlcenter.platform.process.DesktopIntegrationModule;
+import org.cachyos.controlcenter.platform.status.LinuxSupplementalStatusProbe;
+import org.cachyos.controlcenter.systeminfo.DashboardDataSource;
+import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
 import org.cachyos.controlcenter.systeminfo.PlatformDetector;
 import org.cachyos.controlcenter.systeminfo.PlatformInfo;
 import org.cachyos.controlcenter.systeminfo.SystemSnapshot;
@@ -19,6 +23,14 @@ public final class Bootstrap {
     PlatformInfo platformInfo = PlatformDetector.detect();
     SystemSnapshot systemSnapshot = SystemSnapshotDetector.detect(platformInfo);
     LifecycleManager lifecycle = new LifecycleManager();
+    DashboardDataSource dashboardDataSource =
+        new DashboardDataSource(platformInfo, new LinuxSupplementalStatusProbe());
+    DashboardMonitor dashboardMonitor =
+        lifecycle.manage(
+            new DashboardMonitor(
+                dashboardDataSource,
+                DashboardDataSource.initial(systemSnapshot),
+                Duration.ofSeconds(30)));
     InMemoryAuditLog auditLog = new InMemoryAuditLog();
     ModuleRegistry moduleRegistry = new ModuleRegistry();
     ActionRegistry actionRegistry = new ActionRegistry();
@@ -41,6 +53,12 @@ public final class Bootstrap {
                     }),
                 auditLog));
     return new AppContext(
-        platformInfo, systemSnapshot, lifecycle, dispatcher, auditLog, moduleRegistry);
+        platformInfo,
+        systemSnapshot,
+        dashboardMonitor,
+        lifecycle,
+        dispatcher,
+        auditLog,
+        moduleRegistry);
   }
 }

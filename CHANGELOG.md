@@ -7,6 +7,9 @@ Alle nennenswerten Änderungen werden in dieser Datei dokumentiert. Das Format o
 
 ### Added
 
+- Lastarm aktualisiertes Dashboard für CPU, RAM, Speicher, Netzwerk und Akku
+- Gecachter Update- und fehlgeschlagener-Dienste-Status über feste read-only Argumentlisten
+- Schwellenwertbasierte Warnungen und Anzeige der letzten lokalen Aktionen
 - Schreibgeschützter System-Snapshot für Distribution, Kernel, Sitzung und Hardware
 - Dynamische Erkennung von Speicher, Akku, Netzwerk und Bootmanager
 - Zentrale Capability Registry mit Gründen und Installationshinweisen für fehlende Werkzeuge

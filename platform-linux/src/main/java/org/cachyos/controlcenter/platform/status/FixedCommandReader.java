@@ -1,0 +1,51 @@
+package org.cachyos.controlcenter.platform.status;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
+
+/** Executes fixed, read-only argument lists with bounded output and timeout. */
+final class FixedCommandReader {
+  private static final int MAX_LINES = 5_000;
+
+  private FixedCommandReader() {}
+
+  static Optional<List<String>> read(
+      Path executable, List<String> fixedArguments, Duration timeout) {
+    List<String> command = new ArrayList<>(fixedArguments.size() + 1);
+    command.add(executable.toAbsolutePath().normalize().toString());
+    command.addAll(fixedArguments);
+    try {
+      Process process = new ProcessBuilder(command).redirectErrorStream(true).start();
+      CompletableFuture<List<String>> output =
+          CompletableFuture.supplyAsync(
+              () -> {
+                try (var lines = process.inputReader().lines()) {
+                  return lines.limit(MAX_LINES).toList();
+                }
+              });
+      if (!process.waitFor(timeout.toMillis(), TimeUnit.MILLISECONDS)) {
+        process.destroyForcibly();
+        output.cancel(true);
+        return Optional.empty();
+      }
+      if (process.exitValue() != 0) {
+        return Optional.empty();
+      }
+      return Optional.of(output.get(1, TimeUnit.SECONDS));
+    } catch (InterruptedException exception) {
+      Thread.currentThread().interrupt();
+      return Optional.empty();
+    } catch (IOException exception) {
+      return Optional.empty();
+    } catch (java.util.concurrent.ExecutionException
+        | java.util.concurrent.TimeoutException exception) {
+      return Optional.empty();
+    }
+  }
+}

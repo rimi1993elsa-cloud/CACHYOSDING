@@ -23,6 +23,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.cachyos.controlcenter.core.action.ActionDispatcher;
+import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
+import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
 import org.cachyos.controlcenter.systeminfo.PlatformInfo;
 import org.cachyos.controlcenter.systeminfo.SystemSnapshot;
 import org.cachyos.controlcenter.ui.navigation.ContentRouter;
@@ -50,6 +52,8 @@ final class ApplicationShell {
   ApplicationShell(
       PlatformInfo platformInfo,
       SystemSnapshot systemSnapshot,
+      DashboardMonitor dashboardMonitor,
+      InMemoryAuditLog auditLog,
       NavigationCatalog catalog,
       ThemeManager themeManager,
       NotificationCenter notifications,
@@ -58,7 +62,13 @@ final class ApplicationShell {
     router =
         new ContentRouter(
             createPages(
-                platformInfo, systemSnapshot, themeManager, notifications, actionDispatcher));
+                platformInfo,
+                systemSnapshot,
+                dashboardMonitor,
+                auditLog,
+                themeManager,
+                notifications,
+                actionDispatcher));
     sidebar = createSidebar(catalog);
 
     frame.getStyleClass().add("application-shell");
@@ -140,7 +150,7 @@ final class ApplicationShell {
 
     Label title = new Label("CachyOS Control Center");
     title.getStyleClass().add("app-title");
-    Label phase = new Label("Entwicklungsstand · Phase 3");
+    Label phase = new Label("Entwicklungsstand · Phase 4");
     phase.getStyleClass().add("phase-badge");
 
     Label statusDot = new Label("●");
@@ -186,13 +196,15 @@ final class ApplicationShell {
   private Map<NavigationId, Node> createPages(
       PlatformInfo platformInfo,
       SystemSnapshot systemSnapshot,
+      DashboardMonitor dashboardMonitor,
+      InMemoryAuditLog auditLog,
       ThemeManager themeManager,
       NotificationCenter notificationCenter,
       ActionDispatcher actionDispatcher) {
     Map<NavigationId, Node> pages = new EnumMap<>(NavigationId.class);
     pages.put(
         NavigationId.OVERVIEW,
-        ShellPages.overview(platformInfo, systemSnapshot, actionDispatcher, notificationCenter));
+        ShellPages.overview(dashboardMonitor, auditLog, actionDispatcher, notificationCenter));
     pages.put(NavigationId.SYSTEM, ShellPages.system(platformInfo, systemSnapshot));
     pages.put(
         NavigationId.SETTINGS,

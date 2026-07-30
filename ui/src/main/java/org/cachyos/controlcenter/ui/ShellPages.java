@@ -7,14 +7,14 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import org.cachyos.controlcenter.core.action.ActionDispatcher;
+import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
+import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
 import org.cachyos.controlcenter.systeminfo.PlatformInfo;
 import org.cachyos.controlcenter.systeminfo.SystemSnapshot;
-import org.cachyos.controlcenter.ui.components.QuickActionBar;
-import org.cachyos.controlcenter.ui.components.StatusCard;
+import org.cachyos.controlcenter.ui.dashboard.DashboardView;
 import org.cachyos.controlcenter.ui.notifications.NotificationCenter;
 import org.cachyos.controlcenter.ui.theme.ThemeManager;
 import org.cachyos.controlcenter.ui.theme.ThemeMode;
@@ -24,36 +24,14 @@ final class ShellPages {
   private ShellPages() {}
 
   static Node overview(
-      PlatformInfo platformInfo,
-      SystemSnapshot snapshot,
+      DashboardMonitor dashboardMonitor,
+      InMemoryAuditLog auditLog,
       ActionDispatcher actionDispatcher,
       NotificationCenter notifications) {
-    FlowPane cards = new FlowPane(14, 14);
-    cards
-        .getChildren()
-        .addAll(
-            new StatusCard("Plattform", snapshot.distribution().prettyName(), snapshot.kernel()),
-            new StatusCard("Sitzung", platformInfo.sessionType(), platformInfo.desktopSession()),
-            new StatusCard(
-                "Arbeitsspeicher",
-                formatBytes(snapshot.hardware().totalMemoryBytes()),
-                snapshot.hardware().cpuModel()),
-            new StatusCard(
-                "Speicher",
-                formatBytes(snapshot.storage().usableBytes()) + " frei",
-                snapshot.storage().fileSystem()),
-            new StatusCard(
-                "Sicherheitsmodus", "Unprivilegiert", "Nur registrierte lokale Aktionen"));
-    VBox content =
-        new VBox(
-            18,
-            cards,
-            new Label("Schnellaktionen"),
-            new QuickActionBar(actionDispatcher, notifications));
     return page(
         "Übersicht",
-        "Die Grundoberfläche ist bereit. Angezeigte Werte stammen aus der lokalen Laufzeit.",
-        content);
+        "Lokaler Systemstatus mit lastarmer Aktualisierung und ohne erhöhte Rechte.",
+        new DashboardView(dashboardMonitor, auditLog, actionDispatcher, notifications));
   }
 
   static Node system(PlatformInfo info, SystemSnapshot snapshot) {

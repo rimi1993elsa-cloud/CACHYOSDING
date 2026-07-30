@@ -1,4 +1,4 @@
-# Benutzerhandbuch – Phase 3
+# Benutzerhandbuch – Phase 4
 
 Nach `./gradlew :app:run` erscheint die Grundoberfläche mit Topbar, Navigation, Inhaltsbereich und
 Statusbereich. Die Seiten „Übersicht“, „System“ und „Einstellungen“ enthalten reale lokale Inhalte.
@@ -17,6 +17,11 @@ Unter „Einstellungen“ kann zwischen System-, hellem und dunklem Farbschema g
 Die Seite „System“ zeigt erkannte Angaben zu Distribution, CachyOS, Kernel, Desktop, Sitzung,
 Prozessor, Arbeitsspeicher, Speicherplatz, Akku, Netzwerk, Bootmanager und optionalen Werkzeugen.
 Nicht verfügbare Werte werden nicht geschätzt. Der Inhalt ist auf kleinen Displays scrollbar.
+
+Die Übersicht aktualisiert CPU, Arbeitsspeicher, Systemspeicher, Netzwerk und Akku automatisch.
+Update- und Dienstestatus werden nur angezeigt, wenn `pacman` beziehungsweise `systemctl`
+verfügbar waren und die Abfrage erfolgreich war. Warnungen entstehen ausschließlich aus erkannten
+Schwellenwerten. Die fünf letzten lokalen Aktionen erscheinen nach der nächsten Aktualisierung.
 
 Auf der Übersicht stehen vier Schnellaktionen bereit:
 

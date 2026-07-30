@@ -2,10 +2,12 @@ package org.cachyos.controlcenter.ui;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
@@ -13,8 +15,12 @@ import org.cachyos.controlcenter.core.action.ActionId;
 import org.cachyos.controlcenter.core.action.ActionRequest;
 import org.cachyos.controlcenter.core.action.ActionResult;
 import org.cachyos.controlcenter.core.action.InputSource;
+import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
+import org.cachyos.controlcenter.systeminfo.DashboardDataSource;
+import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
 import org.cachyos.controlcenter.systeminfo.OperatingSystemFamily;
 import org.cachyos.controlcenter.systeminfo.PlatformInfo;
+import org.cachyos.controlcenter.systeminfo.SupplementalStatus;
 import org.cachyos.controlcenter.systeminfo.SystemSnapshotDetector;
 import org.cachyos.controlcenter.ui.navigation.NavigationEntry;
 import org.cachyos.controlcenter.ui.navigation.NavigationId;
@@ -23,16 +29,25 @@ import org.testfx.framework.junit5.ApplicationTest;
 
 class ApplicationShellTest extends ApplicationTest {
   private final AtomicReference<ActionRequest> dispatched = new AtomicReference<>();
+  private DashboardMonitor dashboardMonitor;
 
   @Override
   public void start(Stage stage) {
     PlatformInfo platformInfo =
         new PlatformInfo(
             OperatingSystemFamily.LINUX, "CachyOS", "rolling", "x86_64", "KDE", "wayland");
+    var systemSnapshot = SystemSnapshotDetector.detect(platformInfo);
+    dashboardMonitor =
+        new DashboardMonitor(
+            new DashboardDataSource(platformInfo, ignored -> SupplementalStatus.unavailable()),
+            DashboardDataSource.initial(systemSnapshot),
+            Duration.ofMinutes(1));
     MainView view =
         new MainView(
             platformInfo,
-            SystemSnapshotDetector.detect(platformInfo),
+            systemSnapshot,
+            dashboardMonitor,
+            new InMemoryAuditLog(),
             request -> {
               dispatched.set(request);
               return CompletableFuture.completedFuture(ActionResult.success("Test"));
@@ -41,6 +56,11 @@ class ApplicationShellTest extends ApplicationTest {
     view.install(scene);
     stage.setScene(scene);
     stage.show();
+  }
+
+  @Override
+  public void stop() {
+    dashboardMonitor.close();
   }
 
   @Test
@@ -67,7 +87,8 @@ class ApplicationShellTest extends ApplicationTest {
 
   @Test
   void quickButtonDispatchesItsFixedActionId() {
-    clickOn("#action-open-firefox");
+    Button firefox = lookup("#action-open-firefox").queryButton();
+    interact(firefox::fire);
 
     assertEquals(ActionId.OPEN_FIREFOX, dispatched.get().actionId());
     assertEquals(InputSource.BUTTON, dispatched.get().source());

@@ -3,6 +3,8 @@ package org.cachyos.controlcenter.ui;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import org.cachyos.controlcenter.core.action.ActionDispatcher;
+import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
+import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
 import org.cachyos.controlcenter.systeminfo.PlatformInfo;
 import org.cachyos.controlcenter.systeminfo.SystemSnapshot;
 import org.cachyos.controlcenter.ui.navigation.NavigationCatalog;
@@ -15,13 +17,19 @@ public final class MainView {
   private final ThemeManager themeManager;
 
   public MainView(
-      PlatformInfo platformInfo, SystemSnapshot systemSnapshot, ActionDispatcher actionDispatcher) {
+      PlatformInfo platformInfo,
+      SystemSnapshot systemSnapshot,
+      DashboardMonitor dashboardMonitor,
+      InMemoryAuditLog auditLog,
+      ActionDispatcher actionDispatcher) {
     NotificationCenter notifications = new NotificationCenter();
     themeManager = new ThemeManager();
     shell =
         new ApplicationShell(
             platformInfo,
             systemSnapshot,
+            dashboardMonitor,
+            auditLog,
             new NavigationCatalog(),
             themeManager,
             notifications,
