@@ -3,6 +3,7 @@ plugins {
 }
 
 dependencies {
+    api(project(":core"))
     api(project(":system-info"))
     testImplementation("org.testfx:testfx-junit5:4.0.18")
     testImplementation("org.hamcrest:hamcrest:3.0")

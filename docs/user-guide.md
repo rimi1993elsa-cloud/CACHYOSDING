@@ -13,4 +13,14 @@ Tastaturkürzel:
 - `Strg+L`: späteres Eingabefeld fokussieren
 
 Unter „Einstellungen“ kann zwischen System-, hellem und dunklem Farbschema gewechselt werden.
-Systemaktionen sind in Phase 1 weiterhin nicht verfügbar.
+
+Auf der Übersicht stehen vier Schnellaktionen bereit:
+
+- Firefox öffnen
+- Dateimanager öffnen
+- Terminal öffnen
+- Bildschirm sperren
+
+Jeder Button ist fest mit einer registrierten Action-ID verbunden. Wenn das benötigte Programm
+nicht installiert oder nicht im sicheren Suchpfad auffindbar ist, erscheint eine verständliche
+Meldung. Die Anwendung fordert für diese Aktionen keine erhöhten Rechte an.

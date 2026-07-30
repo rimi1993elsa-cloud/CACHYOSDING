@@ -7,6 +7,10 @@ Alle nennenswerten Änderungen werden in dieser Datei dokumentiert. Das Format o
 
 ### Added
 
+- Typisierte Action-Requests und -Results mit allowlist-basierter Registry
+- Asynchroner Dispatcher mit Fehlerabbildung und parameterfreiem Audit
+- Modulregistrierung und gemeinsame Manager-Schnittstelle
+- Sichere Desktop-Schnellaktionen für Firefox, Dateimanager, Terminal und Bildschirmsperre
 - Responsive Anwendungsshell mit Sidebar, Topbar, Status- und Eingabebereich
 - Tastaturbedienbare Navigation mit ehrlicher Modulverfügbarkeit
 - Light-, Dark- und System-Theme

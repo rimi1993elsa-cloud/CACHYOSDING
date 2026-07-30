@@ -7,6 +7,7 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":ui"))
     implementation(project(":system-info"))
+    implementation(project(":platform-linux"))
     implementation("org.slf4j:slf4j-api:2.0.18")
     runtimeOnly("ch.qos.logback:logback-classic:1.5.38")
 }

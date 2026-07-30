@@ -2,10 +2,17 @@ package org.cachyos.controlcenter.ui;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicReference;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+import org.cachyos.controlcenter.core.action.ActionId;
+import org.cachyos.controlcenter.core.action.ActionRequest;
+import org.cachyos.controlcenter.core.action.ActionResult;
+import org.cachyos.controlcenter.core.action.InputSource;
 import org.cachyos.controlcenter.systeminfo.OperatingSystemFamily;
 import org.cachyos.controlcenter.systeminfo.PlatformInfo;
 import org.cachyos.controlcenter.ui.navigation.NavigationEntry;
@@ -14,12 +21,20 @@ import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 
 class ApplicationShellTest extends ApplicationTest {
+  private final AtomicReference<ActionRequest> dispatched = new AtomicReference<>();
+
   @Override
   public void start(Stage stage) {
     PlatformInfo platformInfo =
         new PlatformInfo(
             OperatingSystemFamily.LINUX, "CachyOS", "rolling", "x86_64", "KDE", "wayland");
-    MainView view = new MainView(platformInfo);
+    MainView view =
+        new MainView(
+            platformInfo,
+            request -> {
+              dispatched.set(request);
+              return CompletableFuture.completedFuture(ActionResult.success("Test"));
+            });
     Scene scene = new Scene(view.root(), 1100, 720);
     view.install(scene);
     stage.setScene(scene);
@@ -46,5 +61,14 @@ class ApplicationShellTest extends ApplicationTest {
 
     Label settingsHeading = lookup(".page-title").queryAs(Label.class);
     assertEquals("Einstellungen", settingsHeading.getText());
+  }
+
+  @Test
+  void quickButtonDispatchesItsFixedActionId() {
+    clickOn("#action-open-firefox");
+
+    assertEquals(ActionId.OPEN_FIREFOX, dispatched.get().actionId());
+    assertEquals(InputSource.BUTTON, dispatched.get().source());
+    assertEquals(Map.of(), dispatched.get().parameters());
   }
 }

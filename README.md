@@ -5,10 +5,10 @@ phasenweise nach dem verbindlichen Masterauftrag entwickelt.
 
 ## Aktueller Stand
 
-Phase 1 stellt ein reproduzierbares Gradle-Multi-Modul-Projekt und eine responsive JavaFX-Shell mit
-Navigation, Themes, Toasts, XDG-Pfaden, rotierendem Logging und sicherer, rein lesender
-Plattform-Erkennung bereit. Es sind noch keine Systemaktionen oder Manager-Funktionen
-freigeschaltet.
+Phase 2 stellt eine responsive JavaFX-Shell und ein typisiertes, allowlist-basiertes Action
+Framework bereit. Vier unprivilegierte Schnellaktionen können Firefox, Dateimanager und Terminal
+öffnen oder die Bildschirmsperre anfordern. Nicht verfügbare Programme werden ehrlich gemeldet;
+Manager-Funktionen sind noch nicht freigeschaltet.
 
 ## Voraussetzungen
 
@@ -38,8 +38,8 @@ Unter Windows:
 ./gradlew :app:run
 ```
 
-Die aktuelle Oberfläche zeigt ausschließlich reale JVM-/Sitzungsdaten. Sie führt keine Befehle aus,
-liest keine Systemdateien und fordert keine erhöhten Rechte an.
+Die aktuelle Oberfläche zeigt reale JVM-/Sitzungsdaten. Schnellbuttons senden ausschließlich feste
+Action-IDs an den lokalen Dispatcher. Es gibt keine freie Shellausführung und keine erhöhten Rechte.
 
 ## Projektmodule
 

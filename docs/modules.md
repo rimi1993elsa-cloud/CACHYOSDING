@@ -2,7 +2,8 @@
 
 | Modulgruppe | Phase 0 | Geplante Aktivierung |
 |---|---|---|
-| App/Core/UI | Responsive Shell, Navigation und Theme aktiv | Phase 2 |
+| App/Core/UI | Shell, Navigation, Theme und sichere Schnellbuttons aktiv | Phase 3 |
+| Desktop-Integration | Vier unprivilegierte, feste Aktionen aktiv | Phase 3 |
 | System-Info | sichere Plattformbasis | Phase 3 |
 | Netzwerk/Audio/Anwendungen | nur Projektstruktur | Phase 5–7 |
 | Input/STT/Intent | nur Projektstruktur | Phase 8–9 |

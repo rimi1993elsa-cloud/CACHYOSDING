@@ -3,8 +3,8 @@
 ## Ziel
 
 Die Anwendung trennt Anzeige, lokale Aktionen, privilegierte Aktionen und Online-KI technisch. In
-Phase 0 existieren nur die unprivilegierte UI, gemeinsame Infrastruktur und eine sichere
-Plattform-Erkennung.
+Phase 2 existieren die unprivilegierte UI, gemeinsame Infrastruktur, sichere Plattform-Erkennung
+und eine allowlist-basierte lokale Action Engine für vier harmlose Desktop-Aktionen.
 
 ```mermaid
 flowchart TB
@@ -32,8 +32,8 @@ flowchart TB
 - `ui` kennt darstellbare, unveränderliche Daten, aber keine Prozess- oder Root-Schnittstelle.
 - `system-info` liest Daten. Phase 0 nutzt ausschließlich JVM-Eigenschaften und ausgewählte
   Sitzungsvariablen.
-- `platform-linux` wird später typisierte Adapter enthalten. Freie Shell-Schnittstellen sind
-  verboten.
+- `platform-linux` enthält typisierte Adapter. Der aktuelle Prozessadapter akzeptiert eine absolute
+  Executable und eine getrennte Argumentliste; freie Shell-Schnittstellen sind verboten.
 - `ai` darf später weder `core.action`-Executor noch `platform-linux` oder den Helper als
   Abhängigkeit erhalten.
 - `helper` ist kein Bestandteil des GUI-Prozesses und wird erst in Phase 13 implementiert.
@@ -65,4 +65,3 @@ Benutzer-Home zurück. Secrets gehören später in Secret Service/KDE Wallet, ni
 - JUnit 5.14.4
 - Spotless 8.9.0
 - Checkstyle 13.9.0
-

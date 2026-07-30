@@ -11,6 +11,9 @@ class BootstrapTest {
 
     assertNotNull(context.platformInfo());
     assertNotNull(context.lifecycleManager());
+    assertNotNull(context.actionDispatcher());
+    assertNotNull(context.auditLog());
+    assertNotNull(context.moduleRegistry());
     context.lifecycleManager().close();
   }
 }

@@ -2,6 +2,7 @@ package org.cachyos.controlcenter.ui;
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import org.cachyos.controlcenter.core.action.ActionDispatcher;
 import org.cachyos.controlcenter.systeminfo.PlatformInfo;
 import org.cachyos.controlcenter.ui.navigation.NavigationCatalog;
 import org.cachyos.controlcenter.ui.notifications.NotificationCenter;
@@ -12,11 +13,12 @@ public final class MainView {
   private final ApplicationShell shell;
   private final ThemeManager themeManager;
 
-  public MainView(PlatformInfo platformInfo) {
+  public MainView(PlatformInfo platformInfo, ActionDispatcher actionDispatcher) {
     NotificationCenter notifications = new NotificationCenter();
     themeManager = new ThemeManager();
     shell =
-        new ApplicationShell(platformInfo, new NavigationCatalog(), themeManager, notifications);
+        new ApplicationShell(
+            platformInfo, new NavigationCatalog(), themeManager, notifications, actionDispatcher);
   }
 
   public Parent root() {

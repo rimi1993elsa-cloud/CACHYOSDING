@@ -8,8 +8,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
+import org.cachyos.controlcenter.core.action.ActionDispatcher;
 import org.cachyos.controlcenter.systeminfo.PlatformInfo;
+import org.cachyos.controlcenter.ui.components.QuickActionBar;
 import org.cachyos.controlcenter.ui.components.StatusCard;
+import org.cachyos.controlcenter.ui.notifications.NotificationCenter;
 import org.cachyos.controlcenter.ui.theme.ThemeManager;
 import org.cachyos.controlcenter.ui.theme.ThemeMode;
 
@@ -17,7 +20,10 @@ import org.cachyos.controlcenter.ui.theme.ThemeMode;
 final class ShellPages {
   private ShellPages() {}
 
-  static Node overview(PlatformInfo platformInfo) {
+  static Node overview(
+      PlatformInfo platformInfo,
+      ActionDispatcher actionDispatcher,
+      NotificationCenter notifications) {
     FlowPane cards = new FlowPane(14, 14);
     cards
         .getChildren()
@@ -28,11 +34,17 @@ final class ShellPages {
                 platformInfo.operatingSystemName()),
             new StatusCard("Sitzung", platformInfo.sessionType(), platformInfo.desktopSession()),
             new StatusCard(
-                "Sicherheitsmodus", "Unprivilegiert", "Keine Systemaktionen in Phase 1"));
+                "Sicherheitsmodus", "Unprivilegiert", "Nur registrierte lokale Aktionen"));
+    VBox content =
+        new VBox(
+            18,
+            cards,
+            new Label("Schnellaktionen"),
+            new QuickActionBar(actionDispatcher, notifications));
     return page(
         "Übersicht",
         "Die Grundoberfläche ist bereit. Angezeigte Werte stammen aus der lokalen Laufzeit.",
-        cards);
+        content);
   }
 
   static Node system(PlatformInfo info) {
