@@ -6,12 +6,17 @@ import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.cachyos.controlcenter.ai.api.AiProvider;
+import org.cachyos.controlcenter.ai.api.AiRequest;
+import org.cachyos.controlcenter.ai.api.AiStreamEvent;
+import org.cachyos.controlcenter.ai.provider.AiConfiguration;
 import org.cachyos.controlcenter.core.action.ActionId;
 import org.cachyos.controlcenter.core.action.ActionRequest;
 import org.cachyos.controlcenter.core.action.ActionResult;
@@ -91,6 +96,8 @@ class ApplicationShellTest extends ApplicationTest {
             new SpeechModelManager(
                 java.nio.file.Path.of(System.getProperty("user.home")).toAbsolutePath()),
             new NoopSpeechEngine(),
+            new UnavailableAiProvider(),
+            AiConfiguration.defaults(),
             request -> {
               dispatched.set(request);
               return CompletableFuture.completedFuture(ActionResult.success("Test"));
@@ -194,6 +201,20 @@ class ApplicationShellTest extends ApplicationTest {
     assertEquals(null, dispatched.get());
   }
 
+  @Test
+  void questionMovesToChatDraftWithoutDispatching() {
+    TextField command = lookup("#command-field").queryAs(TextField.class);
+    clickOn(command).write("Warum ist mein WLAN langsam?");
+    press(javafx.scene.input.KeyCode.ENTER).release(javafx.scene.input.KeyCode.ENTER);
+
+    Label heading = lookup(".page-title").queryAs(Label.class);
+    assertEquals("KI-Assistent", heading.getText());
+    javafx.scene.control.TextArea question =
+        lookup("#chat-question").queryAs(javafx.scene.control.TextArea.class);
+    assertEquals("Warum ist mein WLAN langsam?", question.getText());
+    assertEquals(null, dispatched.get());
+  }
+
   private static final class UnavailableNetworkBackend implements NetworkBackend {
     @Override
     public NetworkSnapshot readSnapshot() {
@@ -294,6 +315,30 @@ class ApplicationShellTest extends ApplicationTest {
     public boolean recording() {
       return false;
     }
+
+    @Override
+    public void close() {}
+  }
+
+  private static final class UnavailableAiProvider implements AiProvider {
+    @Override
+    public boolean available() {
+      return false;
+    }
+
+    @Override
+    public String availabilityMessage() {
+      return "Test: kein API-Schlüssel";
+    }
+
+    @Override
+    public java.util.concurrent.CompletionStage<Void> stream(
+        AiRequest request, Consumer<AiStreamEvent> listener) {
+      return CompletableFuture.failedFuture(new IllegalStateException("Unavailable"));
+    }
+
+    @Override
+    public void cancel() {}
 
     @Override
     public void close() {}

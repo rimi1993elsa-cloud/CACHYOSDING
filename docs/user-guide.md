@@ -1,4 +1,4 @@
-# Benutzerhandbuch – Phase 9
+# Benutzerhandbuch – Phase 10
 
 Nach `./gradlew :app:run` erscheint die Grundoberfläche mit Topbar, Navigation, Inhaltsbereich und
 Statusbereich. Die Seiten „Übersicht“, „System“ und „Einstellungen“ enthalten reale lokale Inhalte.
@@ -55,9 +55,25 @@ den sichtbaren Text an denselben lokalen Router wie das Eingabefeld am unteren F
 Das Eingabefeld erkennt feste deutsche Formulierungen wie „Öffne Firefox“, „Zeige Netzwerk“,
 „WLAN suchen“ oder „Testton abspielen“. Exakt katalogisierte Anwendungen können mit
 „Starte GIMP“ geöffnet werden. Sind mehrere Programmnamen möglich, wird nichts gestartet.
-„Bildschirm sperren“ verlangt vor der Ausführung eine Bestätigung. Fragen werden erkannt, aber erst
-der optionale Chat aus Phase 10 kann sie online beantworten. Freie Terminalbefehle werden nicht
-ausgeführt.
+„Bildschirm sperren“ verlangt vor der Ausführung eine Bestätigung. Fragen werden als Entwurf in den
+KI-Assistenten übernommen, aber erst ein bewusster Klick auf „Frage senden“ startet die
+Online-Anfrage. Freie Terminalbefehle werden nicht ausgeführt.
+
+Unter „KI-Assistent“ steht der optionale OpenAI-Chat. Ohne API-Schlüssel ist Senden deaktiviert und
+alle lokalen Manager bleiben vollständig nutzbar. Unter KDE kann ein Schlüssel beispielsweise mit
+dem Secret-Service-Werkzeug hinterlegt werden:
+
+```bash
+secret-tool store --label="CachyOS Control Center OpenAI" \
+  application cachyos-control-center key openai-api-key
+```
+
+Der Schlüssel wird dabei interaktiv eingelesen und erscheint nicht in der Befehlszeile. Für eine
+reine Entwicklungssitzung kann alternativ `OPENAI_API_KEY` gesetzt werden. Das Modell ist über
+`CACHYOS_CC_OPENAI_MODEL`, die Ausgabegrenze über
+`CACHYOS_CC_OPENAI_MAX_OUTPUT_TOKENS` konfigurierbar. Voreingestellt sind `gpt-5.6-sol` und 2048
+Ausgabetokens. Prüfe vor Nutzung die aktuellen API-Preise. Der Chat besitzt keine lokale
+Ausführungsfunktion.
 
 Auf der Übersicht stehen vier Schnellaktionen bereit:
 

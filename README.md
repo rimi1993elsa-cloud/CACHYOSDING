@@ -5,10 +5,9 @@ phasenweise nach dem verbindlichen Masterauftrag entwickelt.
 
 ## Aktueller Stand
 
-Phase 9 ergänzt einen deterministischen, lokalen Intent-Router. Text und bewusst übernommene
-Sprachtranskripte werden normalisiert und ausschließlich auf registrierte Aktionen, Navigation,
-Fragen, unbekannte oder mehrdeutige Eingaben abgebildet. Freier Shelltext bleibt wirkungslos;
-sitzungsverändernde Befehle benötigen eine zusätzliche Bestätigung.
+Phase 10 ergänzt einen optionalen, streamenden OpenAI-Chat über die Responses API. Der API-Schlüssel
+wird aus Secret Service/libsecret gelesen; ohne Schlüssel bleibt die gesamte lokale Anwendung
+nutzbar. Das KI-Modul hat keine Abhängigkeit zur Action Engine und liefert ausschließlich Text.
 
 ## Voraussetzungen
 
@@ -50,7 +49,7 @@ es gibt keine freie Shellausführung und keine erhöhten Rechte.
 | `core` | Gemeinsame Kernmodelle und XDG-Infrastruktur |
 | `ui` | JavaFX-Shell, Navigation, Statuskarten und Benachrichtigungen |
 | `input` | Vosk-Push-to-Talk und gemeinsamer lokaler Text-/Voice-Intent-Router |
-| `ai` | Spätere, strikt nur lesende KI-Grenze |
+| `ai` | Strikt nur lesende Provider-Grenze und OpenAI-Responses-Adapter |
 | `system-info` | Plattform-, Hardware-, Netzwerk-, Boot- und Capability-Erkennung |
 | `platform-linux` | Spätere typisierte Linux-Adapter |
 | `persistence` | Spätere SQLite-Persistenz |

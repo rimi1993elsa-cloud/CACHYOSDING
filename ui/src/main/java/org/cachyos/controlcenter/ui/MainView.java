@@ -2,6 +2,8 @@ package org.cachyos.controlcenter.ui;
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import org.cachyos.controlcenter.ai.api.AiProvider;
+import org.cachyos.controlcenter.ai.provider.AiConfiguration;
 import org.cachyos.controlcenter.core.action.ActionDispatcher;
 import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
 import org.cachyos.controlcenter.input.intent.GermanIntentRouter;
@@ -39,6 +41,8 @@ public final class MainView {
       MicrophoneCatalog microphoneCatalog,
       SpeechModelManager speechModelManager,
       SpeechToTextEngine speechToTextEngine,
+      AiProvider aiProvider,
+      AiConfiguration aiConfiguration,
       ActionDispatcher actionDispatcher) {
     NotificationCenter notifications = new NotificationCenter();
     themeManager = new ThemeManager();
@@ -57,6 +61,8 @@ public final class MainView {
             microphoneCatalog,
             speechModelManager,
             speechToTextEngine,
+            aiProvider,
+            aiConfiguration,
             new NavigationCatalog(),
             themeManager,
             notifications,

@@ -10,6 +10,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import org.cachyos.controlcenter.ai.api.AiProvider;
+import org.cachyos.controlcenter.ai.provider.AiConfiguration;
 import org.cachyos.controlcenter.core.action.ActionDispatcher;
 import org.cachyos.controlcenter.core.action.InputSource;
 import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
@@ -24,6 +26,7 @@ import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
 import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
 import org.cachyos.controlcenter.systeminfo.PlatformInfo;
 import org.cachyos.controlcenter.systeminfo.SystemSnapshot;
+import org.cachyos.controlcenter.ui.ai.ChatView;
 import org.cachyos.controlcenter.ui.applications.ApplicationsView;
 import org.cachyos.controlcenter.ui.audio.AudioView;
 import org.cachyos.controlcenter.ui.dashboard.DashboardView;
@@ -136,6 +139,17 @@ final class ShellPages {
         "Sprache",
         "Offline Push-to-Talk mit sichtbarem Transkript und ohne automatische Ausführung.",
         new VoiceView(microphones, models, engine, onSubmit));
+  }
+
+  static ChatView createChat(AiProvider provider, AiConfiguration configuration) {
+    return new ChatView(provider, configuration);
+  }
+
+  static Node chat(ChatView chat) {
+    return page(
+        "KI-Assistent",
+        "Optionaler Online-Chat über eine strikt lesende Textgrenze ohne lokale Ausführungsrechte.",
+        chat);
   }
 
   static Node settings(ThemeManager themeManager, Consumer<ThemeMode> onChanged) {

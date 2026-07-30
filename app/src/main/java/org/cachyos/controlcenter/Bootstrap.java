@@ -2,6 +2,9 @@ package org.cachyos.controlcenter;
 
 import java.time.Duration;
 import java.util.concurrent.Executors;
+import org.cachyos.controlcenter.ai.api.AiProvider;
+import org.cachyos.controlcenter.ai.openai.OpenAiResponsesProvider;
+import org.cachyos.controlcenter.ai.provider.AiConfiguration;
 import org.cachyos.controlcenter.core.action.ActionRegistry;
 import org.cachyos.controlcenter.core.action.DefaultActionDispatcher;
 import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
@@ -20,6 +23,7 @@ import org.cachyos.controlcenter.platform.audio.PactlEventMonitor;
 import org.cachyos.controlcenter.platform.network.NmcliEventMonitor;
 import org.cachyos.controlcenter.platform.network.NmcliNetworkBackend;
 import org.cachyos.controlcenter.platform.process.DesktopIntegrationModule;
+import org.cachyos.controlcenter.platform.secrets.DesktopSecretStore;
 import org.cachyos.controlcenter.platform.status.LinuxSupplementalStatusProbe;
 import org.cachyos.controlcenter.systeminfo.DashboardDataSource;
 import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
@@ -66,6 +70,9 @@ public final class Bootstrap {
         new SpeechModelManager(XdgPaths.detect().dataDirectory());
     VoskSpeechToTextEngine speechToTextEngine =
         lifecycle.manage(new VoskSpeechToTextEngine(microphoneCatalog));
+    AiConfiguration aiConfiguration = AiConfiguration.fromEnvironment();
+    AiProvider aiProvider =
+        lifecycle.manage(new OpenAiResponsesProvider(aiConfiguration, new DesktopSecretStore()));
     InMemoryAuditLog auditLog = new InMemoryAuditLog();
     ModuleRegistry moduleRegistry = new ModuleRegistry();
     ActionRegistry actionRegistry = new ActionRegistry();
@@ -106,6 +113,8 @@ public final class Bootstrap {
         microphoneCatalog,
         speechModelManager,
         speechToTextEngine,
+        aiProvider,
+        aiConfiguration,
         lifecycle,
         dispatcher,
         auditLog,

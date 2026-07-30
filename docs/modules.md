@@ -9,7 +9,8 @@
 | Audio | PipeWire-Pulse-Geräte, Streams und Mixeraktionen aktiv | Phase 9 |
 | Anwendungen | XDG-Katalog, Suche, Favoriten, Icons und sicherer Start aktiv | Phase 9 |
 | Input/STT/Intent | Vosk und lokaler Text-/Voice-Intent-Router aktiv | Phase 10 |
-| KI/RAG | nur Projektstruktur | Phase 10–11 |
+| KI/Chat | Responses-Streaming, Secret-Service und Offlinezustand aktiv | Phase 11 |
+| Knowledge/RAG | nur Projektstruktur | Phase 11 |
 | Diagnose/Helper/Pakete | nur Projektstruktur | Phase 12–14 |
 | Weitere Manager | nur Projektstruktur | Phase 15–21 |
 | Packaging | nur Verzeichnisstruktur | Phase 24 |

@@ -7,6 +7,12 @@ Alle nennenswerten Änderungen werden in dieser Datei dokumentiert. Das Format o
 
 ### Added
 
+- Optionale, streamende OpenAI-Responses-API-Anbindung über das offizielle Java-SDK 4.43.0
+- Rein textbasierte `AiProvider`-Grenze ohne Action- oder Plattformabhängigkeit
+- Chatseite mit Abbruch, Offlinezustand, Modell-/Tokenanzeige und Kostenhinweis
+- Secret-Service/libsecret-Lookup mit nicht persistentem Umgebungsfallback
+- Konfigurierbares Modell und Ausgabegrenze über validierte Umgebungsvariablen
+- Sicherheits-Systemprompt gegen Ausführungsbehauptungen und Prompt Injection aus Kontextdaten
 - Deterministischer deutscher Offline-Intent-Router für Aktion, Navigation, Frage und Unklarheit
 - Gemeinsame Auswertung für Texteingabe und bewusst übernommene Sprachtranskripte
 - Synonyme, Normalisierung, Konfidenz und Mehrdeutigkeitserkennung

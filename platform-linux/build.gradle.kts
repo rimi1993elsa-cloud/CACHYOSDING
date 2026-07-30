@@ -1,6 +1,7 @@
 dependencies {
     api(project(":core"))
     api(project(":system-info"))
+    implementation(project(":ai"))
     implementation(project(":modules:network"))
     implementation(project(":modules:audio"))
     implementation(project(":modules:applications"))

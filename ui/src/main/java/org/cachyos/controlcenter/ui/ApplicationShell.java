@@ -26,6 +26,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import org.cachyos.controlcenter.ai.api.AiProvider;
+import org.cachyos.controlcenter.ai.provider.AiConfiguration;
 import org.cachyos.controlcenter.core.action.ActionDispatcher;
 import org.cachyos.controlcenter.core.action.ActionRequest;
 import org.cachyos.controlcenter.core.action.InputSource;
@@ -43,6 +45,7 @@ import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
 import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
 import org.cachyos.controlcenter.systeminfo.PlatformInfo;
 import org.cachyos.controlcenter.systeminfo.SystemSnapshot;
+import org.cachyos.controlcenter.ui.ai.ChatView;
 import org.cachyos.controlcenter.ui.navigation.ContentRouter;
 import org.cachyos.controlcenter.ui.navigation.NavigationCatalog;
 import org.cachyos.controlcenter.ui.navigation.NavigationEntry;
@@ -64,6 +67,7 @@ final class ApplicationShell {
   private final NotificationCenter notifications;
   private final GermanIntentRouter intentRouter;
   private final ActionDispatcher actionDispatcher;
+  private ChatView chatView;
   private boolean compact;
   private boolean compactSidebarOpen;
 
@@ -81,6 +85,8 @@ final class ApplicationShell {
       MicrophoneCatalog microphoneCatalog,
       SpeechModelManager speechModelManager,
       SpeechToTextEngine speechToTextEngine,
+      AiProvider aiProvider,
+      AiConfiguration aiConfiguration,
       NavigationCatalog catalog,
       ThemeManager themeManager,
       NotificationCenter notifications,
@@ -103,6 +109,8 @@ final class ApplicationShell {
                 microphoneCatalog,
                 speechModelManager,
                 speechToTextEngine,
+                aiProvider,
+                aiConfiguration,
                 themeManager,
                 notifications,
                 actionDispatcher));
@@ -187,7 +195,7 @@ final class ApplicationShell {
 
     Label title = new Label("CachyOS Control Center");
     title.getStyleClass().add("app-title");
-    Label phase = new Label("Entwicklungsstand · Phase 9");
+    Label phase = new Label("Entwicklungsstand · Phase 10");
     phase.getStyleClass().add("phase-badge");
 
     Label statusDot = new Label("●");
@@ -246,6 +254,8 @@ final class ApplicationShell {
       MicrophoneCatalog microphoneCatalog,
       SpeechModelManager speechModelManager,
       SpeechToTextEngine speechToTextEngine,
+      AiProvider aiProvider,
+      AiConfiguration aiConfiguration,
       ThemeManager themeManager,
       NotificationCenter notificationCenter,
       ActionDispatcher actionDispatcher) {
@@ -266,6 +276,8 @@ final class ApplicationShell {
     pages.put(
         NavigationId.VOICE,
         ShellPages.voice(microphoneCatalog, speechModelManager, speechToTextEngine, this::submit));
+    chatView = ShellPages.createChat(aiProvider, aiConfiguration);
+    pages.put(NavigationId.AI_ASSISTANT, ShellPages.chat(chatView));
     pages.put(
         NavigationId.SETTINGS,
         ShellPages.settings(
@@ -281,10 +293,13 @@ final class ApplicationShell {
     switch (result.kind()) {
       case ACTION -> handleAction(result, source);
       case NAVIGATION -> handleNavigation(result);
-      case QUESTION ->
-          notifications.show(
-              "Frage erkannt",
-              "Der lokale Router führt nichts aus. Der optionale KI-Chat folgt in Phase 10.");
+      case QUESTION -> {
+        chatView.setDraft(text);
+        select(NavigationId.AI_ASSISTANT);
+        notifications.show(
+            "Frage erkannt",
+            "Die Frage wurde nur als Entwurf übernommen. Senden bleibt eine bewusste Online-Aktion.");
+      }
       case AMBIGUOUS -> notifications.show("Mehrdeutige Eingabe", result.message());
       case UNKNOWN -> notifications.show("Nicht erkannt", result.message());
       default -> notifications.show("Eingabe", "Die Eingabe wurde sicher verworfen.");

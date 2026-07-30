@@ -3,7 +3,7 @@
 ## Ziel
 
 Die Anwendung trennt Anzeige, lokale Aktionen, privilegierte Aktionen und Online-KI technisch. In
-Phase 9 existieren die unprivilegierte UI, sichere Systemerkennung, das Live-Dashboard, eine
+Phase 10 existieren die unprivilegierte UI, sichere Systemerkennung, das Live-Dashboard, eine
 allowlist-basierte lokale Action Engine, Fachgrenzen für NetworkManager und PipeWire-Pulse sowie
 eine strikt textliefernde Speech-to-Text-Grenze.
 
@@ -16,7 +16,7 @@ flowchart TB
     ACTION["Typisierte Action Engine"]
     NETWORK["NetworkManager-Adapter (nmcli)"]
     HELPER["D-Bus/Polkit Helper (spätere Phase)"]
-    AI["Online-KI (nur Text, keine Executor-Referenz)"]
+    AI["OpenAI Responses (nur Text, keine Executor-Referenz)"]
     OS["Linux-Systemdienste"]
 
     UI --> INFO
@@ -27,7 +27,7 @@ flowchart TB
     NETWORK --> OS
     UI --> ROUTER
     ROUTER -. registrierte Action-ID .-> ACTION
-    ROUTER -. Frage .-> AI
+    ROUTER -. bewusster Versand einer Frage .-> AI
     ACTION -. Allowlist .-> HELPER
     HELPER -. feste Methoden .-> OS
     INFO -. bereinigter Kontext .-> AI
@@ -49,8 +49,8 @@ flowchart TB
 - `platform-linux` enthält typisierte Adapter. Der aktuelle Prozessadapter akzeptiert eine absolute
   Executable und eine getrennte Argumentliste. `nmcli` wird nur über feste Argumentformen und
   validierte Bezeichner verwendet; freie Shell-Schnittstellen sind verboten.
-- `ai` darf später weder `core.action`-Executor noch `platform-linux` oder den Helper als
-  Abhängigkeit erhalten.
+- `ai` enthält nur Provider-, Prompt- und Textmodelle. Sein Gradle-Modul besitzt weder eine
+  Projektabhängigkeit zu `core`, `input`, `ui`, `platform-linux` noch zum Helper.
 - `helper` ist kein Bestandteil des GUI-Prozesses und wird erst in Phase 13 implementiert.
 
 ## Nebenläufigkeit
@@ -82,3 +82,4 @@ Benutzer-Home zurück. Secrets gehören später in Secret Service/KDE Wallet, ni
 - Checkstyle 13.9.0
 - Jackson 2.22.0
 - Vosk Java 0.3.45 (neueste auf Maven Central verfügbare Desktop-Bibliothek; Upstream-Release 0.3.50)
+- Offizielles OpenAI Java SDK 4.43.0
