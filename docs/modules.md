@@ -18,7 +18,8 @@
 | Hardware | CPU/GPU/RAM/Akku/Sensoren/PCI/USB/Treiber aktiv | Phase 16 |
 | Speicher/Snapshots | Laufwerke, SMART, Btrfs, Analyse und Snapper aktiv | Phase 17 |
 | Dienste/Prozesse | systemd-Scopes, Logs, Ressourcen und geschützte Aktionen | Phase 18 |
-| Weitere Manager | nur Projektstruktur | Phase 15–21 |
+| Anzeige/Energie | KDE/Wayland, Backlight, Grafik, Akku, Profile und Sleep | Phase 19 |
+| Weitere Manager | nur Projektstruktur | Phase 20–21 |
 | Packaging | nur Verzeichnisstruktur | Phase 24 |
 
 Eine vorhandene Projektstruktur bedeutet ausdrücklich nicht, dass das jeweilige Fachmodul bereits

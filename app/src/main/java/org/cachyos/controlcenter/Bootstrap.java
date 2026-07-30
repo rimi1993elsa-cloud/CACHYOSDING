@@ -21,9 +21,11 @@ import org.cachyos.controlcenter.input.voice.VoskSpeechToTextEngine;
 import org.cachyos.controlcenter.modules.applications.ApplicationManagerModule;
 import org.cachyos.controlcenter.modules.audio.AudioManagerModule;
 import org.cachyos.controlcenter.modules.diagnostics.DiagnosticManager;
+import org.cachyos.controlcenter.modules.display.DisplayManager;
 import org.cachyos.controlcenter.modules.hardware.HardwareManager;
 import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
 import org.cachyos.controlcenter.modules.packages.PackageManager;
+import org.cachyos.controlcenter.modules.power.PowerManager;
 import org.cachyos.controlcenter.modules.processes.ProcessManager;
 import org.cachyos.controlcenter.modules.security.SecurityManager;
 import org.cachyos.controlcenter.modules.services.ServiceManager;
@@ -33,11 +35,13 @@ import org.cachyos.controlcenter.platform.applications.DesktopApplicationBackend
 import org.cachyos.controlcenter.platform.audio.PactlAudioBackend;
 import org.cachyos.controlcenter.platform.audio.PactlEventMonitor;
 import org.cachyos.controlcenter.platform.diagnostics.LinuxDiagnosticBackend;
+import org.cachyos.controlcenter.platform.display.LinuxDisplayBackend;
 import org.cachyos.controlcenter.platform.hardware.LinuxHardwareBackend;
 import org.cachyos.controlcenter.platform.network.NmcliEventMonitor;
 import org.cachyos.controlcenter.platform.network.NmcliNetworkBackend;
 import org.cachyos.controlcenter.platform.packages.DbusPackageMutationGateway;
 import org.cachyos.controlcenter.platform.packages.PacmanPackageBackend;
+import org.cachyos.controlcenter.platform.power.LinuxPowerBackend;
 import org.cachyos.controlcenter.platform.process.DesktopIntegrationModule;
 import org.cachyos.controlcenter.platform.processes.DbusProcessGateway;
 import org.cachyos.controlcenter.platform.processes.LinuxProcessBackend;
@@ -122,6 +126,9 @@ public final class Bootstrap {
     ProcessManager processManager =
         lifecycle.manage(
             new ProcessManager(new LinuxProcessBackend(linux), new DbusProcessGateway(linux)));
+    DisplayManager displayManager =
+        lifecycle.manage(new DisplayManager(new LinuxDisplayBackend(linux)));
+    PowerManager powerManager = lifecycle.manage(new PowerManager(new LinuxPowerBackend(linux)));
     GermanIntentRouter intentRouter =
         new GermanIntentRouter(
             () ->
@@ -185,6 +192,8 @@ public final class Bootstrap {
         snapshotManager,
         serviceManager,
         processManager,
+        displayManager,
+        powerManager,
         intentRouter,
         microphoneCatalog,
         speechModelManager,

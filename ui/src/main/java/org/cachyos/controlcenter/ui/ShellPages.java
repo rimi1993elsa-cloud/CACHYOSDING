@@ -23,10 +23,12 @@ import org.cachyos.controlcenter.modules.applications.ApplicationManagerModule;
 import org.cachyos.controlcenter.modules.audio.AudioEvents;
 import org.cachyos.controlcenter.modules.audio.AudioManagerModule;
 import org.cachyos.controlcenter.modules.diagnostics.DiagnosticManager;
+import org.cachyos.controlcenter.modules.display.DisplayManager;
 import org.cachyos.controlcenter.modules.hardware.HardwareManager;
 import org.cachyos.controlcenter.modules.network.NetworkEvents;
 import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
 import org.cachyos.controlcenter.modules.packages.PackageManager;
+import org.cachyos.controlcenter.modules.power.PowerManager;
 import org.cachyos.controlcenter.modules.processes.ProcessManager;
 import org.cachyos.controlcenter.modules.security.SecurityManager;
 import org.cachyos.controlcenter.modules.services.ServiceManager;
@@ -40,10 +42,12 @@ import org.cachyos.controlcenter.ui.applications.ApplicationsView;
 import org.cachyos.controlcenter.ui.audio.AudioView;
 import org.cachyos.controlcenter.ui.dashboard.DashboardView;
 import org.cachyos.controlcenter.ui.diagnostics.DiagnosticsView;
+import org.cachyos.controlcenter.ui.display.DisplayView;
 import org.cachyos.controlcenter.ui.hardware.HardwareView;
 import org.cachyos.controlcenter.ui.network.NetworkView;
 import org.cachyos.controlcenter.ui.notifications.NotificationCenter;
 import org.cachyos.controlcenter.ui.packages.PackagesView;
+import org.cachyos.controlcenter.ui.power.PowerView;
 import org.cachyos.controlcenter.ui.processes.ProcessesView;
 import org.cachyos.controlcenter.ui.security.SecurityView;
 import org.cachyos.controlcenter.ui.services.ServicesView;
@@ -228,6 +232,20 @@ final class ShellPages {
         "Prozesse",
         "Ressourcen, geschützte kritische Prozesse und validierte Signale/Prioritäten.",
         new ProcessesView(manager, notifications));
+  }
+
+  static Node display(DisplayManager manager, NotificationCenter notifications) {
+    return page(
+        "Anzeige",
+        "KDE-/Wayland-Monitore, Helligkeit und Grafikfähigkeiten ohne X11-Kernabhängigkeit.",
+        new DisplayView(manager, notifications));
+  }
+
+  static Node power(PowerManager manager, NotificationCenter notifications) {
+    return page(
+        "Energie",
+        "Akku, Profile und bestätigungspflichtige Schlafzustände aus dynamischen Fähigkeiten.",
+        new PowerView(manager, notifications));
   }
 
   static Node settings(ThemeManager themeManager, Consumer<ThemeMode> onChanged) {

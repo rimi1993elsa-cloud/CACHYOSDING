@@ -62,6 +62,11 @@ flowchart TB
   `USER` wird unprivilegiert mit festen `systemctl --user`-Argumenten verarbeitet.
 - `modules/processes` akzeptiert Aktionen nur für PIDs aus dem letzten Snapshot und sperrt
   kritische oder nicht vollständig identifizierbare Prozesse.
+- `modules/display` und `modules/power` modellieren Hardwarefähigkeiten explizit. Der Linux-Adapter
+  nutzt KScreen, sysfs, EGL/Vulkan und power-profiles-daemon nur, wenn sie vorhanden sind.
+- Anzeige- und Energieänderungen besitzen feste Executables und getrennte, validierte Argumente.
+  Suspend/Hibernate bleiben zusätzlich durch systemd/logind-Policy und UI-Bestätigung geschützt.
+- X11-Werkzeuge wie `xrandr` oder `glxinfo` sind keine Kernabhängigkeit.
 - `platform-linux` liest Pacman-Daten mit `LC_ALL=C`, begrenzter Ausgabe und getrennten
   validierten Argumenten. Nur der Mutation-Gateway kennt `helper-api`.
 - `platform-linux` enthält typisierte Adapter. Der aktuelle Prozessadapter akzeptiert eine absolute

@@ -13,6 +13,8 @@ dependencies {
     implementation(project(":modules:snapshots"))
     implementation(project(":modules:services"))
     implementation(project(":modules:processes"))
+    implementation(project(":modules:display"))
+    implementation(project(":modules:power"))
     implementation(project(":helper:helper-api"))
     implementation("com.fasterxml.jackson.core:jackson-databind:2.22.0")
     runtimeOnly("com.github.hypfvieh:dbus-java-transport-jnr-unixsocket:5.2.0")

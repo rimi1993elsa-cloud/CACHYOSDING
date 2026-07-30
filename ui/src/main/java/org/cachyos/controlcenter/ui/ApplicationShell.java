@@ -42,10 +42,12 @@ import org.cachyos.controlcenter.modules.applications.ApplicationManagerModule;
 import org.cachyos.controlcenter.modules.audio.AudioEvents;
 import org.cachyos.controlcenter.modules.audio.AudioManagerModule;
 import org.cachyos.controlcenter.modules.diagnostics.DiagnosticManager;
+import org.cachyos.controlcenter.modules.display.DisplayManager;
 import org.cachyos.controlcenter.modules.hardware.HardwareManager;
 import org.cachyos.controlcenter.modules.network.NetworkEvents;
 import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
 import org.cachyos.controlcenter.modules.packages.PackageManager;
+import org.cachyos.controlcenter.modules.power.PowerManager;
 import org.cachyos.controlcenter.modules.processes.ProcessManager;
 import org.cachyos.controlcenter.modules.security.SecurityManager;
 import org.cachyos.controlcenter.modules.services.ServiceManager;
@@ -98,6 +100,8 @@ final class ApplicationShell {
       SnapshotManager snapshotManager,
       ServiceManager serviceManager,
       ProcessManager processManager,
+      DisplayManager displayManager,
+      PowerManager powerManager,
       GermanIntentRouter intentRouter,
       MicrophoneCatalog microphoneCatalog,
       SpeechModelManager speechModelManager,
@@ -132,6 +136,8 @@ final class ApplicationShell {
                 snapshotManager,
                 serviceManager,
                 processManager,
+                displayManager,
+                powerManager,
                 microphoneCatalog,
                 speechModelManager,
                 speechToTextEngine,
@@ -222,7 +228,7 @@ final class ApplicationShell {
 
     Label title = new Label("CachyOS Control Center");
     title.getStyleClass().add("app-title");
-    Label phase = new Label("Entwicklungsstand · Phase 18");
+    Label phase = new Label("Entwicklungsstand · Phase 19");
     phase.getStyleClass().add("phase-badge");
 
     Label statusDot = new Label("●");
@@ -286,6 +292,8 @@ final class ApplicationShell {
       SnapshotManager snapshotManager,
       ServiceManager serviceManager,
       ProcessManager processManager,
+      DisplayManager displayManager,
+      PowerManager powerManager,
       MicrophoneCatalog microphoneCatalog,
       SpeechModelManager speechModelManager,
       SpeechToTextEngine speechToTextEngine,
@@ -316,6 +324,8 @@ final class ApplicationShell {
     pages.put(NavigationId.SNAPSHOTS, ShellPages.snapshots(snapshotManager, notificationCenter));
     pages.put(NavigationId.SERVICES, ShellPages.services(serviceManager, notificationCenter));
     pages.put(NavigationId.PROCESSES, ShellPages.processes(processManager, notificationCenter));
+    pages.put(NavigationId.DISPLAY, ShellPages.display(displayManager, notificationCenter));
+    pages.put(NavigationId.POWER, ShellPages.power(powerManager, notificationCenter));
     pages.put(
         NavigationId.VOICE,
         ShellPages.voice(microphoneCatalog, speechModelManager, speechToTextEngine, this::submit));

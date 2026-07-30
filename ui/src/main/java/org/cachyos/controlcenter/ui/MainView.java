@@ -15,10 +15,12 @@ import org.cachyos.controlcenter.modules.applications.ApplicationManagerModule;
 import org.cachyos.controlcenter.modules.audio.AudioEvents;
 import org.cachyos.controlcenter.modules.audio.AudioManagerModule;
 import org.cachyos.controlcenter.modules.diagnostics.DiagnosticManager;
+import org.cachyos.controlcenter.modules.display.DisplayManager;
 import org.cachyos.controlcenter.modules.hardware.HardwareManager;
 import org.cachyos.controlcenter.modules.network.NetworkEvents;
 import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
 import org.cachyos.controlcenter.modules.packages.PackageManager;
+import org.cachyos.controlcenter.modules.power.PowerManager;
 import org.cachyos.controlcenter.modules.processes.ProcessManager;
 import org.cachyos.controlcenter.modules.security.SecurityManager;
 import org.cachyos.controlcenter.modules.services.ServiceManager;
@@ -54,6 +56,8 @@ public final class MainView {
       SnapshotManager snapshotManager,
       ServiceManager serviceManager,
       ProcessManager processManager,
+      DisplayManager displayManager,
+      PowerManager powerManager,
       GermanIntentRouter intentRouter,
       MicrophoneCatalog microphoneCatalog,
       SpeechModelManager speechModelManager,
@@ -83,6 +87,8 @@ public final class MainView {
             snapshotManager,
             serviceManager,
             processManager,
+            displayManager,
+            powerManager,
             intentRouter,
             microphoneCatalog,
             speechModelManager,

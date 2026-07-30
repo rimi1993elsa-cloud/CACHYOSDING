@@ -35,6 +35,8 @@ public final class ControlCenterApplication extends Application {
             context.snapshotManager(),
             context.serviceManager(),
             context.processManager(),
+            context.displayManager(),
+            context.powerManager(),
             context.intentRouter(),
             context.microphoneCatalog(),
             context.speechModelManager(),

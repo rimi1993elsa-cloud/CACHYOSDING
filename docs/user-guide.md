@@ -151,3 +151,15 @@ Die Prozessseite zeigt PID, Benutzer, kumulierte CPU-Zeit, residenten Speicher u
 PID 1/2, bekannte zentrale Prozesse sowie Prozesse mit verborgener Identität sind als `GESCHÜTZT`
 markiert. TERM, KILL und Priorität akzeptieren nur PIDs aus der zuletzt aktualisierten Liste.
 Für KILL muss die PID zusätzlich exakt eingegeben werden.
+
+# Anzeige und Energie
+
+„Anzeige“ liest KDE-Monitore bevorzugt über `kscreen-doctor -j`. Fehlt das Werkzeug, bleiben
+Helligkeit und Grafikevidenz unabhängig nutzbar. Die Helligkeit wird nur angeboten, wenn ein
+Backlight-Gerät und `brightnessctl` vorhanden sind. Grafikdetails verwenden `lspci`,
+`vulkaninfo` und `eglinfo`; es gibt keine Pflicht zu einer X11-Sitzung.
+
+„Energie“ zeigt Akku, verfügbare Profile und die vom Kernel angebotenen Schlafzustände. Ein
+Profilwechsel ist auf `power-saver`, `balanced` und `performance` begrenzt. Suspend verlangt einen
+Bestätigungsdialog. Für Hibernate muss zusätzlich `RUHEZUSTAND` exakt eingegeben werden; systemd
+und logind entscheiden anschließend anhand der lokalen Richtlinie, ob die Aktion zulässig ist.

@@ -42,6 +42,11 @@ import org.cachyos.controlcenter.modules.audio.AudioSnapshot;
 import org.cachyos.controlcenter.modules.diagnostics.DiagnosticManager;
 import org.cachyos.controlcenter.modules.diagnostics.DiagnosticObservation;
 import org.cachyos.controlcenter.modules.diagnostics.DiagnosticStatus;
+import org.cachyos.controlcenter.modules.display.DisplayBackend;
+import org.cachyos.controlcenter.modules.display.DisplayManager;
+import org.cachyos.controlcenter.modules.display.DisplayResult;
+import org.cachyos.controlcenter.modules.display.DisplayState;
+import org.cachyos.controlcenter.modules.display.GraphicsInfo;
 import org.cachyos.controlcenter.modules.hardware.HardwareManager;
 import org.cachyos.controlcenter.modules.hardware.HardwareSnapshot;
 import org.cachyos.controlcenter.modules.network.NetworkBackend;
@@ -57,6 +62,10 @@ import org.cachyos.controlcenter.modules.packages.PackageManager;
 import org.cachyos.controlcenter.modules.packages.PackageMutationGateway;
 import org.cachyos.controlcenter.modules.packages.PackageOperationResult;
 import org.cachyos.controlcenter.modules.packages.PackageSnapshot;
+import org.cachyos.controlcenter.modules.power.PowerBackend;
+import org.cachyos.controlcenter.modules.power.PowerManager;
+import org.cachyos.controlcenter.modules.power.PowerResult;
+import org.cachyos.controlcenter.modules.power.PowerState;
 import org.cachyos.controlcenter.modules.processes.ProcessGateway;
 import org.cachyos.controlcenter.modules.processes.ProcessManager;
 import org.cachyos.controlcenter.modules.processes.ProcessResult;
@@ -101,6 +110,8 @@ class ApplicationShellTest extends ApplicationTest {
   private SnapshotManager snapshotManager;
   private ServiceManager serviceManager;
   private ProcessManager processManager;
+  private DisplayManager displayManager;
+  private PowerManager powerManager;
 
   @Override
   public void start(Stage stage) {
@@ -196,6 +207,50 @@ class ApplicationShellTest extends ApplicationTest {
             },
             new UnavailableServiceGateway());
     processManager = new ProcessManager(java.util.List::of, new UnavailableProcessGateway());
+    displayManager =
+        new DisplayManager(
+            new DisplayBackend() {
+              public DisplayState inspect() {
+                return new DisplayState(
+                    false,
+                    true,
+                    java.util.List.of(),
+                    0,
+                    false,
+                    false,
+                    false,
+                    new GraphicsInfo("", "", "", ""),
+                    "Test");
+              }
+
+              public DisplayResult setBrightness(int percent) {
+                return new DisplayResult(false, "Test");
+              }
+
+              public DisplayResult setNightMode(boolean enabled) {
+                return new DisplayResult(false, "Test");
+              }
+            });
+    powerManager =
+        new PowerManager(
+            new PowerBackend() {
+              public PowerState inspect() {
+                return new PowerState(
+                    false, false, 0, "", java.util.List.of(), false, false, "Test");
+              }
+
+              public PowerResult setProfile(String profile) {
+                return new PowerResult(false, "Test");
+              }
+
+              public PowerResult suspend() {
+                return new PowerResult(false, "Test");
+              }
+
+              public PowerResult hibernate() {
+                return new PowerResult(false, "Test");
+              }
+            });
     MainView view =
         new MainView(
             platformInfo,
@@ -227,6 +282,8 @@ class ApplicationShellTest extends ApplicationTest {
             snapshotManager,
             serviceManager,
             processManager,
+            displayManager,
+            powerManager,
             new GermanIntentRouter(java.util.List::of),
             new MicrophoneCatalog(),
             new SpeechModelManager(
@@ -257,6 +314,8 @@ class ApplicationShellTest extends ApplicationTest {
     snapshotManager.close();
     serviceManager.close();
     processManager.close();
+    displayManager.close();
+    powerManager.close();
   }
 
   @Test
@@ -401,6 +460,14 @@ class ApplicationShellTest extends ApplicationTest {
                         .findFirst()
                         .orElseThrow()));
     lookup("#process-list").queryListView();
+  }
+
+  @Test
+  void opensDisplayAndPowerPages() {
+    clickOn("Anzeige");
+    assertEquals("Anzeige", lookup(".page-title").queryAs(Label.class).getText());
+    clickOn("Energie");
+    assertEquals("Energie", lookup(".page-title").queryAs(Label.class).getText());
   }
 
   @Test

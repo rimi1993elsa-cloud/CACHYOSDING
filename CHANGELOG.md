@@ -7,6 +7,15 @@ Alle nennenswerten Änderungen werden in dieser Datei dokumentiert. Das Format o
 
 ### Added
 
+- KDE-/Wayland-orientierte Monitorerkennung über die optionale KScreen-Schnittstelle
+- Dynamische Hintergrundbeleuchtung mit strikt validierten Prozentwerten
+- Optionaler KDE-Nachtmodus über eine feste D-Bus-Methode
+- GPU-, Treiber-, Vulkan- und OpenGL/EGL-Evidenz ohne X11-Kernabhängigkeit
+- Akku- und Kernel-Schlafzustandserkennung direkt aus `sysfs`
+- Energieprofile über `power-profiles-daemon`
+- Bestätigter Suspend und wortbestätigtes Hibernate über systemd/logind-Richtlinien
+- Ehrliche Fähigkeitszustände bei Desktops, Hardware oder Werkzeugen ohne Unterstützung
+
 - Getrennte systemd-System- und Benutzerdienste mit Scope im Datenmodell
 - Start/Stop/Restart/Enable/Disable über scope-spezifische sichere Pfade
 - Auf 200 Zeilen begrenzte lokale systemd-Logs
