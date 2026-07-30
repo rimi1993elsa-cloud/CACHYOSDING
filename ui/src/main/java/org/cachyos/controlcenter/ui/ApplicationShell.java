@@ -41,6 +41,7 @@ import org.cachyos.controlcenter.input.voice.SpeechToTextEngine;
 import org.cachyos.controlcenter.modules.applications.ApplicationManagerModule;
 import org.cachyos.controlcenter.modules.audio.AudioEvents;
 import org.cachyos.controlcenter.modules.audio.AudioManagerModule;
+import org.cachyos.controlcenter.modules.diagnostics.DiagnosticManager;
 import org.cachyos.controlcenter.modules.network.NetworkEvents;
 import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
 import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
@@ -82,6 +83,7 @@ final class ApplicationShell {
       AudioManagerModule audioManager,
       AudioEvents audioEvents,
       ApplicationManagerModule applicationManager,
+      DiagnosticManager diagnosticManager,
       GermanIntentRouter intentRouter,
       MicrophoneCatalog microphoneCatalog,
       SpeechModelManager speechModelManager,
@@ -108,6 +110,7 @@ final class ApplicationShell {
                 audioManager,
                 audioEvents,
                 applicationManager,
+                diagnosticManager,
                 microphoneCatalog,
                 speechModelManager,
                 speechToTextEngine,
@@ -198,7 +201,7 @@ final class ApplicationShell {
 
     Label title = new Label("CachyOS Control Center");
     title.getStyleClass().add("app-title");
-    Label phase = new Label("Entwicklungsstand · Phase 11");
+    Label phase = new Label("Entwicklungsstand · Phase 12");
     phase.getStyleClass().add("phase-badge");
 
     Label statusDot = new Label("●");
@@ -254,6 +257,7 @@ final class ApplicationShell {
       AudioManagerModule audioManager,
       AudioEvents audioEvents,
       ApplicationManagerModule applicationManager,
+      DiagnosticManager diagnosticManager,
       MicrophoneCatalog microphoneCatalog,
       SpeechModelManager speechModelManager,
       SpeechToTextEngine speechToTextEngine,
@@ -282,6 +286,16 @@ final class ApplicationShell {
         ShellPages.voice(microphoneCatalog, speechModelManager, speechToTextEngine, this::submit));
     chatView = ShellPages.createChat(aiProvider, aiConfiguration, knowledgeService);
     pages.put(NavigationId.AI_ASSISTANT, ShellPages.chat(chatView));
+    pages.put(
+        NavigationId.DIAGNOSTICS,
+        ShellPages.diagnostics(
+            diagnosticManager,
+            actionDispatcher,
+            notificationCenter,
+            report -> {
+              chatView.setDraft(report);
+              select(NavigationId.AI_ASSISTANT);
+            }));
     pages.put(
         NavigationId.SETTINGS,
         ShellPages.settings(

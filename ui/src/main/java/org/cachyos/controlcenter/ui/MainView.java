@@ -14,6 +14,7 @@ import org.cachyos.controlcenter.input.voice.SpeechToTextEngine;
 import org.cachyos.controlcenter.modules.applications.ApplicationManagerModule;
 import org.cachyos.controlcenter.modules.audio.AudioEvents;
 import org.cachyos.controlcenter.modules.audio.AudioManagerModule;
+import org.cachyos.controlcenter.modules.diagnostics.DiagnosticManager;
 import org.cachyos.controlcenter.modules.network.NetworkEvents;
 import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
 import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
@@ -38,6 +39,7 @@ public final class MainView {
       AudioManagerModule audioManager,
       AudioEvents audioEvents,
       ApplicationManagerModule applicationManager,
+      DiagnosticManager diagnosticManager,
       GermanIntentRouter intentRouter,
       MicrophoneCatalog microphoneCatalog,
       SpeechModelManager speechModelManager,
@@ -59,6 +61,7 @@ public final class MainView {
             audioManager,
             audioEvents,
             applicationManager,
+            diagnosticManager,
             intentRouter,
             microphoneCatalog,
             speechModelManager,

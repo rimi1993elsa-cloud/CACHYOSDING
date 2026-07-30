@@ -5,10 +5,10 @@ phasenweise nach dem verbindlichen Masterauftrag entwickelt.
 
 ## Aktueller Stand
 
-Phase 11 ergänzt eine lokale, quellenbasierte Wissensbasis aus fest registrierten Seiten des
-CachyOS- und Arch-Wikis. Abruf und Aktualisierung erfolgen nur nach bewusstem Klick, Inhalte werden
-begrenzt, bereinigt, gecacht und lexikalisch abgerufen. Treffer erscheinen mit URL und Abrufstand;
-Dokumenttext bleibt gegenüber der KI ausdrücklich unvertrauenswürdig.
+Phase 12 ergänzt einen vollständig lokal nutzbaren Diagnosemanager für Netzwerk, Audio, Dienste,
+Boot, Grafik und Pakete. Feste lesende Abfragen laufen asynchron und liefern ehrliche
+Capability-Fallbacks. Befunde werden zentral redigiert; eine KI-Erklärung wird nur als sichtbarer
+Chatentwurf vorbereitet. Abhilfen bleiben feste, bewusst anklickbare lokale Aktionen.
 
 ## Voraussetzungen
 

@@ -31,6 +31,7 @@ class NavigationCatalogTest {
     assertTrue(entry(catalog, NavigationId.APPLICATIONS).enabled());
     assertTrue(entry(catalog, NavigationId.VOICE).enabled());
     assertTrue(entry(catalog, NavigationId.AI_ASSISTANT).enabled());
+    assertTrue(entry(catalog, NavigationId.DIAGNOSTICS).enabled());
     assertTrue(entry(catalog, NavigationId.SETTINGS).enabled());
     assertFalse(entry(catalog, NavigationId.PACKAGES).enabled());
     assertEquals("Phase 14", entry(catalog, NavigationId.PACKAGES).availability());

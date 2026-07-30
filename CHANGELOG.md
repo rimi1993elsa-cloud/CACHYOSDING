@@ -7,6 +7,11 @@ Alle nennenswerten Änderungen werden in dieser Datei dokumentiert. Das Format o
 
 ### Added
 
+- Lokaler Diagnosemanager für Netzwerk, Audio, Dienste, Boot, Grafik und Pakete
+- Serielle, abbrechbare Diagnoseausführung außerhalb des JavaFX-Threads
+- Zentraler Sanitizer für Kontaktdaten, Pfade, IPs, Secrets und Hardwarekennungen
+- Bereinigter Diagnosebericht mit optionaler, zweistufiger KI-Erklärung
+- Ausschließlich feste lokale Abhilfemaßnahmen für passende Warnungen
 - Allowlist-basierte CachyOS-/ArchWiki-Quellenregistry
 - Explizit ausgelöster, begrenzter HTTPS-Abruf mit siebentägiger Cache-Strategie
 - Symlink-resistenter XDG-Wissenscache mit atomaren Ersetzungen

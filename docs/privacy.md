@@ -17,3 +17,8 @@ geloggt, nicht in SQLite geschrieben und nicht als Prozessargument übergeben.
 `wiki.cachyos.org` und `wiki.archlinux.org` ab. Dabei sehen diese Server technisch die öffentliche
 IP-Adresse. Es gibt keinen Abruf beim Programmstart. Der bereinigte Textcache liegt unter dem
 XDG-Cacheverzeichnis und enthält keine privaten Systemdaten.
+
+Diagnoseberichte werden vor der Anzeige und vor jeder optionalen KI-Übergabe zentral bereinigt.
+Maskiert werden insbesondere E-Mail-Adressen, Home-Verzeichnisse, private IPv4-Adressen, Hostnamen,
+API-Token, MAC-Adressen, UUIDs und Serienkennungen. „Im KI-Chat erklären“ erstellt lediglich einen
+sichtbaren Entwurf; erst ein weiterer Klick auf „Frage senden“ überträgt ihn.

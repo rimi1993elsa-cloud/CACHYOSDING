@@ -11,7 +11,8 @@
 | Input/STT/Intent | Vosk und lokaler Text-/Voice-Intent-Router aktiv | Phase 10 |
 | KI/Chat | Responses-Streaming, Secret-Service und Offlinezustand aktiv | Phase 12 |
 | Knowledge/RAG | offizielle Quellen, Cache, Retrieval und Quellenanzeige aktiv | Phase 12 |
-| Diagnose/Helper/Pakete | nur Projektstruktur | Phase 12–14 |
+| Diagnose | sechs lokale Probes, Sanitizer und feste Abhilfen aktiv | Phase 13 |
+| Helper/Pakete | nur Projektstruktur | Phase 13–14 |
 | Weitere Manager | nur Projektstruktur | Phase 15–21 |
 | Packaging | nur Verzeichnisstruktur | Phase 24 |
 

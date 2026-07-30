@@ -22,6 +22,7 @@ import org.cachyos.controlcenter.input.voice.SpeechToTextEngine;
 import org.cachyos.controlcenter.modules.applications.ApplicationManagerModule;
 import org.cachyos.controlcenter.modules.audio.AudioEvents;
 import org.cachyos.controlcenter.modules.audio.AudioManagerModule;
+import org.cachyos.controlcenter.modules.diagnostics.DiagnosticManager;
 import org.cachyos.controlcenter.modules.network.NetworkEvents;
 import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
 import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
@@ -31,6 +32,7 @@ import org.cachyos.controlcenter.ui.ai.ChatView;
 import org.cachyos.controlcenter.ui.applications.ApplicationsView;
 import org.cachyos.controlcenter.ui.audio.AudioView;
 import org.cachyos.controlcenter.ui.dashboard.DashboardView;
+import org.cachyos.controlcenter.ui.diagnostics.DiagnosticsView;
 import org.cachyos.controlcenter.ui.network.NetworkView;
 import org.cachyos.controlcenter.ui.notifications.NotificationCenter;
 import org.cachyos.controlcenter.ui.theme.ThemeManager;
@@ -152,6 +154,17 @@ final class ShellPages {
         "KI-Assistent",
         "Optionaler Online-Chat über eine strikt lesende Textgrenze ohne lokale Ausführungsrechte.",
         chat);
+  }
+
+  static Node diagnostics(
+      DiagnosticManager manager,
+      ActionDispatcher dispatcher,
+      NotificationCenter notifications,
+      Consumer<String> explain) {
+    return page(
+        "Diagnose",
+        "Lokale, bereinigte Befunde; Online-Erklärung erfolgt nur nach bewusster Übergabe.",
+        new DiagnosticsView(manager, dispatcher, notifications, explain));
   }
 
   static Node settings(ThemeManager themeManager, Consumer<ThemeMode> onChanged) {

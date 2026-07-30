@@ -20,10 +20,12 @@ import org.cachyos.controlcenter.input.voice.SpeechModelManager;
 import org.cachyos.controlcenter.input.voice.VoskSpeechToTextEngine;
 import org.cachyos.controlcenter.modules.applications.ApplicationManagerModule;
 import org.cachyos.controlcenter.modules.audio.AudioManagerModule;
+import org.cachyos.controlcenter.modules.diagnostics.DiagnosticManager;
 import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
 import org.cachyos.controlcenter.platform.applications.DesktopApplicationBackend;
 import org.cachyos.controlcenter.platform.audio.PactlAudioBackend;
 import org.cachyos.controlcenter.platform.audio.PactlEventMonitor;
+import org.cachyos.controlcenter.platform.diagnostics.LinuxDiagnosticBackend;
 import org.cachyos.controlcenter.platform.network.NmcliEventMonitor;
 import org.cachyos.controlcenter.platform.network.NmcliNetworkBackend;
 import org.cachyos.controlcenter.platform.process.DesktopIntegrationModule;
@@ -64,6 +66,9 @@ public final class Bootstrap {
         lifecycle.manage(new PactlEventMonitor(systemSnapshot.capabilities()));
     ApplicationManagerModule applicationManager =
         new ApplicationManagerModule(new DesktopApplicationBackend(systemSnapshot.capabilities()));
+    DiagnosticManager diagnosticManager =
+        lifecycle.manage(
+            new DiagnosticManager(new LinuxDiagnosticBackend(systemSnapshot.capabilities())));
     GermanIntentRouter intentRouter =
         new GermanIntentRouter(
             () ->
@@ -119,6 +124,7 @@ public final class Bootstrap {
         audioManager,
         audioEvents,
         applicationManager,
+        diagnosticManager,
         intentRouter,
         microphoneCatalog,
         speechModelManager,

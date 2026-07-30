@@ -3,7 +3,7 @@
 ## Ziel
 
 Die Anwendung trennt Anzeige, lokale Aktionen, privilegierte Aktionen und Online-KI technisch. In
-Phase 11 existieren die unprivilegierte UI, sichere Systemerkennung, das Live-Dashboard, eine
+Phase 12 existieren die unprivilegierte UI, sichere Systemerkennung, das Live-Dashboard, eine
 allowlist-basierte lokale Action Engine, Fachgrenzen für NetworkManager und PipeWire-Pulse sowie
 eine strikt textliefernde Speech-to-Text-Grenze.
 
@@ -46,6 +46,9 @@ flowchart TB
 - `modules/network` enthält ausschließlich Netzwerkmodelle, Validierung und den Manager-Vertrag.
 - `modules/audio` enthält ausschließlich Audiomodelle, Mixer-Validierung und den Manager-Vertrag.
 - `ui` erhält den Netzwerkmanager als Fachschnittstelle und kennt weder `nmcli` noch Prozess-APIs.
+- `modules/diagnostics` koordiniert lesende Fachbefunde und redigiert sie zentral.
+  `platform-linux` besitzt die festen Probe-Argumentlisten; nur der bereinigte Report erreicht UI
+  oder einen bewusst vorbereiteten KI-Entwurf.
 - `platform-linux` enthält typisierte Adapter. Der aktuelle Prozessadapter akzeptiert eine absolute
   Executable und eine getrennte Argumentliste. `nmcli` wird nur über feste Argumentformen und
   validierte Bezeichner verwendet; freie Shell-Schnittstellen sind verboten.

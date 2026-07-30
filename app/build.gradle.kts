@@ -11,6 +11,7 @@ dependencies {
     implementation(project(":modules:network"))
     implementation(project(":modules:audio"))
     implementation(project(":modules:applications"))
+    implementation(project(":modules:diagnostics"))
     implementation(project(":input"))
     implementation(project(":ai"))
     implementation("org.slf4j:slf4j-api:2.0.18")

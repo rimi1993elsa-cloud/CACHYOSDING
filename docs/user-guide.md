@@ -1,4 +1,4 @@
-# Benutzerhandbuch – Phase 11
+# Benutzerhandbuch – Phase 12
 
 Nach `./gradlew :app:run` erscheint die Grundoberfläche mit Topbar, Navigation, Inhaltsbereich und
 Statusbereich. Die Seiten „Übersicht“, „System“ und „Einstellungen“ enthalten reale lokale Inhalte.
@@ -80,6 +80,17 @@ lokalen Cache geladen. Dieser Netzwerkzugriff geschieht nie automatisch beim Sta
 gilt sieben Tage als aktuell; bei Offlinebetrieb bleibt der letzte Stand nutzbar. Bei einer Frage
 zeigt „Lokale Wissensquellen“ die verwendeten Treffer samt URL und Abrufzeit. Gibt es keinen
 passenden Treffer, wird dies offen angezeigt.
+
+Unter „Diagnose“ startet „Lokale Diagnose starten“ sechs feste, lesende Prüfungen. Je nach
+verfügbaren Werkzeugen erscheinen Befunde für NetworkManager, PipeWire-Pulse, fehlgeschlagene
+systemd-Dienste, Kernel-Bootparameter, PCI-/Grafikdaten und die Pacman-Datenbank. Fehlende Werkzeuge
+werden als „nicht verfügbar“ gemeldet und stoppen die übrigen Prüfungen nicht.
+
+Warnungen zu Netzwerk oder Audio können einen festen lokalen Maßnahmenbutton anbieten. Dieser nutzt
+dieselbe typisierte Action Engine wie die jeweilige Managerseite und interpretiert keinen
+Diagnosetext. „Bereinigten Bericht im KI-Chat erklären“ übernimmt den redigierten Bericht nur als
+Entwurf. Prüfe ihn sichtbar und klicke im Chat separat auf Senden, wenn du ihn wirklich übertragen
+möchtest.
 
 Auf der Übersicht stehen vier Schnellaktionen bereit:
 

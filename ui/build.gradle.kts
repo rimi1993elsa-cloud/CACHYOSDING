@@ -8,6 +8,7 @@ dependencies {
     api(project(":modules:network"))
     api(project(":modules:audio"))
     api(project(":modules:applications"))
+    api(project(":modules:diagnostics"))
     api(project(":input"))
     api(project(":ai"))
     testImplementation("org.testfx:testfx-junit5:4.0.18")

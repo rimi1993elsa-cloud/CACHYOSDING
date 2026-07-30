@@ -21,7 +21,7 @@ public final class NavigationCatalog {
           planned(NavigationId.POWER, "Energie", "Akku und Energieprofile", 19),
           planned(NavigationId.SERVICES, "Dienste", "Systemd-Units", 18),
           planned(NavigationId.PROCESSES, "Prozesse", "Laufende Prozesse", 18),
-          planned(NavigationId.DIAGNOSTICS, "Diagnose", "Lokale Systemdiagnose", 12),
+          active(NavigationId.DIAGNOSTICS, "Diagnose", "Lokale Systemdiagnose"),
           active(NavigationId.AI_ASSISTANT, "KI-Assistent", "Optionale Online-Hilfe"),
           active(NavigationId.SETTINGS, "Einstellungen", "Lokale Darstellung"));
 

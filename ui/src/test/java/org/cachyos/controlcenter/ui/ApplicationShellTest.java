@@ -39,6 +39,9 @@ import org.cachyos.controlcenter.modules.audio.AudioEvents;
 import org.cachyos.controlcenter.modules.audio.AudioManagerModule;
 import org.cachyos.controlcenter.modules.audio.AudioOperationResult;
 import org.cachyos.controlcenter.modules.audio.AudioSnapshot;
+import org.cachyos.controlcenter.modules.diagnostics.DiagnosticManager;
+import org.cachyos.controlcenter.modules.diagnostics.DiagnosticObservation;
+import org.cachyos.controlcenter.modules.diagnostics.DiagnosticStatus;
 import org.cachyos.controlcenter.modules.network.NetworkBackend;
 import org.cachyos.controlcenter.modules.network.NetworkEvents;
 import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
@@ -59,6 +62,7 @@ class ApplicationShellTest extends ApplicationTest {
   private final AtomicReference<ActionRequest> dispatched = new AtomicReference<>();
   private DashboardMonitor dashboardMonitor;
   private KnowledgeService knowledgeService;
+  private DiagnosticManager diagnosticManager;
 
   @Override
   public void start(Stage stage) {
@@ -80,6 +84,11 @@ class ApplicationShellTest extends ApplicationTest {
             source -> {
               throw new AssertionError("No source registered");
             });
+    diagnosticManager =
+        new DiagnosticManager(
+            category ->
+                new DiagnosticObservation(
+                    category, DiagnosticStatus.UNAVAILABLE, "Im Test nicht verfügbar.", ""));
     MainView view =
         new MainView(
             platformInfo,
@@ -103,6 +112,7 @@ class ApplicationShellTest extends ApplicationTest {
               public void close() {}
             },
             new ApplicationManagerModule(new EmptyApplicationBackend()),
+            diagnosticManager,
             new GermanIntentRouter(java.util.List::of),
             new MicrophoneCatalog(),
             new SpeechModelManager(
@@ -125,6 +135,7 @@ class ApplicationShellTest extends ApplicationTest {
   public void stop() {
     dashboardMonitor.close();
     knowledgeService.close();
+    diagnosticManager.close();
   }
 
   @Test
@@ -174,6 +185,24 @@ class ApplicationShellTest extends ApplicationTest {
     Label heading = lookup(".page-title").queryAs(Label.class);
     assertEquals("Programme", heading.getText());
     lookup("#application-list").queryListView();
+  }
+
+  @Test
+  void opensLocalDiagnosticsPage() {
+    ListView<NavigationEntry> navigation = lookup("#primary-navigation").queryListView();
+    interact(
+        () ->
+            navigation
+                .getSelectionModel()
+                .select(
+                    navigation.getItems().stream()
+                        .filter(entry -> entry.id() == NavigationId.DIAGNOSTICS)
+                        .findFirst()
+                        .orElseThrow()));
+
+    Label heading = lookup(".page-title").queryAs(Label.class);
+    assertEquals("Diagnose", heading.getText());
+    lookup("#diagnostics-run").queryButton();
   }
 
   @Test
