@@ -28,6 +28,8 @@ import org.cachyos.controlcenter.modules.network.NetworkEvents;
 import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
 import org.cachyos.controlcenter.modules.packages.PackageManager;
 import org.cachyos.controlcenter.modules.security.SecurityManager;
+import org.cachyos.controlcenter.modules.snapshots.SnapshotManager;
+import org.cachyos.controlcenter.modules.storage.StorageManager;
 import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
 import org.cachyos.controlcenter.systeminfo.PlatformInfo;
 import org.cachyos.controlcenter.systeminfo.SystemSnapshot;
@@ -41,6 +43,8 @@ import org.cachyos.controlcenter.ui.network.NetworkView;
 import org.cachyos.controlcenter.ui.notifications.NotificationCenter;
 import org.cachyos.controlcenter.ui.packages.PackagesView;
 import org.cachyos.controlcenter.ui.security.SecurityView;
+import org.cachyos.controlcenter.ui.storage.SnapshotsView;
+import org.cachyos.controlcenter.ui.storage.StorageView;
 import org.cachyos.controlcenter.ui.theme.ThemeManager;
 import org.cachyos.controlcenter.ui.theme.ThemeMode;
 import org.cachyos.controlcenter.ui.voice.VoiceView;
@@ -192,6 +196,20 @@ final class ShellPages {
         "Hardware",
         "CPU, GPU, RAM, Akku, Sensoren, Busgeräte und Treiber ohne Seriennummernerhebung.",
         new HardwareView(manager, notifications));
+  }
+
+  static Node storage(StorageManager manager, NotificationCenter notifications) {
+    return page(
+        "Speicher",
+        "Laufwerke, Mounts, SMART, große Dateien und optionale Btrfs-Nutzung im Lesemodus.",
+        new StorageView(manager, notifications));
+  }
+
+  static Node snapshots(SnapshotManager manager, NotificationCenter notifications) {
+    return page(
+        "Snapshots",
+        "Optionale Snapper-Verwaltung mit Polkit und expliziter ID-Bestätigung vor Löschung.",
+        new SnapshotsView(manager, notifications));
   }
 
   static Node settings(ThemeManager themeManager, Consumer<ThemeMode> onChanged) {

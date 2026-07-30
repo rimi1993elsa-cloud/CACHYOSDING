@@ -16,6 +16,7 @@
 | Pakete | Pacman-Lesen, Vorschau und Helper-Mutation aktiv | Phase 14 |
 | Sicherheit | Einzelbefunde und Firewall-Helper aktiv | Phase 15 |
 | Hardware | CPU/GPU/RAM/Akku/Sensoren/PCI/USB/Treiber aktiv | Phase 16 |
+| Speicher/Snapshots | Laufwerke, SMART, Btrfs, Analyse und Snapper aktiv | Phase 17 |
 | Weitere Manager | nur Projektstruktur | Phase 15–21 |
 | Packaging | nur Verzeichnisstruktur | Phase 24 |
 

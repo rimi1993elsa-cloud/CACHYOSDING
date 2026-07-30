@@ -61,6 +61,13 @@ import org.cachyos.controlcenter.modules.security.SecurityManager;
 import org.cachyos.controlcenter.modules.security.SecurityMutationGateway;
 import org.cachyos.controlcenter.modules.security.SecurityOperationResult;
 import org.cachyos.controlcenter.modules.security.SecuritySnapshot;
+import org.cachyos.controlcenter.modules.snapshots.SnapshotGateway;
+import org.cachyos.controlcenter.modules.snapshots.SnapshotManager;
+import org.cachyos.controlcenter.modules.snapshots.SnapshotResult;
+import org.cachyos.controlcenter.modules.snapshots.SnapshotState;
+import org.cachyos.controlcenter.modules.storage.StorageBackend;
+import org.cachyos.controlcenter.modules.storage.StorageManager;
+import org.cachyos.controlcenter.modules.storage.StorageSnapshot;
 import org.cachyos.controlcenter.systeminfo.DashboardDataSource;
 import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
 import org.cachyos.controlcenter.systeminfo.OperatingSystemFamily;
@@ -80,6 +87,8 @@ class ApplicationShellTest extends ApplicationTest {
   private PackageManager packageManager;
   private SecurityManager securityManager;
   private HardwareManager hardwareManager;
+  private StorageManager storageManager;
+  private SnapshotManager snapshotManager;
 
   @Override
   public void start(Stage stage) {
@@ -135,6 +144,33 @@ class ApplicationShellTest extends ApplicationTest {
                     java.util.List.of(),
                     java.time.Instant.now(),
                     "Test"));
+    storageManager =
+        new StorageManager(
+            new StorageBackend() {
+              @Override
+              public StorageSnapshot inspect() {
+                return new StorageSnapshot(
+                    false,
+                    java.util.List.of(),
+                    java.util.List.of(),
+                    java.util.List.of(),
+                    false,
+                    "",
+                    java.time.Instant.now(),
+                    "Test");
+              }
+
+              @Override
+              public java.util.List<org.cachyos.controlcenter.modules.storage.LargeFile>
+                  findLargeFiles(java.nio.file.Path root) {
+                return java.util.List.of();
+              }
+            },
+            java.nio.file.Path.of(System.getProperty("java.io.tmpdir")));
+    snapshotManager =
+        new SnapshotManager(
+            () -> new SnapshotState(false, java.util.List.of(), "Test"),
+            new UnavailableSnapshotGateway());
     MainView view =
         new MainView(
             platformInfo,
@@ -162,6 +198,8 @@ class ApplicationShellTest extends ApplicationTest {
             packageManager,
             securityManager,
             hardwareManager,
+            storageManager,
+            snapshotManager,
             new GermanIntentRouter(java.util.List::of),
             new MicrophoneCatalog(),
             new SpeechModelManager(
@@ -188,6 +226,8 @@ class ApplicationShellTest extends ApplicationTest {
     packageManager.close();
     securityManager.close();
     hardwareManager.close();
+    storageManager.close();
+    snapshotManager.close();
   }
 
   @Test
@@ -282,6 +322,31 @@ class ApplicationShellTest extends ApplicationTest {
     Label heading = lookup(".page-title").queryAs(Label.class);
     assertEquals("Hardware", heading.getText());
     lookup("#hardware-devices").queryListView();
+  }
+
+  @Test
+  void opensStorageAndSnapshotPages() {
+    ListView<NavigationEntry> navigation = lookup("#primary-navigation").queryListView();
+    interact(
+        () ->
+            navigation
+                .getSelectionModel()
+                .select(
+                    navigation.getItems().stream()
+                        .filter(entry -> entry.id() == NavigationId.STORAGE)
+                        .findFirst()
+                        .orElseThrow()));
+    lookup("#storage-entries").queryListView();
+    interact(
+        () ->
+            navigation
+                .getSelectionModel()
+                .select(
+                    navigation.getItems().stream()
+                        .filter(entry -> entry.id() == NavigationId.SNAPSHOTS)
+                        .findFirst()
+                        .orElseThrow()));
+    lookup("#snapshot-list").queryListView();
   }
 
   @Test
@@ -485,6 +550,23 @@ class ApplicationShellTest extends ApplicationTest {
     @Override
     public SecurityOperationResult setFirewallEnabled(boolean enabled) {
       return new SecurityOperationResult(false, "Test");
+    }
+  }
+
+  private static final class UnavailableSnapshotGateway implements SnapshotGateway {
+    @Override
+    public boolean available() {
+      return false;
+    }
+
+    @Override
+    public SnapshotResult create(String description) {
+      return new SnapshotResult(false, "Test");
+    }
+
+    @Override
+    public SnapshotResult delete(int id) {
+      return new SnapshotResult(false, "Test");
     }
   }
 

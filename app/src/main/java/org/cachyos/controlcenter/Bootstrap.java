@@ -25,6 +25,8 @@ import org.cachyos.controlcenter.modules.hardware.HardwareManager;
 import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
 import org.cachyos.controlcenter.modules.packages.PackageManager;
 import org.cachyos.controlcenter.modules.security.SecurityManager;
+import org.cachyos.controlcenter.modules.snapshots.SnapshotManager;
+import org.cachyos.controlcenter.modules.storage.StorageManager;
 import org.cachyos.controlcenter.platform.applications.DesktopApplicationBackend;
 import org.cachyos.controlcenter.platform.audio.PactlAudioBackend;
 import org.cachyos.controlcenter.platform.audio.PactlEventMonitor;
@@ -39,6 +41,9 @@ import org.cachyos.controlcenter.platform.secrets.DesktopSecretStore;
 import org.cachyos.controlcenter.platform.security.DbusSecurityMutationGateway;
 import org.cachyos.controlcenter.platform.security.LinuxSecurityBackend;
 import org.cachyos.controlcenter.platform.status.LinuxSupplementalStatusProbe;
+import org.cachyos.controlcenter.platform.storage.DbusSnapshotGateway;
+import org.cachyos.controlcenter.platform.storage.LinuxSnapshotBackend;
+import org.cachyos.controlcenter.platform.storage.LinuxStorageBackend;
 import org.cachyos.controlcenter.systeminfo.DashboardDataSource;
 import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
 import org.cachyos.controlcenter.systeminfo.OperatingSystemFamily;
@@ -96,6 +101,15 @@ public final class Bootstrap {
             new HardwareManager(
                 new LinuxHardwareBackend(
                     platformInfo.operatingSystemFamily() == OperatingSystemFamily.LINUX)));
+    boolean linux = platformInfo.operatingSystemFamily() == OperatingSystemFamily.LINUX;
+    StorageManager storageManager =
+        lifecycle.manage(
+            new StorageManager(
+                new LinuxStorageBackend(linux),
+                java.nio.file.Path.of(System.getProperty("user.home")).toAbsolutePath()));
+    SnapshotManager snapshotManager =
+        lifecycle.manage(
+            new SnapshotManager(new LinuxSnapshotBackend(linux), new DbusSnapshotGateway(linux)));
     GermanIntentRouter intentRouter =
         new GermanIntentRouter(
             () ->
@@ -155,6 +169,8 @@ public final class Bootstrap {
         packageManager,
         securityManager,
         hardwareManager,
+        storageManager,
+        snapshotManager,
         intentRouter,
         microphoneCatalog,
         speechModelManager,

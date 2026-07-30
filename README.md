@@ -5,9 +5,9 @@ phasenweise nach dem verbindlichen Masterauftrag entwickelt.
 
 ## Aktueller Stand
 
-Phase 16 ergänzt Hardwareerkennung für CPU, GPU, RAM, Akku, Sensoren, PCI, USB und gebundene
-Treiber. Optionale Linux-Werkzeuge werden dynamisch behandelt. Der Bericht erhebt keine
-Seriennummern und kann vor dem Kopieren zusätzlich anonymisiert werden.
+Phase 17 ergänzt Laufwerke, Partitionen, Mounts, SMART, begrenzte Home-Speicheranalyse sowie
+optionale Btrfs-/Snapper-Unterstützung. Ohne Btrfs bleibt die Speicheransicht voll nutzbar.
+Snapshot-Löschungen erfordern die sichtbare ID und anschließend Polkit.
 
 ## Voraussetzungen
 

@@ -21,6 +21,8 @@ class BootstrapTest {
     assertNotNull(context.packageManager());
     assertNotNull(context.securityManager());
     assertNotNull(context.hardwareManager());
+    assertNotNull(context.storageManager());
+    assertNotNull(context.snapshotManager());
     assertNotNull(context.intentRouter());
     assertNotNull(context.microphoneCatalog());
     assertNotNull(context.speechModelManager());

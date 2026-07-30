@@ -7,6 +7,12 @@ Alle nennenswerten Änderungen werden in dieser Datei dokumentiert. Das Format o
 
 ### Added
 
+- Speicheransicht für Laufwerke, Partitionen, Mounts und SMART-Evidenz
+- Begrenzte, symlink-resistente Suche großer Dateien ausschließlich im Benutzer-Home
+- Dynamische Btrfs-Root- und Nutzungsanzeige ohne Btrfs-Zwang
+- Optionale Snapper-Liste, Erstellung und streng bestätigte Löschung
+- Snapshot-Aktionen ausschließlich über D-Bus/Polkit-Helper
+- Keine schreibenden Mount- oder Partitionsoperationen
 - Hardwaremanager für CPU, GPU, RAM, Akku, Sensoren, PCI, USB und Treiber
 - Sichere sysfs-/procfs-Erkennung ohne Seriennummernerhebung
 - Optionale, zeitbegrenzte `lspci`-, `lsusb`- und `sensors`-Probes

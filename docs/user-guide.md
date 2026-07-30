@@ -1,4 +1,4 @@
-# Benutzerhandbuch – Phase 16
+# Benutzerhandbuch – Phase 17
 
 Nach `./gradlew :app:run` erscheint die Grundoberfläche mit Topbar, Navigation, Inhaltsbereich und
 Statusbereich. Die Seiten „Übersicht“, „System“ und „Einstellungen“ enthalten reale lokale Inhalte.
@@ -129,3 +129,14 @@ Die Hardwareseite zeigt Modell, CPU, RAM, Akku, Grafik, PCI-/USB-Geräte, Treibe
 Sensorwerte. Fehlen `lspci`, `lsusb` oder `lm_sensors`, bleibt der übrige Bericht nutzbar.
 Seriennummern und Machine-ID werden nicht erhoben. „Anonymisierten Bericht kopieren“ wendet
 zusätzlich eine Redaction auf unerwartete Identifier an.
+
+# Speicher und Snapshots
+
+„Speicher“ zeigt Laufwerke, Partitionen, Mounts, SMART-Evidenz und optional Btrfs-Nutzung. Die Suche
+nach großen Dateien startet nur per Button, bleibt im Benutzer-Home, folgt keinen Symlinks und ist
+auf Tiefe, Treffer und Mindestgröße begrenzt. Die Anwendung bietet bewusst keine Mount- oder
+Partitionsänderung an.
+
+„Snapshots“ erscheint auch ohne Btrfs/Snapper mit einer verständlichen Nichtverfügbarkeit.
+Erstellung benötigt eine validierte Beschreibung und Polkit. Vor einer Löschung muss die angezeigte
+Snapshot-ID exakt eingegeben werden; erst danach wird der Helper aufgerufen.
