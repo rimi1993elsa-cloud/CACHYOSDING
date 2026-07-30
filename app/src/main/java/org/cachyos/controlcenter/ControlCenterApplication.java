@@ -27,6 +27,9 @@ public final class ControlCenterApplication extends Application {
             context.audioManager(),
             context.audioEvents(),
             context.applicationManager(),
+            context.microphoneCatalog(),
+            context.speechModelManager(),
+            context.speechToTextEngine(),
             context.actionDispatcher());
     Scene scene = new Scene(mainView.root(), 1100, 720);
     mainView.install(scene);

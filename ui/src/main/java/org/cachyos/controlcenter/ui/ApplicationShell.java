@@ -24,6 +24,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.cachyos.controlcenter.core.action.ActionDispatcher;
 import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
+import org.cachyos.controlcenter.input.voice.MicrophoneCatalog;
+import org.cachyos.controlcenter.input.voice.SpeechModelManager;
+import org.cachyos.controlcenter.input.voice.SpeechToTextEngine;
 import org.cachyos.controlcenter.modules.applications.ApplicationManagerModule;
 import org.cachyos.controlcenter.modules.audio.AudioEvents;
 import org.cachyos.controlcenter.modules.audio.AudioManagerModule;
@@ -64,6 +67,9 @@ final class ApplicationShell {
       AudioManagerModule audioManager,
       AudioEvents audioEvents,
       ApplicationManagerModule applicationManager,
+      MicrophoneCatalog microphoneCatalog,
+      SpeechModelManager speechModelManager,
+      SpeechToTextEngine speechToTextEngine,
       NavigationCatalog catalog,
       ThemeManager themeManager,
       NotificationCenter notifications,
@@ -81,6 +87,9 @@ final class ApplicationShell {
                 audioManager,
                 audioEvents,
                 applicationManager,
+                microphoneCatalog,
+                speechModelManager,
+                speechToTextEngine,
                 themeManager,
                 notifications,
                 actionDispatcher));
@@ -165,7 +174,7 @@ final class ApplicationShell {
 
     Label title = new Label("CachyOS Control Center");
     title.getStyleClass().add("app-title");
-    Label phase = new Label("Entwicklungsstand · Phase 7");
+    Label phase = new Label("Entwicklungsstand · Phase 8");
     phase.getStyleClass().add("phase-badge");
 
     Label statusDot = new Label("●");
@@ -218,6 +227,9 @@ final class ApplicationShell {
       AudioManagerModule audioManager,
       AudioEvents audioEvents,
       ApplicationManagerModule applicationManager,
+      MicrophoneCatalog microphoneCatalog,
+      SpeechModelManager speechModelManager,
+      SpeechToTextEngine speechToTextEngine,
       ThemeManager themeManager,
       NotificationCenter notificationCenter,
       ActionDispatcher actionDispatcher) {
@@ -235,6 +247,9 @@ final class ApplicationShell {
     pages.put(
         NavigationId.APPLICATIONS,
         ShellPages.applications(applicationManager, actionDispatcher, notificationCenter));
+    pages.put(
+        NavigationId.VOICE,
+        ShellPages.voice(microphoneCatalog, speechModelManager, speechToTextEngine));
     pages.put(
         NavigationId.SETTINGS,
         ShellPages.settings(

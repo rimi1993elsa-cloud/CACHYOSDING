@@ -3,14 +3,16 @@
 ## Ziel
 
 Die Anwendung trennt Anzeige, lokale Aktionen, privilegierte Aktionen und Online-KI technisch. In
-Phase 6 existieren die unprivilegierte UI, sichere Systemerkennung, das Live-Dashboard, eine
-allowlist-basierte lokale Action Engine sowie Fachgrenzen für NetworkManager und PipeWire-Pulse.
+Phase 8 existieren die unprivilegierte UI, sichere Systemerkennung, das Live-Dashboard, eine
+allowlist-basierte lokale Action Engine, Fachgrenzen für NetworkManager und PipeWire-Pulse sowie
+eine strikt textliefernde Speech-to-Text-Grenze.
 
 ```mermaid
 flowchart TB
     UI["JavaFX-App (normaler Benutzer)"]
     INFO["System-Info (nur lesend)"]
     ROUTER["Input Router (spätere Phase)"]
+    STT["Vosk STT (nur Push-to-Talk)"]
     ACTION["Typisierte Action Engine"]
     NETWORK["NetworkManager-Adapter (nmcli)"]
     HELPER["D-Bus/Polkit Helper (spätere Phase)"]
@@ -18,6 +20,8 @@ flowchart TB
     OS["Linux-Systemdienste"]
 
     UI --> INFO
+    UI --> STT
+    STT -. sichtbares Transkript .-> UI
     UI --> ACTION
     ACTION --> NETWORK
     NETWORK --> OS
@@ -35,6 +39,8 @@ flowchart TB
 - `core` enthält plattformneutrale Modelle und Infrastruktur.
 - `ui` kennt darstellbare, unveränderliche Daten, aber keine Prozess- oder Root-Schnittstelle.
 - `system-info` liest lokale Daten und betreibt den lastarmen Dashboard-Monitor.
+- `input.voice` öffnet ein gewähltes Mikrofon nur während Push-to-Talk und liefert ausschließlich
+  Transkriptereignisse. Es besitzt weder Dispatcher- noch KI-Abhängigkeit.
 - `modules/network` enthält ausschließlich Netzwerkmodelle, Validierung und den Manager-Vertrag.
 - `modules/audio` enthält ausschließlich Audiomodelle, Mixer-Validierung und den Manager-Vertrag.
 - `ui` erhält den Netzwerkmanager als Fachschnittstelle und kennt weder `nmcli` noch Prozess-APIs.
@@ -73,3 +79,4 @@ Benutzer-Home zurück. Secrets gehören später in Secret Service/KDE Wallet, ni
 - Spotless 8.9.0
 - Checkstyle 13.9.0
 - Jackson 2.22.0
+- Vosk Java 0.3.45 (neueste auf Maven Central verfügbare Desktop-Bibliothek; Upstream-Release 0.3.50)

@@ -7,6 +7,10 @@ Alle nennenswerten Änderungen werden in dieser Datei dokumentiert. Das Format o
 
 ### Added
 
+- Austauschbare Vosk-Speech-to-Text-Grenze mit deutschem 16-kHz-Mono-Profil
+- Mikrofon- und lokale Modellwahl mit expliziter Verfügbarkeitsprüfung
+- Push-to-Talk per Button oder Leertaste mit sichtbaren Teil- und Endtranskripten
+- Aufnahme nur während aktiver Bedienung und ohne dauerhafte Audiospeicherung
 - XDG-Anwendungsmanager mit Suche, Icons und Sitzungsfavoriten
 - Sicherer Desktop-Exec-Parser mit Feldcodebehandlung und expliziter Shell-Ablehnung
 - ID-only Anwendungsstart und verständliche Startfehler

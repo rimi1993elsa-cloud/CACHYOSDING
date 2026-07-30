@@ -6,6 +6,9 @@ import org.cachyos.controlcenter.core.action.ActionRegistry;
 import org.cachyos.controlcenter.core.action.DefaultActionDispatcher;
 import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
 import org.cachyos.controlcenter.core.module.ModuleRegistry;
+import org.cachyos.controlcenter.input.voice.MicrophoneCatalog;
+import org.cachyos.controlcenter.input.voice.SpeechModelManager;
+import org.cachyos.controlcenter.input.voice.VoskSpeechToTextEngine;
 import org.cachyos.controlcenter.modules.applications.ApplicationManagerModule;
 import org.cachyos.controlcenter.modules.audio.AudioManagerModule;
 import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
@@ -22,6 +25,7 @@ import org.cachyos.controlcenter.systeminfo.PlatformDetector;
 import org.cachyos.controlcenter.systeminfo.PlatformInfo;
 import org.cachyos.controlcenter.systeminfo.SystemSnapshot;
 import org.cachyos.controlcenter.systeminfo.SystemSnapshotDetector;
+import org.cachyos.controlcenter.xdg.XdgPaths;
 
 /** Creates the unprivileged application context. */
 public final class Bootstrap {
@@ -49,6 +53,11 @@ public final class Bootstrap {
         lifecycle.manage(new PactlEventMonitor(systemSnapshot.capabilities()));
     ApplicationManagerModule applicationManager =
         new ApplicationManagerModule(new DesktopApplicationBackend(systemSnapshot.capabilities()));
+    MicrophoneCatalog microphoneCatalog = new MicrophoneCatalog();
+    SpeechModelManager speechModelManager =
+        new SpeechModelManager(XdgPaths.detect().dataDirectory());
+    VoskSpeechToTextEngine speechToTextEngine =
+        lifecycle.manage(new VoskSpeechToTextEngine(microphoneCatalog));
     InMemoryAuditLog auditLog = new InMemoryAuditLog();
     ModuleRegistry moduleRegistry = new ModuleRegistry();
     ActionRegistry actionRegistry = new ActionRegistry();
@@ -85,6 +94,9 @@ public final class Bootstrap {
         audioManager,
         audioEvents,
         applicationManager,
+        microphoneCatalog,
+        speechModelManager,
+        speechToTextEngine,
         lifecycle,
         dispatcher,
         auditLog,

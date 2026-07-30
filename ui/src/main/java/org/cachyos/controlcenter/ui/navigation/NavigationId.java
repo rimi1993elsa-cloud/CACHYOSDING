@@ -7,6 +7,7 @@ public enum NavigationId {
   SECURITY,
   NETWORK,
   APPLICATIONS,
+  VOICE,
   PACKAGES,
   HARDWARE,
   STORAGE,

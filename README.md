@@ -5,10 +5,10 @@ phasenweise nach dem verbindlichen Masterauftrag entwickelt.
 
 ## Aktueller Stand
 
-Phase 7 ergänzt einen sicheren XDG-Anwendungsmanager. Installierte `.desktop`-Anwendungen werden
-durchsucht, mit Name, Kommentar und verfügbaren Icons angezeigt, gefiltert, favorisiert und über
-eine katalogisierte ID gestartet. Exec-Felder werden ohne Shell in Argumente zerlegt; Shellstarter,
-Symlinks und nicht ausführbare Programme werden abgelehnt. Pacman ordnet Pakete bei Bedarf lesend zu.
+Phase 8 ergänzt eine austauschbare Offline-Spracherkennung mit Vosk. Mikrofon und deutsches Modell
+werden bewusst ausgewählt; aufgenommen wird ausschließlich während Push-to-Talk. Teil- und
+Endtranskripte bleiben sichtbar, Audio wird weder gespeichert noch automatisch als Aktion oder
+KI-Anfrage weitergegeben.
 
 ## Voraussetzungen
 
@@ -49,7 +49,7 @@ es gibt keine freie Shellausführung und keine erhöhten Rechte.
 | `app` | Bootstrap, JavaFX-Lebenszyklus und Composition Root |
 | `core` | Gemeinsame Kernmodelle und XDG-Infrastruktur |
 | `ui` | JavaFX-Shell, Navigation, Statuskarten und Benachrichtigungen |
-| `input` | Spätere Text-, Voice- und Intent-Grenze |
+| `input` | Vosk-Push-to-Talk, Mikrofon- und Modellverwaltung; Intent folgt in Phase 9 |
 | `ai` | Spätere, strikt nur lesende KI-Grenze |
 | `system-info` | Plattform-, Hardware-, Netzwerk-, Boot- und Capability-Erkennung |
 | `platform-linux` | Spätere typisierte Linux-Adapter |

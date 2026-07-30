@@ -4,6 +4,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import org.cachyos.controlcenter.core.action.ActionDispatcher;
 import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
+import org.cachyos.controlcenter.input.voice.MicrophoneCatalog;
+import org.cachyos.controlcenter.input.voice.SpeechModelManager;
+import org.cachyos.controlcenter.input.voice.SpeechToTextEngine;
 import org.cachyos.controlcenter.modules.applications.ApplicationManagerModule;
 import org.cachyos.controlcenter.modules.audio.AudioEvents;
 import org.cachyos.controlcenter.modules.audio.AudioManagerModule;
@@ -31,6 +34,9 @@ public final class MainView {
       AudioManagerModule audioManager,
       AudioEvents audioEvents,
       ApplicationManagerModule applicationManager,
+      MicrophoneCatalog microphoneCatalog,
+      SpeechModelManager speechModelManager,
+      SpeechToTextEngine speechToTextEngine,
       ActionDispatcher actionDispatcher) {
     NotificationCenter notifications = new NotificationCenter();
     themeManager = new ThemeManager();
@@ -45,6 +51,9 @@ public final class MainView {
             audioManager,
             audioEvents,
             applicationManager,
+            microphoneCatalog,
+            speechModelManager,
+            speechToTextEngine,
             new NavigationCatalog(),
             themeManager,
             notifications,

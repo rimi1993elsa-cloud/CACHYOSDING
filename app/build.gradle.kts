@@ -11,6 +11,7 @@ dependencies {
     implementation(project(":modules:network"))
     implementation(project(":modules:audio"))
     implementation(project(":modules:applications"))
+    implementation(project(":input"))
     implementation("org.slf4j:slf4j-api:2.0.18")
     runtimeOnly("ch.qos.logback:logback-classic:1.5.38")
 }

@@ -1,4 +1,4 @@
-# Benutzerhandbuch – Phase 7
+# Benutzerhandbuch – Phase 8
 
 Nach `./gradlew :app:run` erscheint die Grundoberfläche mit Topbar, Navigation, Inhaltsbereich und
 Statusbereich. Die Seiten „Übersicht“, „System“ und „Einstellungen“ enthalten reale lokale Inhalte.
@@ -41,6 +41,15 @@ Unter „Programme“ werden sicher startbare Einträge aus den XDG-Anwendungsve
 Die Suche filtert Name und Beschreibung. Favoriten stehen während der laufenden Sitzung oben.
 Nach Auswahl zeigt die App die Paketzuordnung, sofern `pacman` verfügbar ist. „Starten“ sendet nur
 die interne Katalog-ID; der sichtbare Name und der Suchtext werden niemals als Befehl interpretiert.
+
+Unter „Sprache“ wird ein vorhandenes Java-Sound-Mikrofon ausgewählt. Über „Modell auswählen“ wird
+ein entpacktes deutsches Vosk-Modell festgelegt; erwartet werden unter anderem `am/final.mdl`,
+`conf/` und `graph/`. Halte den Aufnahmebutton oder die Leertaste gedrückt und sprich. Währenddessen
+zeigt die Seite den Aufnahmezustand und Teiltranskripte, nach dem Loslassen das bestätigte
+Transkript. Ohne Modell oder Mikrofon bleibt Push-to-Talk deaktiviert und nennt den Grund.
+
+Die Aufnahme wird nur während Push-to-Talk geöffnet. Audiodaten werden nicht in Dateien geschrieben.
+Ein Transkript löst in dieser Phase weder eine lokale Aktion noch eine Online-Anfrage aus.
 
 Auf der Übersicht stehen vier Schnellaktionen bereit:
 

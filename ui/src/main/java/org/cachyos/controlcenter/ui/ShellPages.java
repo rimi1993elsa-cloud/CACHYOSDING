@@ -11,6 +11,9 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import org.cachyos.controlcenter.core.action.ActionDispatcher;
 import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
+import org.cachyos.controlcenter.input.voice.MicrophoneCatalog;
+import org.cachyos.controlcenter.input.voice.SpeechModelManager;
+import org.cachyos.controlcenter.input.voice.SpeechToTextEngine;
 import org.cachyos.controlcenter.modules.applications.ApplicationManagerModule;
 import org.cachyos.controlcenter.modules.audio.AudioEvents;
 import org.cachyos.controlcenter.modules.audio.AudioManagerModule;
@@ -26,6 +29,7 @@ import org.cachyos.controlcenter.ui.network.NetworkView;
 import org.cachyos.controlcenter.ui.notifications.NotificationCenter;
 import org.cachyos.controlcenter.ui.theme.ThemeManager;
 import org.cachyos.controlcenter.ui.theme.ThemeMode;
+import org.cachyos.controlcenter.ui.voice.VoiceView;
 
 /** Real Phase 1 content pages. Later manager pages are not created here. */
 final class ShellPages {
@@ -119,6 +123,14 @@ final class ShellPages {
         "Programme",
         "Sicher katalogisierte XDG-Anwendungen mit Suche, Favoriten und Paketzuordnung.",
         new ApplicationsView(manager, dispatcher, notifications));
+  }
+
+  static Node voice(
+      MicrophoneCatalog microphones, SpeechModelManager models, SpeechToTextEngine engine) {
+    return page(
+        "Sprache",
+        "Offline Push-to-Talk mit sichtbarem Transkript und ohne automatische Ausführung.",
+        new VoiceView(microphones, models, engine));
   }
 
   static Node settings(ThemeManager themeManager, Consumer<ThemeMode> onChanged) {

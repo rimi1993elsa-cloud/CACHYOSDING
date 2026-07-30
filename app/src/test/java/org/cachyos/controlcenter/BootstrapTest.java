@@ -17,6 +17,9 @@ class BootstrapTest {
     assertNotNull(context.audioManager());
     assertNotNull(context.audioEvents());
     assertNotNull(context.applicationManager());
+    assertNotNull(context.microphoneCatalog());
+    assertNotNull(context.speechModelManager());
+    assertNotNull(context.speechToTextEngine());
     assertNotNull(context.lifecycleManager());
     assertNotNull(context.actionDispatcher());
     assertNotNull(context.auditLog());

@@ -16,6 +16,11 @@ import org.cachyos.controlcenter.core.action.ActionRequest;
 import org.cachyos.controlcenter.core.action.ActionResult;
 import org.cachyos.controlcenter.core.action.InputSource;
 import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
+import org.cachyos.controlcenter.input.voice.MicrophoneCatalog;
+import org.cachyos.controlcenter.input.voice.MicrophoneDescriptor;
+import org.cachyos.controlcenter.input.voice.SpeechModelManager;
+import org.cachyos.controlcenter.input.voice.SpeechToTextEngine;
+import org.cachyos.controlcenter.input.voice.TranscriptEvent;
 import org.cachyos.controlcenter.modules.applications.ApplicationBackend;
 import org.cachyos.controlcenter.modules.applications.ApplicationEntry;
 import org.cachyos.controlcenter.modules.applications.ApplicationManagerModule;
@@ -79,6 +84,10 @@ class ApplicationShellTest extends ApplicationTest {
               public void close() {}
             },
             new ApplicationManagerModule(new EmptyApplicationBackend()),
+            new MicrophoneCatalog(),
+            new SpeechModelManager(
+                java.nio.file.Path.of(System.getProperty("user.home")).toAbsolutePath()),
+            new NoopSpeechEngine(),
             request -> {
               dispatched.set(request);
               return CompletableFuture.completedFuture(ActionResult.success("Test"));
@@ -141,6 +150,16 @@ class ApplicationShellTest extends ApplicationTest {
     Label heading = lookup(".page-title").queryAs(Label.class);
     assertEquals("Programme", heading.getText());
     lookup("#application-list").queryListView();
+  }
+
+  @Test
+  void opensPushToTalkPageWithoutModel() {
+    clickOn("Sprache");
+
+    Label heading = lookup(".page-title").queryAs(Label.class);
+    assertEquals("Sprache", heading.getText());
+    Button pushToTalk = lookup("#push-to-talk").queryButton();
+    assertEquals(true, pushToTalk.isDisabled());
   }
 
   @Test
@@ -237,5 +256,24 @@ class ApplicationShellTest extends ApplicationTest {
     public java.util.Optional<String> findPackage(String applicationId) {
       return java.util.Optional.empty();
     }
+  }
+
+  private static final class NoopSpeechEngine implements SpeechToTextEngine {
+    @Override
+    public void start(
+        java.nio.file.Path modelDirectory,
+        MicrophoneDescriptor microphone,
+        java.util.function.Consumer<TranscriptEvent> listener) {}
+
+    @Override
+    public void stop() {}
+
+    @Override
+    public boolean recording() {
+      return false;
+    }
+
+    @Override
+    public void close() {}
   }
 }

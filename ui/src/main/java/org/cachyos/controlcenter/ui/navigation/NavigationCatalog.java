@@ -11,6 +11,7 @@ public final class NavigationCatalog {
           planned(NavigationId.SECURITY, "Sicherheit", "Sicherheitsstatus", 15),
           active(NavigationId.NETWORK, "Netzwerk", "Verbindungen und Diagnose"),
           active(NavigationId.APPLICATIONS, "Programme", "Installierte Anwendungen"),
+          active(NavigationId.VOICE, "Sprache", "Offline Push-to-Talk"),
           planned(NavigationId.PACKAGES, "Pakete", "Pacman und optionale AUR-Pakete", 14),
           planned(NavigationId.HARDWARE, "Hardware", "Geräte und Sensoren", 16),
           planned(NavigationId.STORAGE, "Speicher", "Laufwerke und Dateisysteme", 17),
