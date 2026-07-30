@@ -7,6 +7,14 @@ Alle nennenswerten Änderungen werden in dieser Datei dokumentiert. Das Format o
 
 ### Added
 
+- Pacman-Paketmanager mit installierter Liste, Suche, Details und Updates
+- Anzeige verwaister Pakete, Cachegröße und Pacman-Datenbanksperre
+- 60-Sekunden-Lesecache und serielle Hintergrundausführung ohne UI-Blockade
+- Kurzlebige Pacman-Transaktionsvorschau mit Änderungen und Größen
+- Explizite zweite Bestätigung vor jeder Installation oder Entfernung
+- D-Bus-Paketgateway zum privilegierten Helper mit erneutem Lock-Schutz
+- Validierte Such- und Paketargumente sowie englisch stabilisierte Pacman-Ausgabe
+- Ehrlicher optionaler AUR-Nichtverfügbarkeitszustand
 - Separater, per System-D-Bus aktivierbarer privilegierter Helper
 - Acht typisierte administrative Methoden ohne generische Shell- oder Executable-Schnittstelle
 - Polkit-Autorisierung anhand des eindeutigen System-Bus-Absenders

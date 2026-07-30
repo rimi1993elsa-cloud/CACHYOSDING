@@ -1,4 +1,4 @@
-# Benutzerhandbuch – Phase 12
+# Benutzerhandbuch – Phase 14
 
 Nach `./gradlew :app:run` erscheint die Grundoberfläche mit Topbar, Navigation, Inhaltsbereich und
 Statusbereich. Die Seiten „Übersicht“, „System“ und „Einstellungen“ enthalten reale lokale Inhalte.
@@ -102,3 +102,12 @@ Auf der Übersicht stehen vier Schnellaktionen bereit:
 Jeder Button ist fest mit einer registrierten Action-ID verbunden. Wenn das benötigte Programm
 nicht installiert oder nicht im sicheren Suchpfad auffindbar ist, erscheint eine verständliche
 Meldung. Die Anwendung fordert für diese Aktionen keine erhöhten Rechte an.
+# Pakete
+
+Die Paketseite zeigt installierte Pakete sowie Zähler für Updates, verwaiste Pakete und den
+Pacman-Cache. Eine Repository-Suche akzeptiert Paketnamen und sichere Suchbestandteile.
+
+Vor „Installieren“ oder „Entfernen“ zeigt die Anwendung die von Pacman berechneten Änderungen und
+Größen. Erst der Button „Authentifizieren und ausführen“ öffnet Polkit. Wenn eine andere
+Pacman-Anwendung die Datenbank sperrt oder die Vorschau älter als zwei Minuten ist, wird die Aktion
+verworfen. AUR-Unterstützung ist in Version 1 optional und derzeit nicht aktiviert.

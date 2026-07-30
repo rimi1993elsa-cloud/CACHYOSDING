@@ -28,6 +28,7 @@ public final class ControlCenterApplication extends Application {
             context.audioEvents(),
             context.applicationManager(),
             context.diagnosticManager(),
+            context.packageManager(),
             context.intentRouter(),
             context.microphoneCatalog(),
             context.speechModelManager(),

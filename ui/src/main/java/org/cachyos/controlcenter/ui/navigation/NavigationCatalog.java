@@ -12,7 +12,7 @@ public final class NavigationCatalog {
           active(NavigationId.NETWORK, "Netzwerk", "Verbindungen und Diagnose"),
           active(NavigationId.APPLICATIONS, "Programme", "Installierte Anwendungen"),
           active(NavigationId.VOICE, "Sprache", "Offline Push-to-Talk"),
-          planned(NavigationId.PACKAGES, "Pakete", "Pacman und optionale AUR-Pakete", 14),
+          active(NavigationId.PACKAGES, "Pakete", "Pacman und optionale AUR-Pakete"),
           planned(NavigationId.HARDWARE, "Hardware", "Geräte und Sensoren", 16),
           planned(NavigationId.STORAGE, "Speicher", "Laufwerke und Dateisysteme", 17),
           planned(NavigationId.SNAPSHOTS, "Snapshots", "Btrfs- und Snapper-Verwaltung", 17),

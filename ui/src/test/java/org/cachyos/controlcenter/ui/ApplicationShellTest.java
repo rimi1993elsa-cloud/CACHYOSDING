@@ -47,6 +47,14 @@ import org.cachyos.controlcenter.modules.network.NetworkEvents;
 import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
 import org.cachyos.controlcenter.modules.network.NetworkOperationResult;
 import org.cachyos.controlcenter.modules.network.NetworkSnapshot;
+import org.cachyos.controlcenter.modules.packages.PackageAction;
+import org.cachyos.controlcenter.modules.packages.PackageBackend;
+import org.cachyos.controlcenter.modules.packages.PackageDetails;
+import org.cachyos.controlcenter.modules.packages.PackageEntry;
+import org.cachyos.controlcenter.modules.packages.PackageManager;
+import org.cachyos.controlcenter.modules.packages.PackageMutationGateway;
+import org.cachyos.controlcenter.modules.packages.PackageOperationResult;
+import org.cachyos.controlcenter.modules.packages.PackageSnapshot;
 import org.cachyos.controlcenter.systeminfo.DashboardDataSource;
 import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
 import org.cachyos.controlcenter.systeminfo.OperatingSystemFamily;
@@ -63,6 +71,7 @@ class ApplicationShellTest extends ApplicationTest {
   private DashboardMonitor dashboardMonitor;
   private KnowledgeService knowledgeService;
   private DiagnosticManager diagnosticManager;
+  private PackageManager packageManager;
 
   @Override
   public void start(Stage stage) {
@@ -89,6 +98,8 @@ class ApplicationShellTest extends ApplicationTest {
             category ->
                 new DiagnosticObservation(
                     category, DiagnosticStatus.UNAVAILABLE, "Im Test nicht verfügbar.", ""));
+    packageManager =
+        new PackageManager(new UnavailablePackageBackend(), new UnavailablePackageGateway());
     MainView view =
         new MainView(
             platformInfo,
@@ -113,6 +124,7 @@ class ApplicationShellTest extends ApplicationTest {
             },
             new ApplicationManagerModule(new EmptyApplicationBackend()),
             diagnosticManager,
+            packageManager,
             new GermanIntentRouter(java.util.List::of),
             new MicrophoneCatalog(),
             new SpeechModelManager(
@@ -136,6 +148,7 @@ class ApplicationShellTest extends ApplicationTest {
     dashboardMonitor.close();
     knowledgeService.close();
     diagnosticManager.close();
+    packageManager.close();
   }
 
   @Test
@@ -203,6 +216,15 @@ class ApplicationShellTest extends ApplicationTest {
     Label heading = lookup(".page-title").queryAs(Label.class);
     assertEquals("Diagnose", heading.getText());
     lookup("#diagnostics-run").queryButton();
+  }
+
+  @Test
+  void opensImplementedPackageManagerPage() {
+    clickOn("Pakete");
+
+    Label heading = lookup(".page-title").queryAs(Label.class);
+    assertEquals("Pakete", heading.getText());
+    lookup("#package-list").queryListView();
   }
 
   @Test
@@ -341,6 +363,50 @@ class ApplicationShellTest extends ApplicationTest {
     @Override
     public java.util.Optional<String> findPackage(String applicationId) {
       return java.util.Optional.empty();
+    }
+  }
+
+  private static final class UnavailablePackageBackend implements PackageBackend {
+    @Override
+    public boolean available() {
+      return false;
+    }
+
+    @Override
+    public boolean locked() {
+      return false;
+    }
+
+    @Override
+    public PackageSnapshot snapshot() {
+      return PackageSnapshot.unavailable("Test");
+    }
+
+    @Override
+    public java.util.List<PackageEntry> search(String query) {
+      return java.util.List.of();
+    }
+
+    @Override
+    public java.util.Optional<PackageDetails> details(String packageName) {
+      return java.util.Optional.empty();
+    }
+
+    @Override
+    public java.util.List<String> preview(PackageAction action, String packageName) {
+      return java.util.List.of();
+    }
+  }
+
+  private static final class UnavailablePackageGateway implements PackageMutationGateway {
+    @Override
+    public boolean available() {
+      return false;
+    }
+
+    @Override
+    public PackageOperationResult execute(PackageAction action, String packageName) {
+      return new PackageOperationResult(false, "Test");
     }
   }
 

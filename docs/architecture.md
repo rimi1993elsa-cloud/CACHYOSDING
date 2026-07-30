@@ -3,7 +3,7 @@
 ## Ziel
 
 Die Anwendung trennt Anzeige, lokale Aktionen, privilegierte Aktionen und Online-KI technisch. In
-Phase 13 existieren die unprivilegierte UI, sichere Systemerkennung, das Live-Dashboard, eine
+Phase 14 existieren die unprivilegierte UI, sichere Systemerkennung, das Live-Dashboard, eine
 allowlist-basierte lokale Action Engine, Fachgrenzen für NetworkManager und PipeWire-Pulse sowie
 eine strikt textliefernde Speech-to-Text-Grenze und ein separater privilegierter Helper.
 
@@ -49,6 +49,10 @@ flowchart TB
 - `modules/diagnostics` koordiniert lesende Fachbefunde und redigiert sie zentral.
   `platform-linux` besitzt die festen Probe-Argumentlisten; nur der bereinigte Report erreicht UI
   oder einen bewusst vorbereiteten KI-Entwurf.
+- `modules/packages` besitzt Paketmodelle, Cache, Fortschritt und kurzlebige
+  Transaktionsvorschauen. Es kennt weder D-Bus noch Prozess-APIs.
+- `platform-linux` liest Pacman-Daten mit `LC_ALL=C`, begrenzter Ausgabe und getrennten
+  validierten Argumenten. Nur der Mutation-Gateway kennt `helper-api`.
 - `platform-linux` enthält typisierte Adapter. Der aktuelle Prozessadapter akzeptiert eine absolute
   Executable und eine getrennte Argumentliste. `nmcli` wird nur über feste Argumentformen und
   validierte Bezeichner verwendet; freie Shell-Schnittstellen sind verboten.

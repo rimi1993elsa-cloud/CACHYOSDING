@@ -16,6 +16,7 @@ import org.cachyos.controlcenter.modules.audio.AudioManagerModule;
 import org.cachyos.controlcenter.modules.diagnostics.DiagnosticManager;
 import org.cachyos.controlcenter.modules.network.NetworkEvents;
 import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
+import org.cachyos.controlcenter.modules.packages.PackageManager;
 import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
 import org.cachyos.controlcenter.systeminfo.PlatformInfo;
 import org.cachyos.controlcenter.systeminfo.SystemSnapshot;
@@ -31,6 +32,7 @@ public record AppContext(
     AudioEvents audioEvents,
     ApplicationManagerModule applicationManager,
     DiagnosticManager diagnosticManager,
+    PackageManager packageManager,
     GermanIntentRouter intentRouter,
     MicrophoneCatalog microphoneCatalog,
     SpeechModelManager speechModelManager,

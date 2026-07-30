@@ -12,9 +12,16 @@
 | KI/Chat | Responses-Streaming, Secret-Service und Offlinezustand aktiv | Phase 12 |
 | Knowledge/RAG | offizielle Quellen, Cache, Retrieval und Quellenanzeige aktiv | Phase 12 |
 | Diagnose | sechs lokale Probes, Sanitizer und feste Abhilfen aktiv | Phase 13 |
-| Helper/Pakete | nur Projektstruktur | Phase 13–14 |
+| Helper | D-Bus, Polkit, Allowlist, Audit und Timeouts aktiv | Phase 13 |
+| Pakete | Pacman-Lesen, Vorschau und Helper-Mutation aktiv | Phase 14 |
 | Weitere Manager | nur Projektstruktur | Phase 15–21 |
 | Packaging | nur Verzeichnisstruktur | Phase 24 |
 
 Eine vorhandene Projektstruktur bedeutet ausdrücklich nicht, dass das jeweilige Fachmodul bereits
 implementiert oder in der Oberfläche freigeschaltet ist.
+# Paketmanager
+
+`modules/packages` koordiniert lesende Snapshots, Suche, Details, Fortschritt und bestätigte
+Transaktionen. `platform-linux` implementiert Pacman-Abfragen und den D-Bus-Gateway. Eine
+Installation oder Entfernung ist nur mit einer höchstens zwei Minuten alten Vorschau-ID möglich;
+bei `/var/lib/pacman/db.lck` wird vor Vorschau, vor D-Bus-Aufruf und nochmals im Helper abgebrochen.

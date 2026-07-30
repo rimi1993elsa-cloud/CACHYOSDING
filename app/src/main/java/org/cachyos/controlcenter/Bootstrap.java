@@ -22,17 +22,21 @@ import org.cachyos.controlcenter.modules.applications.ApplicationManagerModule;
 import org.cachyos.controlcenter.modules.audio.AudioManagerModule;
 import org.cachyos.controlcenter.modules.diagnostics.DiagnosticManager;
 import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
+import org.cachyos.controlcenter.modules.packages.PackageManager;
 import org.cachyos.controlcenter.platform.applications.DesktopApplicationBackend;
 import org.cachyos.controlcenter.platform.audio.PactlAudioBackend;
 import org.cachyos.controlcenter.platform.audio.PactlEventMonitor;
 import org.cachyos.controlcenter.platform.diagnostics.LinuxDiagnosticBackend;
 import org.cachyos.controlcenter.platform.network.NmcliEventMonitor;
 import org.cachyos.controlcenter.platform.network.NmcliNetworkBackend;
+import org.cachyos.controlcenter.platform.packages.DbusPackageMutationGateway;
+import org.cachyos.controlcenter.platform.packages.PacmanPackageBackend;
 import org.cachyos.controlcenter.platform.process.DesktopIntegrationModule;
 import org.cachyos.controlcenter.platform.secrets.DesktopSecretStore;
 import org.cachyos.controlcenter.platform.status.LinuxSupplementalStatusProbe;
 import org.cachyos.controlcenter.systeminfo.DashboardDataSource;
 import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
+import org.cachyos.controlcenter.systeminfo.OperatingSystemFamily;
 import org.cachyos.controlcenter.systeminfo.PlatformDetector;
 import org.cachyos.controlcenter.systeminfo.PlatformInfo;
 import org.cachyos.controlcenter.systeminfo.SystemSnapshot;
@@ -69,6 +73,12 @@ public final class Bootstrap {
     DiagnosticManager diagnosticManager =
         lifecycle.manage(
             new DiagnosticManager(new LinuxDiagnosticBackend(systemSnapshot.capabilities())));
+    PackageManager packageManager =
+        lifecycle.manage(
+            new PackageManager(
+                new PacmanPackageBackend(systemSnapshot.capabilities()),
+                new DbusPackageMutationGateway(
+                    platformInfo.operatingSystemFamily() == OperatingSystemFamily.LINUX)));
     GermanIntentRouter intentRouter =
         new GermanIntentRouter(
             () ->
@@ -125,6 +135,7 @@ public final class Bootstrap {
         audioEvents,
         applicationManager,
         diagnosticManager,
+        packageManager,
         intentRouter,
         microphoneCatalog,
         speechModelManager,

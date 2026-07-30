@@ -1,7 +1,6 @@
 package org.cachyos.controlcenter.ui.navigation;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.EnumSet;
@@ -33,8 +32,8 @@ class NavigationCatalogTest {
     assertTrue(entry(catalog, NavigationId.AI_ASSISTANT).enabled());
     assertTrue(entry(catalog, NavigationId.DIAGNOSTICS).enabled());
     assertTrue(entry(catalog, NavigationId.SETTINGS).enabled());
-    assertFalse(entry(catalog, NavigationId.PACKAGES).enabled());
-    assertEquals("Phase 14", entry(catalog, NavigationId.PACKAGES).availability());
+    assertTrue(entry(catalog, NavigationId.PACKAGES).enabled());
+    assertEquals("Verfügbar", entry(catalog, NavigationId.PACKAGES).availability());
   }
 
   private static NavigationEntry entry(NavigationCatalog catalog, NavigationId id) {

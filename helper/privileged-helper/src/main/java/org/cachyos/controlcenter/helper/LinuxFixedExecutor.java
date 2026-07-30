@@ -1,6 +1,9 @@
 package org.cachyos.controlcenter.helper;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -11,12 +14,18 @@ final class LinuxFixedExecutor implements HelperExecutor {
   @Override
   public int installPackage(String packageName) throws Exception {
     require(HelperValidation.packageName(packageName));
+    if (pacmanLocked()) {
+      return 75;
+    }
     return run(List.of("/usr/bin/pacman", "--noconfirm", "-S", "--", packageName));
   }
 
   @Override
   public int removePackage(String packageName) throws Exception {
     require(HelperValidation.packageName(packageName));
+    if (pacmanLocked()) {
+      return 75;
+    }
     return run(List.of("/usr/bin/pacman", "--noconfirm", "-Rns", "--", packageName));
   }
 
@@ -92,5 +101,9 @@ final class LinuxFixedExecutor implements HelperExecutor {
 
   private static java.io.File nullDevice() {
     return new java.io.File("/dev/null");
+  }
+
+  private static boolean pacmanLocked() {
+    return Files.exists(Path.of("/var/lib/pacman/db.lck"), LinkOption.NOFOLLOW_LINKS);
   }
 }

@@ -5,10 +5,10 @@ phasenweise nach dem verbindlichen Masterauftrag entwickelt.
 
 ## Aktueller Stand
 
-Phase 13 ergänzt einen separaten privilegierten Helper über den System-D-Bus. Seine kleine,
-typisierte Methoden-Allowlist wird pro Aktion durch Polkit geschützt und innerhalb des
-Root-Prozesses erneut validiert. Zeitlimits, strukturierte Fehlercodes und parameterfreies Audit
-begrenzen Fehlerfolgen; die JavaFX-Anwendung bleibt vollständig unprivilegiert.
+Phase 14 ergänzt einen Pacman-Paketmanager mit installierten Paketen, Repository-Suche, Details,
+Updates, verwaisten Paketen, Cachegröße und Lock-Erkennung. Installieren und Entfernen benötigen
+immer eine konkrete, kurzlebige Transaktionsvorschau und eine bewusste Bestätigung; erst danach
+wird die typisierte Polkit-geschützte Helper-Methode aufgerufen.
 
 ## Voraussetzungen
 
