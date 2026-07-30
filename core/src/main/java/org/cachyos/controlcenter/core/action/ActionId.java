@@ -24,6 +24,7 @@ public record ActionId(String value) implements Comparable<ActionId> {
   public static final ActionId AUDIO_SET_DEFAULT_OUTPUT = new ActionId("audio.set-default-output");
   public static final ActionId AUDIO_SET_DEFAULT_INPUT = new ActionId("audio.set-default-input");
   public static final ActionId AUDIO_TEST_TONE = new ActionId("audio.test-tone");
+  public static final ActionId APPLICATION_LAUNCH = new ActionId("applications.launch");
 
   public ActionId {
     Objects.requireNonNull(value, "value");

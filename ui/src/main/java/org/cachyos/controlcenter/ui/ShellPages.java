@@ -11,6 +11,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import org.cachyos.controlcenter.core.action.ActionDispatcher;
 import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
+import org.cachyos.controlcenter.modules.applications.ApplicationManagerModule;
 import org.cachyos.controlcenter.modules.audio.AudioEvents;
 import org.cachyos.controlcenter.modules.audio.AudioManagerModule;
 import org.cachyos.controlcenter.modules.network.NetworkEvents;
@@ -18,6 +19,7 @@ import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
 import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
 import org.cachyos.controlcenter.systeminfo.PlatformInfo;
 import org.cachyos.controlcenter.systeminfo.SystemSnapshot;
+import org.cachyos.controlcenter.ui.applications.ApplicationsView;
 import org.cachyos.controlcenter.ui.audio.AudioView;
 import org.cachyos.controlcenter.ui.dashboard.DashboardView;
 import org.cachyos.controlcenter.ui.network.NetworkView;
@@ -107,6 +109,16 @@ final class ShellPages {
         "Audio",
         "PipeWire-Geräte, Mikrofone, Streams und lokale Mixersteuerung ohne Audioaufnahme.",
         new AudioView(manager, events, dispatcher, notifications));
+  }
+
+  static Node applications(
+      ApplicationManagerModule manager,
+      ActionDispatcher dispatcher,
+      NotificationCenter notifications) {
+    return page(
+        "Programme",
+        "Sicher katalogisierte XDG-Anwendungen mit Suche, Favoriten und Paketzuordnung.",
+        new ApplicationsView(manager, dispatcher, notifications));
   }
 
   static Node settings(ThemeManager themeManager, Consumer<ThemeMode> onChanged) {

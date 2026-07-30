@@ -26,6 +26,7 @@ public final class ControlCenterApplication extends Application {
             context.networkEvents(),
             context.audioManager(),
             context.audioEvents(),
+            context.applicationManager(),
             context.actionDispatcher());
     Scene scene = new Scene(mainView.root(), 1100, 720);
     mainView.install(scene);

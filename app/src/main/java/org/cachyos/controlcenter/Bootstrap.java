@@ -6,8 +6,10 @@ import org.cachyos.controlcenter.core.action.ActionRegistry;
 import org.cachyos.controlcenter.core.action.DefaultActionDispatcher;
 import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
 import org.cachyos.controlcenter.core.module.ModuleRegistry;
+import org.cachyos.controlcenter.modules.applications.ApplicationManagerModule;
 import org.cachyos.controlcenter.modules.audio.AudioManagerModule;
 import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
+import org.cachyos.controlcenter.platform.applications.DesktopApplicationBackend;
 import org.cachyos.controlcenter.platform.audio.PactlAudioBackend;
 import org.cachyos.controlcenter.platform.audio.PactlEventMonitor;
 import org.cachyos.controlcenter.platform.network.NmcliEventMonitor;
@@ -45,6 +47,8 @@ public final class Bootstrap {
         new AudioManagerModule(new PactlAudioBackend(systemSnapshot.capabilities()));
     PactlEventMonitor audioEvents =
         lifecycle.manage(new PactlEventMonitor(systemSnapshot.capabilities()));
+    ApplicationManagerModule applicationManager =
+        new ApplicationManagerModule(new DesktopApplicationBackend(systemSnapshot.capabilities()));
     InMemoryAuditLog auditLog = new InMemoryAuditLog();
     ModuleRegistry moduleRegistry = new ModuleRegistry();
     ActionRegistry actionRegistry = new ActionRegistry();
@@ -57,6 +61,8 @@ public final class Bootstrap {
     actionRegistry.registerModule(networkManager);
     moduleRegistry.register(audioManager);
     actionRegistry.registerModule(audioManager);
+    moduleRegistry.register(applicationManager);
+    actionRegistry.registerModule(applicationManager);
 
     DefaultActionDispatcher dispatcher =
         lifecycle.manage(
@@ -78,6 +84,7 @@ public final class Bootstrap {
         networkEvents,
         audioManager,
         audioEvents,
+        applicationManager,
         lifecycle,
         dispatcher,
         auditLog,

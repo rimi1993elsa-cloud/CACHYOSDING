@@ -16,6 +16,10 @@ import org.cachyos.controlcenter.core.action.ActionRequest;
 import org.cachyos.controlcenter.core.action.ActionResult;
 import org.cachyos.controlcenter.core.action.InputSource;
 import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
+import org.cachyos.controlcenter.modules.applications.ApplicationBackend;
+import org.cachyos.controlcenter.modules.applications.ApplicationEntry;
+import org.cachyos.controlcenter.modules.applications.ApplicationManagerModule;
+import org.cachyos.controlcenter.modules.applications.ApplicationOperationResult;
 import org.cachyos.controlcenter.modules.audio.AudioBackend;
 import org.cachyos.controlcenter.modules.audio.AudioEvents;
 import org.cachyos.controlcenter.modules.audio.AudioManagerModule;
@@ -74,6 +78,7 @@ class ApplicationShellTest extends ApplicationTest {
               @Override
               public void close() {}
             },
+            new ApplicationManagerModule(new EmptyApplicationBackend()),
             request -> {
               dispatched.set(request);
               return CompletableFuture.completedFuture(ActionResult.success("Test"));
@@ -127,6 +132,15 @@ class ApplicationShellTest extends ApplicationTest {
     Label heading = lookup(".page-title").queryAs(Label.class);
     assertEquals("Audio", heading.getText());
     lookup("#audio-outputs").queryListView();
+  }
+
+  @Test
+  void opensImplementedApplicationManagerPage() {
+    clickOn("Programme");
+
+    Label heading = lookup(".page-title").queryAs(Label.class);
+    assertEquals("Programme", heading.getText());
+    lookup("#application-list").queryListView();
   }
 
   @Test
@@ -205,6 +219,23 @@ class ApplicationShellTest extends ApplicationTest {
     @Override
     public AudioOperationResult playTestTone() {
       return AudioOperationResult.unavailable("Test");
+    }
+  }
+
+  private static final class EmptyApplicationBackend implements ApplicationBackend {
+    @Override
+    public java.util.List<ApplicationEntry> loadApplications() {
+      return java.util.List.of();
+    }
+
+    @Override
+    public ApplicationOperationResult launch(String applicationId) {
+      return ApplicationOperationResult.unavailable("Test");
+    }
+
+    @Override
+    public java.util.Optional<String> findPackage(String applicationId) {
+      return java.util.Optional.empty();
     }
   }
 }

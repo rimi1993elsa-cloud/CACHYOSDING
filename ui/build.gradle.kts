@@ -7,6 +7,7 @@ dependencies {
     api(project(":system-info"))
     api(project(":modules:network"))
     api(project(":modules:audio"))
+    api(project(":modules:applications"))
     testImplementation("org.testfx:testfx-junit5:4.0.18")
     testImplementation("org.hamcrest:hamcrest:3.0")
 }

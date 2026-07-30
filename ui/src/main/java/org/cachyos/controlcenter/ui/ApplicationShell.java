@@ -24,6 +24,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.cachyos.controlcenter.core.action.ActionDispatcher;
 import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
+import org.cachyos.controlcenter.modules.applications.ApplicationManagerModule;
 import org.cachyos.controlcenter.modules.audio.AudioEvents;
 import org.cachyos.controlcenter.modules.audio.AudioManagerModule;
 import org.cachyos.controlcenter.modules.network.NetworkEvents;
@@ -62,6 +63,7 @@ final class ApplicationShell {
       NetworkEvents networkEvents,
       AudioManagerModule audioManager,
       AudioEvents audioEvents,
+      ApplicationManagerModule applicationManager,
       NavigationCatalog catalog,
       ThemeManager themeManager,
       NotificationCenter notifications,
@@ -78,6 +80,7 @@ final class ApplicationShell {
                 networkEvents,
                 audioManager,
                 audioEvents,
+                applicationManager,
                 themeManager,
                 notifications,
                 actionDispatcher));
@@ -162,7 +165,7 @@ final class ApplicationShell {
 
     Label title = new Label("CachyOS Control Center");
     title.getStyleClass().add("app-title");
-    Label phase = new Label("Entwicklungsstand · Phase 6");
+    Label phase = new Label("Entwicklungsstand · Phase 7");
     phase.getStyleClass().add("phase-badge");
 
     Label statusDot = new Label("●");
@@ -214,6 +217,7 @@ final class ApplicationShell {
       NetworkEvents networkEvents,
       AudioManagerModule audioManager,
       AudioEvents audioEvents,
+      ApplicationManagerModule applicationManager,
       ThemeManager themeManager,
       NotificationCenter notificationCenter,
       ActionDispatcher actionDispatcher) {
@@ -228,6 +232,9 @@ final class ApplicationShell {
     pages.put(
         NavigationId.AUDIO,
         ShellPages.audio(audioManager, audioEvents, actionDispatcher, notificationCenter));
+    pages.put(
+        NavigationId.APPLICATIONS,
+        ShellPages.applications(applicationManager, actionDispatcher, notificationCenter));
     pages.put(
         NavigationId.SETTINGS,
         ShellPages.settings(

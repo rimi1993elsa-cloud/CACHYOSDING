@@ -5,10 +5,10 @@ phasenweise nach dem verbindlichen Masterauftrag entwickelt.
 
 ## Aktueller Stand
 
-Phase 6 ergänzt einen PipeWire-Audiomanager über die PulseAudio-Kompatibilitätsschicht. Ausgabe- und
-Eingabegeräte, Standardgeräte, Lautstärke, Mute und Wiedergabestreams werden aus strukturierten
-`pactl`-Daten angezeigt und gesteuert. `pactl subscribe` aktualisiert die Ansicht ohne Polling.
-Mikrofonsteuerung nimmt zu keinem Zeitpunkt Audio auf.
+Phase 7 ergänzt einen sicheren XDG-Anwendungsmanager. Installierte `.desktop`-Anwendungen werden
+durchsucht, mit Name, Kommentar und verfügbaren Icons angezeigt, gefiltert, favorisiert und über
+eine katalogisierte ID gestartet. Exec-Felder werden ohne Shell in Argumente zerlegt; Shellstarter,
+Symlinks und nicht ausführbare Programme werden abgelehnt. Pacman ordnet Pakete bei Bedarf lesend zu.
 
 ## Voraussetzungen
 

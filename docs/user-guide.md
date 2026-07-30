@@ -1,4 +1,4 @@
-# Benutzerhandbuch – Phase 6
+# Benutzerhandbuch – Phase 7
 
 Nach `./gradlew :app:run` erscheint die Grundoberfläche mit Topbar, Navigation, Inhaltsbereich und
 Statusbereich. Die Seiten „Übersicht“, „System“ und „Einstellungen“ enthalten reale lokale Inhalte.
@@ -36,6 +36,11 @@ Unter „Audio“ zeigt die Anwendung Ausgabegeräte, Mikrofone und laufende Wie
 wird durch Auswahl bedient. Danach lassen sich Lautstärke, Stummschaltung und Standardgerät ändern.
 Der Testton ist nur aktiv, wenn `pw-play` und die feste freedesktop-Systemklangdatei verfügbar sind.
 Die Mikrofonseite verändert ausschließlich Mixerwerte und zeichnet kein Audio auf.
+
+Unter „Programme“ werden sicher startbare Einträge aus den XDG-Anwendungsverzeichnissen angezeigt.
+Die Suche filtert Name und Beschreibung. Favoriten stehen während der laufenden Sitzung oben.
+Nach Auswahl zeigt die App die Paketzuordnung, sofern `pacman` verfügbar ist. „Starten“ sendet nur
+die interne Katalog-ID; der sichtbare Name und der Suchtext werden niemals als Befehl interpretiert.
 
 Auf der Übersicht stehen vier Schnellaktionen bereit:
 

@@ -36,6 +36,7 @@ Direkter Button
 | `audio.set-default-output` | Standardausgabe setzen | nein | Gerät |
 | `audio.set-default-input` | Standardmikrofon setzen | nein | Gerät |
 | `audio.test-tone` | festen Systemtestton abspielen | nein | keine |
+| `applications.launch` | katalogisierte Desktop-Anwendung starten | nein | validierte App-ID |
 
 Unbekannte IDs werden vor jedem Handler abgelehnt und auditiert. Die Desktop-Aktionen weisen
 sämtliche Parameter zurück. Prozesse erhalten eine absolute Executable und eine getrennte

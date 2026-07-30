@@ -28,6 +28,7 @@ class NavigationCatalogTest {
     assertTrue(entry(catalog, NavigationId.SYSTEM).enabled());
     assertTrue(entry(catalog, NavigationId.NETWORK).enabled());
     assertTrue(entry(catalog, NavigationId.AUDIO).enabled());
+    assertTrue(entry(catalog, NavigationId.APPLICATIONS).enabled());
     assertTrue(entry(catalog, NavigationId.SETTINGS).enabled());
     assertFalse(entry(catalog, NavigationId.PACKAGES).enabled());
     assertEquals("Phase 14", entry(catalog, NavigationId.PACKAGES).availability());

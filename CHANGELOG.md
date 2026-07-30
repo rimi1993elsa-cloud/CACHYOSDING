@@ -7,6 +7,10 @@ Alle nennenswerten Änderungen werden in dieser Datei dokumentiert. Das Format o
 
 ### Added
 
+- XDG-Anwendungsmanager mit Suche, Icons und Sitzungsfavoriten
+- Sicherer Desktop-Exec-Parser mit Feldcodebehandlung und expliziter Shell-Ablehnung
+- ID-only Anwendungsstart und verständliche Startfehler
+- Bedarfsgesteuerte Paketzuordnung über `pacman -Qoq`
 - PipeWire-Audiomanager für Ausgaben, Mikrofone, Standardgeräte und Streams
 - Validierte Lautstärke- und Mute-Aktionen bis maximal 150 Prozent
 - Ereignisbasierte Audioaktualisierung über `pactl subscribe`
