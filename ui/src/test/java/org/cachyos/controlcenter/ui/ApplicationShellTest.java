@@ -42,6 +42,8 @@ import org.cachyos.controlcenter.modules.audio.AudioSnapshot;
 import org.cachyos.controlcenter.modules.diagnostics.DiagnosticManager;
 import org.cachyos.controlcenter.modules.diagnostics.DiagnosticObservation;
 import org.cachyos.controlcenter.modules.diagnostics.DiagnosticStatus;
+import org.cachyos.controlcenter.modules.hardware.HardwareManager;
+import org.cachyos.controlcenter.modules.hardware.HardwareSnapshot;
 import org.cachyos.controlcenter.modules.network.NetworkBackend;
 import org.cachyos.controlcenter.modules.network.NetworkEvents;
 import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
@@ -77,6 +79,7 @@ class ApplicationShellTest extends ApplicationTest {
   private DiagnosticManager diagnosticManager;
   private PackageManager packageManager;
   private SecurityManager securityManager;
+  private HardwareManager hardwareManager;
 
   @Override
   public void start(Stage stage) {
@@ -116,6 +119,22 @@ class ApplicationShellTest extends ApplicationTest {
                     java.time.Instant.now(),
                     "Test"),
             new UnavailableSecurityGateway());
+    hardwareManager =
+        new HardwareManager(
+            () ->
+                new HardwareSnapshot(
+                    false,
+                    "Test",
+                    "Test",
+                    "Test",
+                    0,
+                    "Test",
+                    java.util.List.of(),
+                    java.util.List.of(),
+                    java.util.List.of(),
+                    java.util.List.of(),
+                    java.time.Instant.now(),
+                    "Test"));
     MainView view =
         new MainView(
             platformInfo,
@@ -142,6 +161,7 @@ class ApplicationShellTest extends ApplicationTest {
             diagnosticManager,
             packageManager,
             securityManager,
+            hardwareManager,
             new GermanIntentRouter(java.util.List::of),
             new MicrophoneCatalog(),
             new SpeechModelManager(
@@ -167,6 +187,7 @@ class ApplicationShellTest extends ApplicationTest {
     diagnosticManager.close();
     packageManager.close();
     securityManager.close();
+    hardwareManager.close();
   }
 
   @Test
@@ -255,8 +276,26 @@ class ApplicationShellTest extends ApplicationTest {
   }
 
   @Test
+  void opensImplementedHardwareManagerPage() {
+    clickOn("Hardware");
+
+    Label heading = lookup(".page-title").queryAs(Label.class);
+    assertEquals("Hardware", heading.getText());
+    lookup("#hardware-devices").queryListView();
+  }
+
+  @Test
   void opensPushToTalkPageWithoutModel() {
-    clickOn("Sprache");
+    ListView<NavigationEntry> navigation = lookup("#primary-navigation").queryListView();
+    interact(
+        () ->
+            navigation
+                .getSelectionModel()
+                .select(
+                    navigation.getItems().stream()
+                        .filter(entry -> entry.id() == NavigationId.VOICE)
+                        .findFirst()
+                        .orElseThrow()));
 
     Label heading = lookup(".page-title").queryAs(Label.class);
     assertEquals("Sprache", heading.getText());

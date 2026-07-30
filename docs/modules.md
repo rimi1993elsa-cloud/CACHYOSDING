@@ -15,6 +15,7 @@
 | Helper | D-Bus, Polkit, Allowlist, Audit und Timeouts aktiv | Phase 13 |
 | Pakete | Pacman-Lesen, Vorschau und Helper-Mutation aktiv | Phase 14 |
 | Sicherheit | Einzelbefunde und Firewall-Helper aktiv | Phase 15 |
+| Hardware | CPU/GPU/RAM/Akku/Sensoren/PCI/USB/Treiber aktiv | Phase 16 |
 | Weitere Manager | nur Projektstruktur | Phase 15–21 |
 | Packaging | nur Verzeichnisstruktur | Phase 24 |
 

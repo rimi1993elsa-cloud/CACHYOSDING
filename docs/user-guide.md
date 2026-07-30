@@ -1,4 +1,4 @@
-# Benutzerhandbuch – Phase 15
+# Benutzerhandbuch – Phase 16
 
 Nach `./gradlew :app:run` erscheint die Grundoberfläche mit Topbar, Navigation, Inhaltsbereich und
 Statusbereich. Die Seiten „Übersicht“, „System“ und „Einstellungen“ enthalten reale lokale Inhalte.
@@ -122,3 +122,10 @@ Updateliste gezeigt.
 Die Anwendung berechnet keinen Gesamtscore. Firewall-Änderungen zeigen ihre Wirkung vorab, benötigen
 eine Bestätigung und anschließend Polkit. Andere Befunde enthalten nur Empfehlungen und lösen keine
 automatische Änderung aus.
+
+# Hardware
+
+Die Hardwareseite zeigt Modell, CPU, RAM, Akku, Grafik, PCI-/USB-Geräte, Treiber und erkannte
+Sensorwerte. Fehlen `lspci`, `lsusb` oder `lm_sensors`, bleibt der übrige Bericht nutzbar.
+Seriennummern und Machine-ID werden nicht erhoben. „Anonymisierten Bericht kopieren“ wendet
+zusätzlich eine Redaction auf unerwartete Identifier an.

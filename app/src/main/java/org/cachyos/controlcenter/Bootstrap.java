@@ -21,6 +21,7 @@ import org.cachyos.controlcenter.input.voice.VoskSpeechToTextEngine;
 import org.cachyos.controlcenter.modules.applications.ApplicationManagerModule;
 import org.cachyos.controlcenter.modules.audio.AudioManagerModule;
 import org.cachyos.controlcenter.modules.diagnostics.DiagnosticManager;
+import org.cachyos.controlcenter.modules.hardware.HardwareManager;
 import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
 import org.cachyos.controlcenter.modules.packages.PackageManager;
 import org.cachyos.controlcenter.modules.security.SecurityManager;
@@ -28,6 +29,7 @@ import org.cachyos.controlcenter.platform.applications.DesktopApplicationBackend
 import org.cachyos.controlcenter.platform.audio.PactlAudioBackend;
 import org.cachyos.controlcenter.platform.audio.PactlEventMonitor;
 import org.cachyos.controlcenter.platform.diagnostics.LinuxDiagnosticBackend;
+import org.cachyos.controlcenter.platform.hardware.LinuxHardwareBackend;
 import org.cachyos.controlcenter.platform.network.NmcliEventMonitor;
 import org.cachyos.controlcenter.platform.network.NmcliNetworkBackend;
 import org.cachyos.controlcenter.platform.packages.DbusPackageMutationGateway;
@@ -89,6 +91,11 @@ public final class Bootstrap {
                     platformInfo.operatingSystemFamily() == OperatingSystemFamily.LINUX),
                 new DbusSecurityMutationGateway(
                     platformInfo.operatingSystemFamily() == OperatingSystemFamily.LINUX)));
+    HardwareManager hardwareManager =
+        lifecycle.manage(
+            new HardwareManager(
+                new LinuxHardwareBackend(
+                    platformInfo.operatingSystemFamily() == OperatingSystemFamily.LINUX)));
     GermanIntentRouter intentRouter =
         new GermanIntentRouter(
             () ->
@@ -147,6 +154,7 @@ public final class Bootstrap {
         diagnosticManager,
         packageManager,
         securityManager,
+        hardwareManager,
         intentRouter,
         microphoneCatalog,
         speechModelManager,

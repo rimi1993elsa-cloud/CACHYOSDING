@@ -42,6 +42,7 @@ import org.cachyos.controlcenter.modules.applications.ApplicationManagerModule;
 import org.cachyos.controlcenter.modules.audio.AudioEvents;
 import org.cachyos.controlcenter.modules.audio.AudioManagerModule;
 import org.cachyos.controlcenter.modules.diagnostics.DiagnosticManager;
+import org.cachyos.controlcenter.modules.hardware.HardwareManager;
 import org.cachyos.controlcenter.modules.network.NetworkEvents;
 import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
 import org.cachyos.controlcenter.modules.packages.PackageManager;
@@ -88,6 +89,7 @@ final class ApplicationShell {
       DiagnosticManager diagnosticManager,
       PackageManager packageManager,
       SecurityManager securityManager,
+      HardwareManager hardwareManager,
       GermanIntentRouter intentRouter,
       MicrophoneCatalog microphoneCatalog,
       SpeechModelManager speechModelManager,
@@ -117,6 +119,7 @@ final class ApplicationShell {
                 diagnosticManager,
                 packageManager,
                 securityManager,
+                hardwareManager,
                 microphoneCatalog,
                 speechModelManager,
                 speechToTextEngine,
@@ -207,7 +210,7 @@ final class ApplicationShell {
 
     Label title = new Label("CachyOS Control Center");
     title.getStyleClass().add("app-title");
-    Label phase = new Label("Entwicklungsstand · Phase 15");
+    Label phase = new Label("Entwicklungsstand · Phase 16");
     phase.getStyleClass().add("phase-badge");
 
     Label statusDot = new Label("●");
@@ -266,6 +269,7 @@ final class ApplicationShell {
       DiagnosticManager diagnosticManager,
       PackageManager packageManager,
       SecurityManager securityManager,
+      HardwareManager hardwareManager,
       MicrophoneCatalog microphoneCatalog,
       SpeechModelManager speechModelManager,
       SpeechToTextEngine speechToTextEngine,
@@ -291,6 +295,7 @@ final class ApplicationShell {
         ShellPages.applications(applicationManager, actionDispatcher, notificationCenter));
     pages.put(NavigationId.PACKAGES, ShellPages.packages(packageManager, notificationCenter));
     pages.put(NavigationId.SECURITY, ShellPages.security(securityManager, notificationCenter));
+    pages.put(NavigationId.HARDWARE, ShellPages.hardware(hardwareManager, notificationCenter));
     pages.put(
         NavigationId.VOICE,
         ShellPages.voice(microphoneCatalog, speechModelManager, speechToTextEngine, this::submit));

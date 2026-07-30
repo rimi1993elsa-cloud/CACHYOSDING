@@ -7,6 +7,11 @@ Alle nennenswerten Änderungen werden in dieser Datei dokumentiert. Das Format o
 
 ### Added
 
+- Hardwaremanager für CPU, GPU, RAM, Akku, Sensoren, PCI, USB und Treiber
+- Sichere sysfs-/procfs-Erkennung ohne Seriennummernerhebung
+- Optionale, zeitbegrenzte `lspci`-, `lsusb`- und `sensors`-Probes
+- Lokal anzeigbarer und zusätzlich anonymisierbarer Hardwarebericht
+- Ehrlicher Nicht-Linux- und Fehlende-Werkzeuge-Fallback
 - Lokale Sicherheitszentrale mit acht getrennt nachvollziehbaren Prüfbereichen
 - Firewall-, Port-, SSH-, Login-, Update-, Secure-Boot-, AppArmor- und Rechtebefunde
 - Bewusster Verzicht auf einen irreführenden aggregierten Sicherheits-Score

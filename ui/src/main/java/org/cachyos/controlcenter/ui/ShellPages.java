@@ -23,6 +23,7 @@ import org.cachyos.controlcenter.modules.applications.ApplicationManagerModule;
 import org.cachyos.controlcenter.modules.audio.AudioEvents;
 import org.cachyos.controlcenter.modules.audio.AudioManagerModule;
 import org.cachyos.controlcenter.modules.diagnostics.DiagnosticManager;
+import org.cachyos.controlcenter.modules.hardware.HardwareManager;
 import org.cachyos.controlcenter.modules.network.NetworkEvents;
 import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
 import org.cachyos.controlcenter.modules.packages.PackageManager;
@@ -35,6 +36,7 @@ import org.cachyos.controlcenter.ui.applications.ApplicationsView;
 import org.cachyos.controlcenter.ui.audio.AudioView;
 import org.cachyos.controlcenter.ui.dashboard.DashboardView;
 import org.cachyos.controlcenter.ui.diagnostics.DiagnosticsView;
+import org.cachyos.controlcenter.ui.hardware.HardwareView;
 import org.cachyos.controlcenter.ui.network.NetworkView;
 import org.cachyos.controlcenter.ui.notifications.NotificationCenter;
 import org.cachyos.controlcenter.ui.packages.PackagesView;
@@ -183,6 +185,13 @@ final class ShellPages {
         "Sicherheit",
         "Nachvollziehbare lokale Einzelbefunde ohne irreführenden Gesamtscore.",
         new SecurityView(manager, notifications));
+  }
+
+  static Node hardware(HardwareManager manager, NotificationCenter notifications) {
+    return page(
+        "Hardware",
+        "CPU, GPU, RAM, Akku, Sensoren, Busgeräte und Treiber ohne Seriennummernerhebung.",
+        new HardwareView(manager, notifications));
   }
 
   static Node settings(ThemeManager themeManager, Consumer<ThemeMode> onChanged) {

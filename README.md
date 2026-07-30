@@ -5,10 +5,9 @@ phasenweise nach dem verbindlichen Masterauftrag entwickelt.
 
 ## Aktueller Stand
 
-Phase 15 ergänzt eine lokale Sicherheitszentrale für Firewall, lauschende Ports, SSH,
-fehlgeschlagene Logins, Updates, Secure Boot, AppArmor und kritische Dateirechte. Jeder Befund
-zeigt eigene Evidenz und Unsicherheit; bewusst gibt es keinen irreführenden Gesamtscore.
-Firewall-Änderungen laufen ausschließlich über die typisierte Polkit-Helper-Methode.
+Phase 16 ergänzt Hardwareerkennung für CPU, GPU, RAM, Akku, Sensoren, PCI, USB und gebundene
+Treiber. Optionale Linux-Werkzeuge werden dynamisch behandelt. Der Bericht erhebt keine
+Seriennummern und kann vor dem Kopieren zusätzlich anonymisiert werden.
 
 ## Voraussetzungen
 
