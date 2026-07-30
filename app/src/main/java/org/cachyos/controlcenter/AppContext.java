@@ -3,6 +3,8 @@ package org.cachyos.controlcenter;
 import org.cachyos.controlcenter.core.action.ActionDispatcher;
 import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
 import org.cachyos.controlcenter.core.module.ModuleRegistry;
+import org.cachyos.controlcenter.modules.audio.AudioEvents;
+import org.cachyos.controlcenter.modules.audio.AudioManagerModule;
 import org.cachyos.controlcenter.modules.network.NetworkEvents;
 import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
 import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
@@ -16,6 +18,8 @@ public record AppContext(
     DashboardMonitor dashboardMonitor,
     NetworkManagerModule networkManager,
     NetworkEvents networkEvents,
+    AudioManagerModule audioManager,
+    AudioEvents audioEvents,
     LifecycleManager lifecycleManager,
     ActionDispatcher actionDispatcher,
     InMemoryAuditLog auditLog,

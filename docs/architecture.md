@@ -3,8 +3,8 @@
 ## Ziel
 
 Die Anwendung trennt Anzeige, lokale Aktionen, privilegierte Aktionen und Online-KI technisch. In
-Phase 5 existieren die unprivilegierte UI, sichere Systemerkennung, das Live-Dashboard, eine
-allowlist-basierte lokale Action Engine sowie die erste vollständige Fachgrenze für NetworkManager.
+Phase 6 existieren die unprivilegierte UI, sichere Systemerkennung, das Live-Dashboard, eine
+allowlist-basierte lokale Action Engine sowie Fachgrenzen für NetworkManager und PipeWire-Pulse.
 
 ```mermaid
 flowchart TB
@@ -36,6 +36,7 @@ flowchart TB
 - `ui` kennt darstellbare, unveränderliche Daten, aber keine Prozess- oder Root-Schnittstelle.
 - `system-info` liest lokale Daten und betreibt den lastarmen Dashboard-Monitor.
 - `modules/network` enthält ausschließlich Netzwerkmodelle, Validierung und den Manager-Vertrag.
+- `modules/audio` enthält ausschließlich Audiomodelle, Mixer-Validierung und den Manager-Vertrag.
 - `ui` erhält den Netzwerkmanager als Fachschnittstelle und kennt weder `nmcli` noch Prozess-APIs.
 - `platform-linux` enthält typisierte Adapter. Der aktuelle Prozessadapter akzeptiert eine absolute
   Executable und eine getrennte Argumentliste. `nmcli` wird nur über feste Argumentformen und
@@ -71,3 +72,4 @@ Benutzer-Home zurück. Secrets gehören später in Secret Service/KDE Wallet, ni
 - JUnit 5.14.4
 - Spotless 8.9.0
 - Checkstyle 13.9.0
+- Jackson 2.22.0

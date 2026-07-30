@@ -17,6 +17,13 @@ public record ActionId(String value) implements Comparable<ActionId> {
   public static final ActionId NETWORK_ACTIVATE_PROFILE = new ActionId("network.activate-profile");
   public static final ActionId NETWORK_DISCONNECT_DEVICE =
       new ActionId("network.disconnect-device");
+  public static final ActionId AUDIO_SET_OUTPUT_VOLUME = new ActionId("audio.set-output-volume");
+  public static final ActionId AUDIO_SET_INPUT_VOLUME = new ActionId("audio.set-input-volume");
+  public static final ActionId AUDIO_SET_OUTPUT_MUTE = new ActionId("audio.set-output-mute");
+  public static final ActionId AUDIO_SET_INPUT_MUTE = new ActionId("audio.set-input-mute");
+  public static final ActionId AUDIO_SET_DEFAULT_OUTPUT = new ActionId("audio.set-default-output");
+  public static final ActionId AUDIO_SET_DEFAULT_INPUT = new ActionId("audio.set-default-input");
+  public static final ActionId AUDIO_TEST_TONE = new ActionId("audio.test-tone");
 
   public ActionId {
     Objects.requireNonNull(value, "value");

@@ -14,6 +14,8 @@ class BootstrapTest {
     assertNotNull(context.dashboardMonitor());
     assertNotNull(context.networkManager());
     assertNotNull(context.networkEvents());
+    assertNotNull(context.audioManager());
+    assertNotNull(context.audioEvents());
     assertNotNull(context.lifecycleManager());
     assertNotNull(context.actionDispatcher());
     assertNotNull(context.auditLog());

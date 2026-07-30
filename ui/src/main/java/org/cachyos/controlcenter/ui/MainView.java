@@ -4,6 +4,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import org.cachyos.controlcenter.core.action.ActionDispatcher;
 import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
+import org.cachyos.controlcenter.modules.audio.AudioEvents;
+import org.cachyos.controlcenter.modules.audio.AudioManagerModule;
 import org.cachyos.controlcenter.modules.network.NetworkEvents;
 import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
 import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
@@ -25,6 +27,8 @@ public final class MainView {
       InMemoryAuditLog auditLog,
       NetworkManagerModule networkManager,
       NetworkEvents networkEvents,
+      AudioManagerModule audioManager,
+      AudioEvents audioEvents,
       ActionDispatcher actionDispatcher) {
     NotificationCenter notifications = new NotificationCenter();
     themeManager = new ThemeManager();
@@ -36,6 +40,8 @@ public final class MainView {
             auditLog,
             networkManager,
             networkEvents,
+            audioManager,
+            audioEvents,
             new NavigationCatalog(),
             themeManager,
             notifications,

@@ -11,11 +11,14 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import org.cachyos.controlcenter.core.action.ActionDispatcher;
 import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
+import org.cachyos.controlcenter.modules.audio.AudioEvents;
+import org.cachyos.controlcenter.modules.audio.AudioManagerModule;
 import org.cachyos.controlcenter.modules.network.NetworkEvents;
 import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
 import org.cachyos.controlcenter.systeminfo.DashboardMonitor;
 import org.cachyos.controlcenter.systeminfo.PlatformInfo;
 import org.cachyos.controlcenter.systeminfo.SystemSnapshot;
+import org.cachyos.controlcenter.ui.audio.AudioView;
 import org.cachyos.controlcenter.ui.dashboard.DashboardView;
 import org.cachyos.controlcenter.ui.network.NetworkView;
 import org.cachyos.controlcenter.ui.notifications.NotificationCenter;
@@ -93,6 +96,17 @@ final class ShellPages {
         "Netzwerk",
         "NetworkManager-Status, gespeicherte Profile, WLANs und sichere lokale Aktionen.",
         new NetworkView(manager, events, dispatcher, notifications));
+  }
+
+  static Node audio(
+      AudioManagerModule manager,
+      AudioEvents events,
+      ActionDispatcher dispatcher,
+      NotificationCenter notifications) {
+    return page(
+        "Audio",
+        "PipeWire-Geräte, Mikrofone, Streams und lokale Mixersteuerung ohne Audioaufnahme.",
+        new AudioView(manager, events, dispatcher, notifications));
   }
 
   static Node settings(ThemeManager themeManager, Consumer<ThemeMode> onChanged) {

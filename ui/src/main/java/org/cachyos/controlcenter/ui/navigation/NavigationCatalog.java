@@ -15,7 +15,7 @@ public final class NavigationCatalog {
           planned(NavigationId.HARDWARE, "Hardware", "Geräte und Sensoren", 16),
           planned(NavigationId.STORAGE, "Speicher", "Laufwerke und Dateisysteme", 17),
           planned(NavigationId.SNAPSHOTS, "Snapshots", "Btrfs- und Snapper-Verwaltung", 17),
-          planned(NavigationId.AUDIO, "Audio", "PipeWire-Geräte und Streams", 6),
+          active(NavigationId.AUDIO, "Audio", "PipeWire-Geräte und Streams"),
           planned(NavigationId.DISPLAY, "Anzeige", "Monitore und Grafik", 19),
           planned(NavigationId.POWER, "Energie", "Akku und Energieprofile", 19),
           planned(NavigationId.SERVICES, "Dienste", "Systemd-Units", 18),

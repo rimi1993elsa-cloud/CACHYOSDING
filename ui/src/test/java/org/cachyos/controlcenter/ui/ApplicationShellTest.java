@@ -16,6 +16,11 @@ import org.cachyos.controlcenter.core.action.ActionRequest;
 import org.cachyos.controlcenter.core.action.ActionResult;
 import org.cachyos.controlcenter.core.action.InputSource;
 import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
+import org.cachyos.controlcenter.modules.audio.AudioBackend;
+import org.cachyos.controlcenter.modules.audio.AudioEvents;
+import org.cachyos.controlcenter.modules.audio.AudioManagerModule;
+import org.cachyos.controlcenter.modules.audio.AudioOperationResult;
+import org.cachyos.controlcenter.modules.audio.AudioSnapshot;
 import org.cachyos.controlcenter.modules.network.NetworkBackend;
 import org.cachyos.controlcenter.modules.network.NetworkEvents;
 import org.cachyos.controlcenter.modules.network.NetworkManagerModule;
@@ -55,6 +60,14 @@ class ApplicationShellTest extends ApplicationTest {
             new InMemoryAuditLog(),
             new NetworkManagerModule(new UnavailableNetworkBackend()),
             new NetworkEvents() {
+              @Override
+              public void subscribe(Runnable listener) {}
+
+              @Override
+              public void close() {}
+            },
+            new AudioManagerModule(new UnavailableAudioBackend()),
+            new AudioEvents() {
               @Override
               public void subscribe(Runnable listener) {}
 
@@ -108,6 +121,15 @@ class ApplicationShellTest extends ApplicationTest {
   }
 
   @Test
+  void opensImplementedAudioManagerPage() {
+    clickOn("Audio");
+
+    Label heading = lookup(".page-title").queryAs(Label.class);
+    assertEquals("Audio", heading.getText());
+    lookup("#audio-outputs").queryListView();
+  }
+
+  @Test
   void quickButtonDispatchesItsFixedActionId() {
     Button firefox = lookup("#action-open-firefox").queryButton();
     interact(firefox::fire);
@@ -141,6 +163,48 @@ class ApplicationShellTest extends ApplicationTest {
     @Override
     public NetworkOperationResult disconnectDevice(String deviceName) {
       return NetworkOperationResult.unavailable("Test");
+    }
+  }
+
+  private static final class UnavailableAudioBackend implements AudioBackend {
+    @Override
+    public AudioSnapshot readSnapshot() {
+      return AudioSnapshot.unavailable("Test");
+    }
+
+    @Override
+    public AudioOperationResult setOutputVolume(String deviceName, int percent) {
+      return AudioOperationResult.unavailable("Test");
+    }
+
+    @Override
+    public AudioOperationResult setInputVolume(String deviceName, int percent) {
+      return AudioOperationResult.unavailable("Test");
+    }
+
+    @Override
+    public AudioOperationResult setOutputMute(String deviceName, boolean muted) {
+      return AudioOperationResult.unavailable("Test");
+    }
+
+    @Override
+    public AudioOperationResult setInputMute(String deviceName, boolean muted) {
+      return AudioOperationResult.unavailable("Test");
+    }
+
+    @Override
+    public AudioOperationResult setDefaultOutput(String deviceName) {
+      return AudioOperationResult.unavailable("Test");
+    }
+
+    @Override
+    public AudioOperationResult setDefaultInput(String deviceName) {
+      return AudioOperationResult.unavailable("Test");
+    }
+
+    @Override
+    public AudioOperationResult playTestTone() {
+      return AudioOperationResult.unavailable("Test");
     }
   }
 }

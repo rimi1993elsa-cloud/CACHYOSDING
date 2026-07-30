@@ -1,4 +1,4 @@
-# Benutzerhandbuch – Phase 5
+# Benutzerhandbuch – Phase 6
 
 Nach `./gradlew :app:run` erscheint die Grundoberfläche mit Topbar, Navigation, Inhaltsbereich und
 Statusbereich. Die Seiten „Übersicht“, „System“ und „Einstellungen“ enthalten reale lokale Inhalte.
@@ -31,6 +31,11 @@ ein ausgewähltes Gerät getrennt werden.
 Neue geschützte WLANs werden bewusst nicht mit einem Passwort als Prozessargument verbunden.
 Lege sie über den NetworkManager-Secret-Agent von KDE an; anschließend kann das gespeicherte Profil
 in der Anwendung aktiviert werden. Fehlt `nmcli`, bleibt die Seite nutzbar und erklärt den Grund.
+
+Unter „Audio“ zeigt die Anwendung Ausgabegeräte, Mikrofone und laufende Wiedergabestreams. Ein Gerät
+wird durch Auswahl bedient. Danach lassen sich Lautstärke, Stummschaltung und Standardgerät ändern.
+Der Testton ist nur aktiv, wenn `pw-play` und die feste freedesktop-Systemklangdatei verfügbar sind.
+Die Mikrofonseite verändert ausschließlich Mixerwerte und zeichnet kein Audio auf.
 
 Auf der Übersicht stehen vier Schnellaktionen bereit:
 

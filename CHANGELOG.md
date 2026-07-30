@@ -7,6 +7,11 @@ Alle nennenswerten Änderungen werden in dieser Datei dokumentiert. Das Format o
 
 ### Added
 
+- PipeWire-Audiomanager für Ausgaben, Mikrofone, Standardgeräte und Streams
+- Validierte Lautstärke- und Mute-Aktionen bis maximal 150 Prozent
+- Ereignisbasierte Audioaktualisierung über `pactl subscribe`
+- Optionaler Testton über fest erkanntes `pw-play` und eine feste Systemklangdatei
+- Jackson 2.22.0 für strukturierte, lokalisierungsunabhängige Adapterdaten
 - NetworkManager-Seite für Geräte, WLANs, Profile, VPNs, Gateway und DNS
 - Ereignisbasierte Netzwerkaktualisierung über den festen `nmcli monitor`-Aufruf
 - Validierte Aktionen für WLAN, Scan, gespeicherte Profile und Gerätetrennung

@@ -5,10 +5,10 @@ phasenweise nach dem verbindlichen Masterauftrag entwickelt.
 
 ## Aktueller Stand
 
-Phase 5 ergänzt einen NetworkManager für Geräte, Verbindungen, WLANs, gespeicherte Profile, VPNs,
-Gateway und DNS. WLAN kann ein- und ausgeschaltet, neu gescannt sowie über gespeicherte Profile
-verbunden werden. `nmcli monitor` aktualisiert die Ansicht ereignisbasiert. Passwörter werden weder
-ausgelesen noch in Prozessargumenten, Datenbank oder Logs gespeichert.
+Phase 6 ergänzt einen PipeWire-Audiomanager über die PulseAudio-Kompatibilitätsschicht. Ausgabe- und
+Eingabegeräte, Standardgeräte, Lautstärke, Mute und Wiedergabestreams werden aus strukturierten
+`pactl`-Daten angezeigt und gesteuert. `pactl subscribe` aktualisiert die Ansicht ohne Polling.
+Mikrofonsteuerung nimmt zu keinem Zeitpunkt Audio auf.
 
 ## Voraussetzungen
 

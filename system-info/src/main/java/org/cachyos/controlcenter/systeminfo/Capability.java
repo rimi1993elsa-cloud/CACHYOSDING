@@ -7,6 +7,7 @@ public enum Capability {
   NMCLI("NetworkManager", List.of("nmcli"), "networkmanager"),
   WPCTL("PipeWire wpctl", List.of("wpctl"), "wireplumber"),
   PACTL("PulseAudio-Kompatibilität", List.of("pactl"), "libpulse"),
+  AUDIO_TEST_PLAYER("PipeWire Testton", List.of("pw-play"), "pipewire-audio"),
   PACMAN("Pacman", List.of("pacman"), "pacman"),
   PARU("Paru", List.of("paru"), "paru"),
   SYSTEMCTL("Systemd", List.of("systemctl"), "systemd"),

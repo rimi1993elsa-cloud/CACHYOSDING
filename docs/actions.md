@@ -29,6 +29,13 @@ Direkter Button
 | `network.wifi-off` | WLAN ausschalten | nein | keine |
 | `network.activate-profile` | gespeichertes Profil aktivieren | nein | validierte UUID |
 | `network.disconnect-device` | Netzwerkgerät trennen | nein | validierter Gerätename |
+| `audio.set-output-volume` | Ausgabelautstärke setzen | nein | Gerät, 0–150 |
+| `audio.set-input-volume` | Mikrofonlautstärke setzen | nein | Gerät, 0–150 |
+| `audio.set-output-mute` | Ausgabe stumm/aktiv setzen | nein | Gerät, Boolean |
+| `audio.set-input-mute` | Mikrofon stumm/aktiv setzen | nein | Gerät, Boolean |
+| `audio.set-default-output` | Standardausgabe setzen | nein | Gerät |
+| `audio.set-default-input` | Standardmikrofon setzen | nein | Gerät |
+| `audio.test-tone` | festen Systemtestton abspielen | nein | keine |
 
 Unbekannte IDs werden vor jedem Handler abgelehnt und auditiert. Die Desktop-Aktionen weisen
 sämtliche Parameter zurück. Prozesse erhalten eine absolute Executable und eine getrennte
