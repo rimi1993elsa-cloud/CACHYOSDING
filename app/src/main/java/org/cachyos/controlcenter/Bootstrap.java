@@ -3,6 +3,10 @@ package org.cachyos.controlcenter;
 import java.time.Duration;
 import java.util.concurrent.Executors;
 import org.cachyos.controlcenter.ai.api.AiProvider;
+import org.cachyos.controlcenter.ai.knowledge.HttpKnowledgeFetcher;
+import org.cachyos.controlcenter.ai.knowledge.KnowledgeCache;
+import org.cachyos.controlcenter.ai.knowledge.KnowledgeService;
+import org.cachyos.controlcenter.ai.knowledge.OfficialSourceRegistry;
 import org.cachyos.controlcenter.ai.openai.OpenAiResponsesProvider;
 import org.cachyos.controlcenter.ai.provider.AiConfiguration;
 import org.cachyos.controlcenter.core.action.ActionRegistry;
@@ -38,6 +42,7 @@ public final class Bootstrap {
   private Bootstrap() {}
 
   public static AppContext createContext() {
+    XdgPaths xdgPaths = XdgPaths.detect();
     PlatformInfo platformInfo = PlatformDetector.detect();
     SystemSnapshot systemSnapshot = SystemSnapshotDetector.detect(platformInfo);
     LifecycleManager lifecycle = new LifecycleManager();
@@ -66,13 +71,18 @@ public final class Bootstrap {
                     .map(entry -> new RegisteredApplication(entry.id(), entry.name()))
                     .toList());
     MicrophoneCatalog microphoneCatalog = new MicrophoneCatalog();
-    SpeechModelManager speechModelManager =
-        new SpeechModelManager(XdgPaths.detect().dataDirectory());
+    SpeechModelManager speechModelManager = new SpeechModelManager(xdgPaths.dataDirectory());
     VoskSpeechToTextEngine speechToTextEngine =
         lifecycle.manage(new VoskSpeechToTextEngine(microphoneCatalog));
     AiConfiguration aiConfiguration = AiConfiguration.fromEnvironment();
     AiProvider aiProvider =
         lifecycle.manage(new OpenAiResponsesProvider(aiConfiguration, new DesktopSecretStore()));
+    KnowledgeService knowledgeService =
+        lifecycle.manage(
+            new KnowledgeService(
+                OfficialSourceRegistry.sources(),
+                new KnowledgeCache(xdgPaths.cacheDirectory()),
+                new HttpKnowledgeFetcher()));
     InMemoryAuditLog auditLog = new InMemoryAuditLog();
     ModuleRegistry moduleRegistry = new ModuleRegistry();
     ActionRegistry actionRegistry = new ActionRegistry();
@@ -115,6 +125,7 @@ public final class Bootstrap {
         speechToTextEngine,
         aiProvider,
         aiConfiguration,
+        knowledgeService,
         lifecycle,
         dispatcher,
         auditLog,

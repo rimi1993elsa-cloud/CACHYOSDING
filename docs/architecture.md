@@ -3,7 +3,7 @@
 ## Ziel
 
 Die Anwendung trennt Anzeige, lokale Aktionen, privilegierte Aktionen und Online-KI technisch. In
-Phase 10 existieren die unprivilegierte UI, sichere Systemerkennung, das Live-Dashboard, eine
+Phase 11 existieren die unprivilegierte UI, sichere Systemerkennung, das Live-Dashboard, eine
 allowlist-basierte lokale Action Engine, Fachgrenzen für NetworkManager und PipeWire-Pulse sowie
 eine strikt textliefernde Speech-to-Text-Grenze.
 
@@ -51,6 +51,9 @@ flowchart TB
   validierte Bezeichner verwendet; freie Shell-Schnittstellen sind verboten.
 - `ai` enthält nur Provider-, Prompt- und Textmodelle. Sein Gradle-Modul besitzt weder eine
   Projektabhängigkeit zu `core`, `input`, `ui`, `platform-linux` noch zum Helper.
+- `ai.knowledge` akzeptiert ausschließlich Registry-URLs der offiziellen CachyOS-/Arch-Wikis.
+  Dokumente werden zu reinem Text reduziert, auf Prompt-Injection-Marker geprüft, lokal gecacht und
+  nur als ausdrücklich unvertrauenswürdiger Kontext an den Provider angefügt.
 - `helper` ist kein Bestandteil des GUI-Prozesses und wird erst in Phase 13 implementiert.
 
 ## Nebenläufigkeit
@@ -83,3 +86,4 @@ Benutzer-Home zurück. Secrets gehören später in Secret Service/KDE Wallet, ni
 - Jackson 2.22.0
 - Vosk Java 0.3.45 (neueste auf Maven Central verfügbare Desktop-Bibliothek; Upstream-Release 0.3.50)
 - Offizielles OpenAI Java SDK 4.43.0
+- jsoup 1.23.1

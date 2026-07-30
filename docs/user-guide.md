@@ -1,4 +1,4 @@
-# Benutzerhandbuch – Phase 10
+# Benutzerhandbuch – Phase 11
 
 Nach `./gradlew :app:run` erscheint die Grundoberfläche mit Topbar, Navigation, Inhaltsbereich und
 Statusbereich. Die Seiten „Übersicht“, „System“ und „Einstellungen“ enthalten reale lokale Inhalte.
@@ -74,6 +74,12 @@ reine Entwicklungssitzung kann alternativ `OPENAI_API_KEY` gesetzt werden. Das M
 `CACHYOS_CC_OPENAI_MAX_OUTPUT_TOKENS` konfigurierbar. Voreingestellt sind `gpt-5.6-sol` und 2048
 Ausgabetokens. Prüfe vor Nutzung die aktuellen API-Preise. Der Chat besitzt keine lokale
 Ausführungsfunktion.
+
+Mit „Offizielle Quellen aktualisieren“ werden fünf fest eingebaute CachyOS-/ArchWiki-Seiten in den
+lokalen Cache geladen. Dieser Netzwerkzugriff geschieht nie automatisch beim Start. Ein Cacheeintrag
+gilt sieben Tage als aktuell; bei Offlinebetrieb bleibt der letzte Stand nutzbar. Bei einer Frage
+zeigt „Lokale Wissensquellen“ die verwendeten Treffer samt URL und Abrufzeit. Gibt es keinen
+passenden Treffer, wird dies offen angezeigt.
 
 Auf der Übersicht stehen vier Schnellaktionen bereit:
 

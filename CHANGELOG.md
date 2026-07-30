@@ -7,6 +7,12 @@ Alle nennenswerten Änderungen werden in dieser Datei dokumentiert. Das Format o
 
 ### Added
 
+- Allowlist-basierte CachyOS-/ArchWiki-Quellenregistry
+- Explizit ausgelöster, begrenzter HTTPS-Abruf mit siebentägiger Cache-Strategie
+- Symlink-resistenter XDG-Wissenscache mit atomaren Ersetzungen
+- Textbereinigung und Neutralisierung eingebetteter Prompt-Injection-Phrasen
+- Lokales Chunking und lexikalisches Retrieval mit Quellen-URL und Abrufstand
+- Sichtbare RAG-Quellen und als untrusted data markierter KI-Kontext
 - Optionale, streamende OpenAI-Responses-API-Anbindung über das offizielle Java-SDK 4.43.0
 - Rein textbasierte `AiProvider`-Grenze ohne Action- oder Plattformabhängigkeit
 - Chatseite mit Abbruch, Offlinezustand, Modell-/Tokenanzeige und Kostenhinweis

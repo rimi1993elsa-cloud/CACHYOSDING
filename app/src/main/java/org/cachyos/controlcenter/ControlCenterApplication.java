@@ -33,6 +33,7 @@ public final class ControlCenterApplication extends Application {
             context.speechToTextEngine(),
             context.aiProvider(),
             context.aiConfiguration(),
+            context.knowledgeService(),
             context.actionDispatcher());
     Scene scene = new Scene(mainView.root(), 1100, 720);
     mainView.install(scene);

@@ -27,6 +27,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.cachyos.controlcenter.ai.api.AiProvider;
+import org.cachyos.controlcenter.ai.knowledge.KnowledgeService;
 import org.cachyos.controlcenter.ai.provider.AiConfiguration;
 import org.cachyos.controlcenter.core.action.ActionDispatcher;
 import org.cachyos.controlcenter.core.action.ActionRequest;
@@ -87,6 +88,7 @@ final class ApplicationShell {
       SpeechToTextEngine speechToTextEngine,
       AiProvider aiProvider,
       AiConfiguration aiConfiguration,
+      KnowledgeService knowledgeService,
       NavigationCatalog catalog,
       ThemeManager themeManager,
       NotificationCenter notifications,
@@ -111,6 +113,7 @@ final class ApplicationShell {
                 speechToTextEngine,
                 aiProvider,
                 aiConfiguration,
+                knowledgeService,
                 themeManager,
                 notifications,
                 actionDispatcher));
@@ -195,7 +198,7 @@ final class ApplicationShell {
 
     Label title = new Label("CachyOS Control Center");
     title.getStyleClass().add("app-title");
-    Label phase = new Label("Entwicklungsstand · Phase 10");
+    Label phase = new Label("Entwicklungsstand · Phase 11");
     phase.getStyleClass().add("phase-badge");
 
     Label statusDot = new Label("●");
@@ -256,6 +259,7 @@ final class ApplicationShell {
       SpeechToTextEngine speechToTextEngine,
       AiProvider aiProvider,
       AiConfiguration aiConfiguration,
+      KnowledgeService knowledgeService,
       ThemeManager themeManager,
       NotificationCenter notificationCenter,
       ActionDispatcher actionDispatcher) {
@@ -276,7 +280,7 @@ final class ApplicationShell {
     pages.put(
         NavigationId.VOICE,
         ShellPages.voice(microphoneCatalog, speechModelManager, speechToTextEngine, this::submit));
-    chatView = ShellPages.createChat(aiProvider, aiConfiguration);
+    chatView = ShellPages.createChat(aiProvider, aiConfiguration, knowledgeService);
     pages.put(NavigationId.AI_ASSISTANT, ShellPages.chat(chatView));
     pages.put(
         NavigationId.SETTINGS,

@@ -3,6 +3,7 @@ package org.cachyos.controlcenter.ui;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import org.cachyos.controlcenter.ai.api.AiProvider;
+import org.cachyos.controlcenter.ai.knowledge.KnowledgeService;
 import org.cachyos.controlcenter.ai.provider.AiConfiguration;
 import org.cachyos.controlcenter.core.action.ActionDispatcher;
 import org.cachyos.controlcenter.core.audit.InMemoryAuditLog;
@@ -43,6 +44,7 @@ public final class MainView {
       SpeechToTextEngine speechToTextEngine,
       AiProvider aiProvider,
       AiConfiguration aiConfiguration,
+      KnowledgeService knowledgeService,
       ActionDispatcher actionDispatcher) {
     NotificationCenter notifications = new NotificationCenter();
     themeManager = new ThemeManager();
@@ -63,6 +65,7 @@ public final class MainView {
             speechToTextEngine,
             aiProvider,
             aiConfiguration,
+            knowledgeService,
             new NavigationCatalog(),
             themeManager,
             notifications,

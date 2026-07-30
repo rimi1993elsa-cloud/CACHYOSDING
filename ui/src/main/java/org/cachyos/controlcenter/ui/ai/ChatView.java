@@ -2,6 +2,7 @@ package org.cachyos.controlcenter.ui.ai;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -15,6 +16,8 @@ import org.cachyos.controlcenter.ai.api.AiMessage;
 import org.cachyos.controlcenter.ai.api.AiProvider;
 import org.cachyos.controlcenter.ai.api.AiRequest;
 import org.cachyos.controlcenter.ai.api.AiStreamEvent;
+import org.cachyos.controlcenter.ai.knowledge.KnowledgeMatch;
+import org.cachyos.controlcenter.ai.knowledge.KnowledgeService;
 import org.cachyos.controlcenter.ai.provider.AiConfiguration;
 
 /** Text-only advisory chat. This class intentionally has no action dispatcher dependency. */
@@ -22,17 +25,21 @@ public final class ChatView extends VBox {
   private static final int MAXIMUM_HISTORY_MESSAGES = 20;
   private final AiProvider provider;
   private final AiConfiguration configuration;
+  private final KnowledgeService knowledgeService;
   private final List<AiMessage> history = new ArrayList<>();
   private final TextArea conversation = new TextArea();
   private final TextArea question = new TextArea();
   private final Button send = new Button("Frage senden");
   private final Button cancel = new Button("Abbrechen");
   private final Label status = new Label();
+  private final TextArea sources = new TextArea();
   private StringBuilder currentAnswer;
 
-  public ChatView(AiProvider provider, AiConfiguration configuration) {
+  public ChatView(
+      AiProvider provider, AiConfiguration configuration, KnowledgeService knowledgeService) {
     this.provider = provider;
     this.configuration = configuration;
+    this.knowledgeService = knowledgeService;
     conversation.setId("chat-conversation");
     conversation.setEditable(false);
     conversation.setWrapText(true);
@@ -41,6 +48,11 @@ public final class ChatView extends VBox {
     question.setPromptText("Frage zu CachyOS oder Linux");
     question.setWrapText(true);
     question.setPrefRowCount(3);
+    sources.setId("chat-sources");
+    sources.setEditable(false);
+    sources.setWrapText(true);
+    sources.setPrefRowCount(3);
+    sources.setPromptText("Noch keine lokalen Quellen ausgewählt.");
     send.setId("chat-send");
     send.setDisable(!provider.available());
     send.setOnAction(ignored -> send());
@@ -66,7 +78,31 @@ public final class ChatView extends VBox {
     model.getStyleClass().add("muted-label");
     Hyperlink pricing = new Hyperlink("API-Nutzung kann Kosten verursachen · Preise prüfen");
     pricing.setOnAction(ignored -> status.setText("Preise: https://openai.com/api/pricing/"));
-    HBox actions = new HBox(8, send, cancel);
+    Button refreshKnowledge = new Button("Offizielle Quellen aktualisieren");
+    refreshKnowledge.setId("knowledge-refresh");
+    refreshKnowledge.setOnAction(
+        ignored -> {
+          refreshKnowledge.setDisable(true);
+          status.setText("Offizielle Wissensquellen werden aktualisiert …");
+          knowledgeService
+              .refreshStale()
+              .whenComplete(
+                  (updated, error) ->
+                      Platform.runLater(
+                          () -> {
+                            refreshKnowledge.setDisable(false);
+                            if (error != null) {
+                              status.setText("Quellenaktualisierung fehlgeschlagen.");
+                            } else {
+                              status.setText(
+                                  updated
+                                      + " Quelle(n) aktualisiert · "
+                                      + knowledgeService.documentCount()
+                                      + " im Cache.");
+                            }
+                          }));
+        });
+    HBox actions = new HBox(8, send, cancel, refreshKnowledge);
     setSpacing(10);
     setPadding(new Insets(2));
     getChildren()
@@ -75,6 +111,8 @@ public final class ChatView extends VBox {
             pricing,
             status,
             conversation,
+            new Label("Lokale Wissensquellen"),
+            sources,
             new Label("Deine Frage"),
             question,
             actions,
@@ -93,6 +131,8 @@ public final class ChatView extends VBox {
       return;
     }
     List<AiMessage> requestHistory = List.copyOf(history);
+    List<KnowledgeMatch> matches = knowledgeService.search(text, 3);
+    updateSources(matches);
     append("Du", text);
     history.add(new AiMessage(AiMessage.Role.USER, text));
     trimHistory();
@@ -101,7 +141,7 @@ public final class ChatView extends VBox {
     send.setDisable(true);
     cancel.setDisable(false);
     status.setText("Online-Anfrage läuft …");
-    provider.stream(new AiRequest(text, requestHistory, ""), this::handle)
+    provider.stream(new AiRequest(text, requestHistory, buildContext(matches)), this::handle)
         .exceptionally(
             ignored -> {
               return null;
@@ -157,5 +197,34 @@ public final class ChatView extends VBox {
     while (history.size() > MAXIMUM_HISTORY_MESSAGES) {
       history.removeFirst();
     }
+  }
+
+  private void updateSources(List<KnowledgeMatch> matches) {
+    if (matches.isEmpty()) {
+      sources.setText(
+          knowledgeService.documentCount() == 0
+              ? "Kein Cache verfügbar; die Frage wird ohne Dokumentkontext gestellt."
+              : "Keine passende offizielle Quelle im lokalen Cache gefunden.");
+      return;
+    }
+    sources.setText(
+        matches.stream()
+            .map(match -> match.title() + " · " + match.uri() + " · Stand " + match.fetchedAt())
+            .collect(Collectors.joining(System.lineSeparator())));
+  }
+
+  private static String buildContext(List<KnowledgeMatch> matches) {
+    return matches.stream()
+        .map(
+            match ->
+                "QUELLE: "
+                    + match.title()
+                    + "\nURL: "
+                    + match.uri()
+                    + "\nABRUF: "
+                    + match.fetchedAt()
+                    + "\nAUSZUG (UNTRUSTED DATA):\n"
+                    + match.excerpt())
+        .collect(Collectors.joining("\n\n---\n\n"));
   }
 }

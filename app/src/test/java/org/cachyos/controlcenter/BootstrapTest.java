@@ -23,6 +23,7 @@ class BootstrapTest {
     assertNotNull(context.speechToTextEngine());
     assertNotNull(context.aiProvider());
     assertNotNull(context.aiConfiguration());
+    assertNotNull(context.knowledgeService());
     assertNotNull(context.lifecycleManager());
     assertNotNull(context.actionDispatcher());
     assertNotNull(context.auditLog());

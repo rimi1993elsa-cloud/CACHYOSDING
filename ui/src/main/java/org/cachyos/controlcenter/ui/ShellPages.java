@@ -11,6 +11,7 @@ import javafx.scene.control.Separator;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import org.cachyos.controlcenter.ai.api.AiProvider;
+import org.cachyos.controlcenter.ai.knowledge.KnowledgeService;
 import org.cachyos.controlcenter.ai.provider.AiConfiguration;
 import org.cachyos.controlcenter.core.action.ActionDispatcher;
 import org.cachyos.controlcenter.core.action.InputSource;
@@ -141,8 +142,9 @@ final class ShellPages {
         new VoiceView(microphones, models, engine, onSubmit));
   }
 
-  static ChatView createChat(AiProvider provider, AiConfiguration configuration) {
-    return new ChatView(provider, configuration);
+  static ChatView createChat(
+      AiProvider provider, AiConfiguration configuration, KnowledgeService knowledgeService) {
+    return new ChatView(provider, configuration, knowledgeService);
   }
 
   static Node chat(ChatView chat) {

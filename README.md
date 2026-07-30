@@ -5,9 +5,10 @@ phasenweise nach dem verbindlichen Masterauftrag entwickelt.
 
 ## Aktueller Stand
 
-Phase 10 ergänzt einen optionalen, streamenden OpenAI-Chat über die Responses API. Der API-Schlüssel
-wird aus Secret Service/libsecret gelesen; ohne Schlüssel bleibt die gesamte lokale Anwendung
-nutzbar. Das KI-Modul hat keine Abhängigkeit zur Action Engine und liefert ausschließlich Text.
+Phase 11 ergänzt eine lokale, quellenbasierte Wissensbasis aus fest registrierten Seiten des
+CachyOS- und Arch-Wikis. Abruf und Aktualisierung erfolgen nur nach bewusstem Klick, Inhalte werden
+begrenzt, bereinigt, gecacht und lexikalisch abgerufen. Treffer erscheinen mit URL und Abrufstand;
+Dokumenttext bleibt gegenüber der KI ausdrücklich unvertrauenswürdig.
 
 ## Voraussetzungen
 

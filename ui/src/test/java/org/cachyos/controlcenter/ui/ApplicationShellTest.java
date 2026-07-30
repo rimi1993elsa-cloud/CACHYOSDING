@@ -16,6 +16,8 @@ import javafx.stage.Stage;
 import org.cachyos.controlcenter.ai.api.AiProvider;
 import org.cachyos.controlcenter.ai.api.AiRequest;
 import org.cachyos.controlcenter.ai.api.AiStreamEvent;
+import org.cachyos.controlcenter.ai.knowledge.KnowledgeCache;
+import org.cachyos.controlcenter.ai.knowledge.KnowledgeService;
 import org.cachyos.controlcenter.ai.provider.AiConfiguration;
 import org.cachyos.controlcenter.core.action.ActionId;
 import org.cachyos.controlcenter.core.action.ActionRequest;
@@ -56,6 +58,7 @@ import org.testfx.framework.junit5.ApplicationTest;
 class ApplicationShellTest extends ApplicationTest {
   private final AtomicReference<ActionRequest> dispatched = new AtomicReference<>();
   private DashboardMonitor dashboardMonitor;
+  private KnowledgeService knowledgeService;
 
   @Override
   public void start(Stage stage) {
@@ -68,6 +71,15 @@ class ApplicationShellTest extends ApplicationTest {
             new DashboardDataSource(platformInfo, ignored -> SupplementalStatus.unavailable()),
             DashboardDataSource.initial(systemSnapshot),
             Duration.ofMinutes(1));
+    knowledgeService =
+        new KnowledgeService(
+            java.util.List.of(),
+            new KnowledgeCache(
+                java.nio.file.Path.of(System.getProperty("java.io.tmpdir"))
+                    .resolve("cachyos-control-center-ui-test")),
+            source -> {
+              throw new AssertionError("No source registered");
+            });
     MainView view =
         new MainView(
             platformInfo,
@@ -98,6 +110,7 @@ class ApplicationShellTest extends ApplicationTest {
             new NoopSpeechEngine(),
             new UnavailableAiProvider(),
             AiConfiguration.defaults(),
+            knowledgeService,
             request -> {
               dispatched.set(request);
               return CompletableFuture.completedFuture(ActionResult.success("Test"));
@@ -111,6 +124,7 @@ class ApplicationShellTest extends ApplicationTest {
   @Override
   public void stop() {
     dashboardMonitor.close();
+    knowledgeService.close();
   }
 
   @Test
