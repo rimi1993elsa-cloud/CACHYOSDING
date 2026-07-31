@@ -1,6 +1,17 @@
 CachyOS Control Center 1.2.0 – Installation
 ================================================
 
+Ein Befehl für CachyOS
+----------------------
+
+In einer normalen Shell als Benutzer ausführen:
+
+  bash <(curl -fsSL https://raw.githubusercontent.com/rimi1993elsa-cloud/CACHYOSDING/master/install-from-github.sh)
+
+Der Befehl lädt das veröffentlichte Paket, prüft dessen SHA-256-Prüfsumme
+und startet anschließend die vollständige Installation. Nicht als root starten;
+sudo wird bei den erforderlichen Paketoperationen automatisch abgefragt.
+
 Empfohlener Weg
 ----------------
 
