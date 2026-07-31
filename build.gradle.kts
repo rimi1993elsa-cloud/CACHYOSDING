@@ -119,6 +119,15 @@ val verifyPackaging = tasks.register("verifyPackaging") {
         check(required.slice(8..10).all { it.readText().startsWith("#!/usr/bin/env bash") }) {
             "Linux helper script is not executable shell source"
         }
+        val cachyosInstaller = file("scripts/install-cachyos.sh").readText()
+        check("xorg-server-xvfb" in cachyosInstaller) {
+            "CachyOS installer must provide the virtual display used by UI tests"
+        }
+        val linuxVerifier = file("scripts/verify-linux.sh").readText()
+        check(
+            "GDK_BACKEND=x11" in linuxVerifier &&
+                "xvfb-run --auto-servernum bash ./gradlew" in linuxVerifier
+        ) { "Linux verification must isolate UI tests in Xvfb" }
         val oneClickDesktop = file("Installieren.desktop").readText()
         check(
             "Terminal=true" in oneClickDesktop &&
@@ -137,7 +146,7 @@ val verifyPackaging = tasks.register("verifyPackaging") {
                 "releases/download/v\${version}/" in githubInstaller &&
                 "sha256sum --check --status" in githubInstaller &&
                 "bash \"\${bundle_path}/install.sh\"" in githubInstaller &&
-                "5b9c0db3b3e374523f6bc3190c78d3f4cc457f2e03bbe6f70b7372359e43d7d7" in githubInstaller
+                "bda852116f63a8ecaf0a5b93c952684b2c7f6b1a7ec93c7fcb09d7334fbf9770" in githubInstaller
         ) { "GitHub bootstrap installer is invalid or unpinned" }
         check("bash ./gradlew" in packageBuild) {
             "PKGBUILD must support source trees on noexec filesystems"

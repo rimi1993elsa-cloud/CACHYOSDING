@@ -371,7 +371,7 @@ class ApplicationShellTest extends ApplicationTest {
 
   @Test
   void navigationChangesRegisteredContent() {
-    clickOn("System");
+    selectNavigation(NavigationId.SYSTEM);
 
     Label systemHeading = lookup(".page-title").queryAs(Label.class);
     assertEquals("System", systemHeading.getText());
@@ -393,7 +393,7 @@ class ApplicationShellTest extends ApplicationTest {
 
   @Test
   void opensImplementedNetworkManagerPage() {
-    clickOn("Netzwerk");
+    selectNavigation(NavigationId.NETWORK);
 
     Label heading = lookup(".page-title").queryAs(Label.class);
     assertEquals("Netzwerk", heading.getText());
@@ -402,7 +402,7 @@ class ApplicationShellTest extends ApplicationTest {
 
   @Test
   void opensImplementedAudioManagerPage() {
-    clickOn("Audio");
+    selectNavigation(NavigationId.AUDIO);
 
     Label heading = lookup(".page-title").queryAs(Label.class);
     assertEquals("Audio", heading.getText());
@@ -411,7 +411,7 @@ class ApplicationShellTest extends ApplicationTest {
 
   @Test
   void opensImplementedApplicationManagerPage() {
-    clickOn("Programme");
+    selectNavigation(NavigationId.APPLICATIONS);
 
     Label heading = lookup(".page-title").queryAs(Label.class);
     assertEquals("Programme", heading.getText());
@@ -438,7 +438,7 @@ class ApplicationShellTest extends ApplicationTest {
 
   @Test
   void opensImplementedPackageManagerPage() {
-    clickOn("Pakete");
+    selectNavigation(NavigationId.PACKAGES);
 
     Label heading = lookup(".page-title").queryAs(Label.class);
     assertEquals("Pakete", heading.getText());
@@ -447,7 +447,7 @@ class ApplicationShellTest extends ApplicationTest {
 
   @Test
   void opensImplementedSecurityManagerPage() {
-    clickOn("Sicherheit");
+    selectNavigation(NavigationId.SECURITY);
 
     Label heading = lookup(".page-title").queryAs(Label.class);
     assertEquals("Sicherheit", heading.getText());
@@ -456,7 +456,7 @@ class ApplicationShellTest extends ApplicationTest {
 
   @Test
   void opensImplementedHardwareManagerPage() {
-    clickOn("Hardware");
+    selectNavigation(NavigationId.HARDWARE);
 
     Label heading = lookup(".page-title").queryAs(Label.class);
     assertEquals("Hardware", heading.getText());
@@ -515,15 +515,15 @@ class ApplicationShellTest extends ApplicationTest {
 
   @Test
   void opensDisplayAndPowerPages() {
-    clickOn("Anzeige");
+    selectNavigation(NavigationId.DISPLAY);
     assertEquals("Anzeige", lookup(".page-title").queryAs(Label.class).getText());
-    clickOn("Energie");
+    selectNavigation(NavigationId.POWER);
     assertEquals("Energie", lookup(".page-title").queryAs(Label.class).getText());
   }
 
   @Test
   void opensBootAndKernelPage() {
-    clickOn("Boot & Kernel");
+    selectNavigation(NavigationId.BOOT);
     assertEquals("Boot & Kernel", lookup(".page-title").queryAs(Label.class).getText());
   }
 
@@ -581,9 +581,7 @@ class ApplicationShellTest extends ApplicationTest {
 
   @Test
   void textCommandUsesTheTypedLocalActionPath() {
-    TextField command = lookup("#command-field").queryAs(TextField.class);
-    clickOn(command).write("Öffne Firefox");
-    press(javafx.scene.input.KeyCode.ENTER).release(javafx.scene.input.KeyCode.ENTER);
+    submitCommand("Öffne Firefox");
 
     assertEquals(ActionId.OPEN_FIREFOX, dispatched.get().actionId());
     assertEquals(InputSource.TEXT, dispatched.get().source());
@@ -591,11 +589,31 @@ class ApplicationShellTest extends ApplicationTest {
 
   @Test
   void unknownTextDoesNotDispatch() {
-    TextField command = lookup("#command-field").queryAs(TextField.class);
-    clickOn(command).write("rm -rf /");
-    press(javafx.scene.input.KeyCode.ENTER).release(javafx.scene.input.KeyCode.ENTER);
+    submitCommand("rm -rf /");
 
     assertEquals(null, dispatched.get());
+  }
+
+  private void selectNavigation(NavigationId navigationId) {
+    ListView<NavigationEntry> navigation = lookup("#primary-navigation").queryListView();
+    interact(
+        () ->
+            navigation
+                .getSelectionModel()
+                .select(
+                    navigation.getItems().stream()
+                        .filter(entry -> entry.id() == navigationId)
+                        .findFirst()
+                        .orElseThrow()));
+  }
+
+  private void submitCommand(String text) {
+    TextField command = lookup("#command-field").queryAs(TextField.class);
+    interact(
+        () -> {
+          command.setText(text);
+          command.fireEvent(new javafx.event.ActionEvent());
+        });
   }
 
   @Test

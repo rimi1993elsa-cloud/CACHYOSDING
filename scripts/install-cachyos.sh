@@ -13,7 +13,7 @@ if [[ ${EUID} -eq 0 ]]; then
 fi
 
 echo "Installiere reproduzierbare Build-Abhängigkeiten …"
-sudo pacman -S --needed base-devel jdk21-openjdk libsecret
+sudo pacman -S --needed base-devel jdk21-openjdk libsecret xorg-server-xvfb
 
 echo "Führe Quell-, Test- und Paketprüfung aus …"
 bash "${repo_root}/scripts/verify-linux.sh"

@@ -3,7 +3,7 @@ set -euo pipefail
 
 readonly version="1.2.0"
 readonly archive_name="CachyOS-Control-Center-${version}.tar.gz"
-readonly archive_sha256="5b9c0db3b3e374523f6bc3190c78d3f4cc457f2e03bbe6f70b7372359e43d7d7"
+readonly archive_sha256="bda852116f63a8ecaf0a5b93c952684b2c7f6b1a7ec93c7fcb09d7334fbf9770"
 readonly download_url="https://github.com/rimi1993elsa-cloud/CACHYOSDING/releases/download/v${version}/${archive_name}"
 
 for command_name in curl tar sha256sum; do
