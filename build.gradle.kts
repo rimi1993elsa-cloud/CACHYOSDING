@@ -97,6 +97,7 @@ val verifyPackaging = tasks.register("verifyPackaging") {
             "scripts/verify-installed.sh",
             "Installieren.desktop",
             "install.sh",
+            "install-from-github.sh",
             "README-INSTALLATION.txt",
         ).map(::file)
         check(required.all { it.isFile }) { "Packaging asset is missing" }
@@ -127,9 +128,20 @@ val verifyPackaging = tasks.register("verifyPackaging") {
         val oneClickInstaller = file("install.sh").readText()
         check(
             oneClickInstaller.startsWith("#!/usr/bin/env bash") &&
-                "scripts/install-cachyos.sh" in oneClickInstaller &&
+                "bash \"\${bundle_root}/scripts/install-cachyos.sh\"" in oneClickInstaller &&
                 "PIPESTATUS[0]" in oneClickInstaller
         ) { "One-click installer does not preserve the underlying exit status" }
+        val githubInstaller = file("install-from-github.sh").readText()
+        check(
+            githubInstaller.startsWith("#!/usr/bin/env bash") &&
+                "releases/download/v\${version}/" in githubInstaller &&
+                "sha256sum --check --status" in githubInstaller &&
+                "bash \"\${bundle_path}/install.sh\"" in githubInstaller &&
+                "5b9c0db3b3e374523f6bc3190c78d3f4cc457f2e03bbe6f70b7372359e43d7d7" in githubInstaller
+        ) { "GitHub bootstrap installer is invalid or unpinned" }
+        check("bash ./gradlew" in packageBuild) {
+            "PKGBUILD must support source trees on noexec filesystems"
+        }
         check(
             file("packaging/dbus/org.cachyos.ControlCenter.Helper1.service").readText() ==
                 file("helper/privileged-helper/src/main/resources/dbus-1/system-services/org.cachyos.ControlCenter.Helper1.service").readText()

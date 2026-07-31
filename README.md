@@ -44,6 +44,16 @@ es gibt keine freie Shellausführung und keine erhöhten Rechte.
 
 ## Auf CachyOS installieren und testen
 
+Komplette Installation mit einem einzigen Shell-Befehl:
+
+```bash
+bash <(curl -fsSL https://github.com/rimi1993elsa-cloud/CACHYOSDING/releases/download/v1.2.0/install-from-github.sh)
+```
+
+Der Bootstrap lädt ausschließlich Release `v1.2.0`, prüft vor dem Entpacken dessen fest hinterlegte
+SHA-256-Prüfsumme und startet dann den vollständigen Installer. Benötigt werden Internetzugang und
+ein normaler Benutzer mit sudo-Berechtigung; den Befehl nicht als root starten.
+
 Für die fertige Übergabe das Archiv `CachyOS-Control-Center-1.2.0.tar.gz` auf CachyOS
 entpacken und im Ordner `Installieren.desktop` doppelklicken. Falls KDE nachfragt, einmal
 „Vertrauen und starten“ bestätigen. Der One-Click-Installer protokolliert den gesamten Lauf in

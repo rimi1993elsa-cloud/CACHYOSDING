@@ -45,7 +45,7 @@ echo "Installationsprotokoll: ${log_file}"
 echo
 
 set +e
-"${bundle_root}/scripts/install-cachyos.sh" 2>&1 | tee "${log_file}"
+bash "${bundle_root}/scripts/install-cachyos.sh" 2>&1 | tee "${log_file}"
 result=${PIPESTATUS[0]}
 set -e
 

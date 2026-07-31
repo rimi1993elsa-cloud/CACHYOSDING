@@ -16,7 +16,7 @@ echo "Installiere reproduzierbare Build-Abhängigkeiten …"
 sudo pacman -S --needed base-devel jdk21-openjdk libsecret
 
 echo "Führe Quell-, Test- und Paketprüfung aus …"
-"${repo_root}/scripts/verify-linux.sh"
+bash "${repo_root}/scripts/verify-linux.sh"
 
 echo "Baue und installiere die vier lokalen Pakete …"
 (

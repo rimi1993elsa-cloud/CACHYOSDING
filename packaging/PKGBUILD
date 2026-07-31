@@ -22,13 +22,13 @@ sha256sums=('b7e53c90b1f0a38456f4cd62b366ecd58803cd97cd42b06438e2c131713d5e43')
 build() {
   cd "$startdir/.."
   export JAVA_HOME=/usr/lib/jvm/java-21-openjdk
-  ./gradlew --no-daemon :app:installDist :helper:privileged-helper:installDist
+  bash ./gradlew --no-daemon :app:installDist :helper:privileged-helper:installDist
 }
 
 check() {
   cd "$startdir/.."
   export JAVA_HOME=/usr/lib/jvm/java-21-openjdk
-  ./gradlew --no-daemon quality
+  bash ./gradlew --no-daemon quality
 }
 
 package_cachyos-control-center() {
