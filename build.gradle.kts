@@ -137,7 +137,7 @@ val verifyPackaging = tasks.register("verifyPackaging") {
                 "releases/download/v\${version}/" in githubInstaller &&
                 "sha256sum --check --status" in githubInstaller &&
                 "bash \"\${bundle_path}/install.sh\"" in githubInstaller &&
-                "6e9922af139679f88ef9f4c274a8fe58f432740f99ca72adbd1b5199cb9c08db" in githubInstaller
+                "5b9c0db3b3e374523f6bc3190c78d3f4cc457f2e03bbe6f70b7372359e43d7d7" in githubInstaller
         ) { "GitHub bootstrap installer is invalid or unpinned" }
         check("bash ./gradlew" in packageBuild) {
             "PKGBUILD must support source trees on noexec filesystems"
