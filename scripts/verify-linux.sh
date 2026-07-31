@@ -24,7 +24,7 @@ if [[ -z "${java_major}" || "${java_major}" -lt 21 ]]; then
 fi
 
 echo "[1/5] Gradle Build, Tests und Qualitätsregeln"
-./gradlew --no-daemon build quality verifyPackaging \
+bash ./gradlew --no-daemon build quality verifyPackaging \
   :app:installDist :helper:privileged-helper:installDist
 
 echo "[2/5] PKGBUILD-Quellen und Prüfsummen"

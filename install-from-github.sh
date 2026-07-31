@@ -48,4 +48,4 @@ echo "SHA-256-Prüfung erfolgreich."
 tar -xzf "${archive_path}" -C "${work_dir}"
 chmod +x "${bundle_path}/install.sh" "${bundle_path}/scripts/"*.sh
 
-"${bundle_path}/install.sh"
+bash "${bundle_path}/install.sh"
