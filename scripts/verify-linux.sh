@@ -9,7 +9,7 @@ if [[ "$(uname -s)" != "Linux" ]]; then
   exit 2
 fi
 
-required=(java makepkg)
+required=(java makepkg xvfb-run)
 for command_name in "${required[@]}"; do
   if ! command -v "${command_name}" >/dev/null 2>&1; then
     echo "Fehlendes Pflichtwerkzeug: ${command_name}" >&2
@@ -24,7 +24,7 @@ if [[ -z "${java_major}" || "${java_major}" -lt 21 ]]; then
 fi
 
 echo "[1/5] Gradle Build, Tests und Qualitätsregeln"
-bash ./gradlew --no-daemon build quality verifyPackaging \
+GDK_BACKEND=x11 xvfb-run --auto-servernum bash ./gradlew --no-daemon build quality verifyPackaging \
   :app:installDist :helper:privileged-helper:installDist
 
 echo "[2/5] PKGBUILD-Quellen und Prüfsummen"

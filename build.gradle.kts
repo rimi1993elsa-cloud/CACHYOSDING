@@ -119,6 +119,15 @@ val verifyPackaging = tasks.register("verifyPackaging") {
         check(required.slice(8..10).all { it.readText().startsWith("#!/usr/bin/env bash") }) {
             "Linux helper script is not executable shell source"
         }
+        val cachyosInstaller = file("scripts/install-cachyos.sh").readText()
+        check("xorg-server-xvfb" in cachyosInstaller) {
+            "CachyOS installer must provide the virtual display used by UI tests"
+        }
+        val linuxVerifier = file("scripts/verify-linux.sh").readText()
+        check(
+            "GDK_BACKEND=x11" in linuxVerifier &&
+                "xvfb-run --auto-servernum bash ./gradlew" in linuxVerifier
+        ) { "Linux verification must isolate UI tests in Xvfb" }
         val oneClickDesktop = file("Installieren.desktop").readText()
         check(
             "Terminal=true" in oneClickDesktop &&
