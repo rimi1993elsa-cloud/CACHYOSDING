@@ -47,7 +47,7 @@ es gibt keine freie Shellausführung und keine erhöhten Rechte.
 Komplette Installation mit einem einzigen Shell-Befehl:
 
 ```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/rimi1993elsa-cloud/CACHYOSDING/master/install-from-github.sh)
+bash <(curl -fsSL https://github.com/rimi1993elsa-cloud/CACHYOSDING/releases/download/v1.2.0/install-from-github.sh)
 ```
 
 Der Bootstrap lädt ausschließlich Release `v1.2.0`, prüft vor dem Entpacken dessen fest hinterlegte

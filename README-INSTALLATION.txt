@@ -6,7 +6,7 @@ Ein Befehl für CachyOS
 
 In einer normalen Shell als Benutzer ausführen:
 
-  bash <(curl -fsSL https://raw.githubusercontent.com/rimi1993elsa-cloud/CACHYOSDING/master/install-from-github.sh)
+  bash <(curl -fsSL https://github.com/rimi1993elsa-cloud/CACHYOSDING/releases/download/v1.2.0/install-from-github.sh)
 
 Der Befehl lädt das veröffentlichte Paket, prüft dessen SHA-256-Prüfsumme
 und startet anschließend die vollständige Installation. Nicht als root starten;
